@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quran Atlas — Shared Topic</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #EAF1F8; color: #10243D; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: white; border-radius: 24px; padding: 40px 32px; max-width: 480px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.1); text-align: center; }
+    .icon { font-size: 3rem; margin-bottom: 16px; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; color: #10243D; }
+    .subtitle { font-size: 1rem; color: #5A6A7A; margin-bottom: 24px; }
+    .topic-box { background: #EAF1F8; border-radius: 16px; padding: 20px; margin-bottom: 24px; border-left: 4px solid #326499; text-align: left; }
+    .topic-name { font-size: 1.2rem; font-weight: 700; color: #326499; margin-bottom: 4px; }
+    .topic-meta { font-size: 0.9rem; color: #7E97AF; }
+    .btn { display: block; background: #326499; color: white; padding: 16px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1rem; margin-bottom: 12px; }
+    .btn:hover { background: #2a5580; }
+    .btn-secondary { display: block; background: #EAF1F8; color: #326499; padding: 14px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+    .error { color: #E07B4F; font-size: 0.95rem; margin-top: 16px; }
+    footer { margin-top: 32px; color: #8FA8BD; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🌙</div>
+    <h1>Quran Atlas</h1>
+    <p class="subtitle">Someone shared a Quran topic with you</p>
+
+    <div class="topic-box" id="topic-box" style="display:none">
+      <div class="topic-name" id="topic-name">Loading...</div>
+      <div class="topic-meta" id="topic-meta"></div>
+    </div>
+
+    <a class="btn" id="open-app" href="#" style="display:none">Open in Quran Atlas</a>
+    <a class="btn" id="download-btn" href="https://apps.apple.com/app/quran-atlas/id0000000000" style="display:none">Download Quran Atlas</a>
+    <a class="btn-secondary" href="/quran-atlas">Learn More About Quran Atlas</a>
+
+    <p class="error" id="error" style="display:none">Could not read the shared topic. The link may be invalid or expired.</p>
+  </div>
+
+  <footer>© 2026 Marsa Digital</footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get('data');
+
+    if (data) {
+      try {
+        const json = decodeURIComponent(escape(atob(decodeURIComponent(data))));
+        const topic = JSON.parse(json);
+
+        // Show topic info
+        document.getElementById('topic-name').textContent = topic.name || 'Shared Topic';
+        const subCount = (topic.children || []).length;
+        const verseCount = countVerses(topic);
+        document.getElementById('topic-meta').textContent =
+          `${subCount} subtopic${subCount !== 1 ? 's' : ''} · ${verseCount} verse${verseCount !== 1 ? 's' : ''}`;
+        document.getElementById('topic-box').style.display = 'block';
+
+        // Deep link to app
+        const deepLink = `quranatlas://import?data=${encodeURIComponent(data)}`;
+        const openBtn = document.getElementById('open-app');
+        openBtn.href = deepLink;
+        openBtn.style.display = 'block';
+
+        // Show download button
+        document.getElementById('download-btn').style.display = 'block';
+
+        // Try to open app automatically
+        window.location.href = deepLink;
+
+      } catch(e) {
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('download-btn').style.display = 'block';
+      }
+    } else {
+      document.getElementById('error').style.display = 'block';
+    }
+
+    function countVerses(node) {
+      return (node.verses || []).length + (node.children || []).reduce((a, c) => a + countVerses(c), 0);
+    }
+  </script>
+</body>
+</html>
