@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title data-en="FAQ &mdash; Quran Atlas Support" data-ar="الأسئلة الشائعة — دعم أطلس القرآن">FAQ &mdash; Quran Atlas Support</title>
+<style>
+
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'UthmanicHafs'; src:url('assets/fonts/UthmanicHafs.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
+:root {
+  --ink: #0B1220;
+  --ink-2: #121D33;
+  --ink-3: #182746;
+  --paper: #EAF1FB;
+  --paper-2: #FFFFFF;
+  --paper-3: #F5F9FF;
+  --accent: #3E7BFA;
+  --accent-soft: #6D9EF5;
+  --accent-dim: #2C5FCB;
+  --mist: #D6E4F0;
+
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --text-primary: #1F4E8A;
+  --text-secondary: #4C6C93;
+  --text-muted: #7C93B3;
+  --border: rgba(31,78,138,0.14);
+  --hero-image: url('assets/img/bg-light.jpg');
+  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--ink);
+    --surface: var(--ink-2);
+    --surface-2: var(--ink-3);
+    --text-primary: var(--mist);
+    --text-secondary: #9FB6D6;
+    --text-muted: #6E8DAA;
+    --border: rgba(214,228,240,0.14);
+    --hero-image: url('assets/img/bg-dark.jpg');
+    --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--ink);
+  --surface: var(--ink-2);
+  --surface-2: var(--ink-3);
+  --text-primary: var(--mist);
+  --text-secondary: #9FB6D6;
+  --text-muted: #6E8DAA;
+  --border: rgba(214,228,240,0.14);
+  --hero-image: url('assets/img/bg-dark.jpg');
+  --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
+}
+:root[data-theme="light"] {
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --text-primary: #1F4E8A;
+  --text-secondary: #4C6C93;
+  --text-muted: #7C93B3;
+  --border: rgba(31,78,138,0.14);
+  --hero-image: url('assets/img/bg-light.jpg');
+  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
+}
+
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .35s ease, color .35s ease;
+}
+html[data-lang="ar"] body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+html[data-lang="ar"] [data-en] { display:none; }
+html[data-lang="en"] [data-ar] { display:none; }
+h1, h2, h3 { font-weight:700; text-wrap: balance; margin:0; }
+html[data-lang="ar"] h1, html[data-lang="ar"] h2, html[data-lang="ar"] h3 { font-weight:600; }
+p { margin:0; }
+a { color: var(--accent); text-decoration:none; }
+a:hover { color: var(--accent-dim); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px;
+}
+button { font-family:inherit; cursor:pointer; }
+
+.eyebrow {
+  font-size: 12px; font-weight:600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); display:inline-flex; align-items:center; gap:8px;
+}
+html[data-lang="ar"] .eyebrow { letter-spacing: 0; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+.prose { max-width: 65ch; }
+html[data-lang="ar"] .prose { max-width: 72ch; }
+
+.nav {
+  position: sticky; top:0; z-index:40;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.nav-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 16px 28px; max-width: 1080px; margin:0 auto; gap: 16px;
+}
+.brand { display:flex; align-items:center; gap:10px; }
+.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; }
+.brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; }
+html[data-lang="ar"] .brand span { font-weight:600; }
+.nav-actions { display:flex; align-items:center; gap:10px; }
+.pill-btn {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-primary);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight:600;
+  display:flex; align-items:center; gap:6px;
+}
+.pill-btn:hover { border-color: var(--accent-soft); color: var(--accent); }
+
+.hero {
+  position: relative; overflow:hidden;
+  background-image: var(--hero-image);
+  background-size: cover; background-position: center bottom;
+}
+.hero::after {
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%);
+}
+.hero-inner {
+  position:relative; z-index:2; max-width: 780px; margin:0 auto;
+  padding: 96px 28px 120px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap: 22px;
+}
+.hero-mark { width:128px; height:128px; filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
+.hero-mark img { width:100%; height:100%; object-fit:contain; }
+@media (prefers-color-scheme: dark) { .hero-mark { filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55)); } }
+:root[data-theme="dark"] .hero-mark { filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55)); }
+:root[data-theme="light"] .hero-mark { filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
+.hero h1 { font-size: clamp(32px, 5.5vw, 52px); line-height:1.08; letter-spacing:-0.02em; }
+.hero p.lede { font-size: 18px; color: var(--text-secondary); max-width: 46ch; }
+.hero-quran-flourish {
+  font-family:'UthmanicHafs'; font-size: 15px; color: var(--text-muted); opacity:.85;
+  letter-spacing: 0.02em;
+}
+.hero-actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+.btn-primary {
+  background: var(--accent); color:#fff; border:none; border-radius: 12px;
+  padding: 13px 24px; font-size:15px; font-weight:600; display:inline-flex; align-items:center; gap:8px;
+  box-shadow: 0 12px 28px -12px rgba(62,123,250,0.55);
+}
+.btn-primary:hover { background: var(--accent-dim); }
+.btn-secondary {
+  background: var(--surface); color: var(--text-primary); border:1px solid var(--border);
+  border-radius: 12px; padding: 13px 22px; font-size:15px; font-weight:600;
+}
+.btn-secondary:hover { border-color: var(--accent-soft); }
+
+section.block { padding: 64px 0; }
+.section-head { margin-bottom: 32px; display:flex; flex-direction:column; gap:10px; }
+.section-head h2 { font-size: 26px; letter-spacing:-0.01em; }
+.section-head p { color: var(--text-secondary); font-size: 15px; }
+
+.card-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 16px; }
+.card {
+  background: var(--surface); border:1px solid var(--border); border-radius: 16px;
+  padding: 22px; display:flex; flex-direction:column; gap: 10px;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--accent-soft); }
+.card .icon {
+  width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); flex-shrink:0;
+}
+.card h3 { font-size:16px; }
+.card p { color: var(--text-secondary); font-size: 14px; line-height:1.55; }
+.card .go { font-size:13px; font-weight:600; color:var(--accent); margin-top:auto; display:flex; align-items:center; gap:6px; }
+
+.faq-callout {
+  background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, var(--surface)), var(--surface));
+  border:1px solid var(--border); border-radius:20px; padding: 32px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px;
+}
+.faq-callout h3 { font-size: 20px; margin-bottom:6px; }
+.faq-callout p { color: var(--text-secondary); font-size:14px; max-width:46ch; }
+
+footer { border-top:1px solid var(--border); padding: 36px 0 48px; }
+.footer-row { display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; align-items:center; }
+.footer-links { display:flex; gap:18px; flex-wrap:wrap; }
+.footer-links a { color: var(--text-secondary); font-size:13px; }
+.footer-links a:hover { color:var(--accent); }
+.footer-note { color: var(--text-muted); font-size:12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+@media (max-width: 640px) {
+  .hero-inner { padding: 72px 20px 96px; }
+  section.block { padding: 48px 0; }
+}
+
+
+.hero { min-height: 30vh; }
+.faq-layout { display:grid; grid-template-columns: 220px 1fr; gap: 40px; align-items:start; }
+@media (max-width: 860px) { .faq-layout { grid-template-columns: 1fr; } }
+.faq-nav { position: sticky; top: 84px; display:flex; flex-direction:column; gap:4px; }
+@media (max-width: 860px) {
+  .faq-nav { position:static; flex-direction:row; flex-wrap:wrap; gap:8px; margin-bottom: 8px; }
+}
+.faq-nav a {
+  padding: 9px 12px; border-radius: 10px; font-size: 13.5px; color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+.faq-nav a:hover { background: var(--surface); color: var(--text-primary); }
+.faq-cat { margin-bottom: 44px; scroll-margin-top: 90px; }
+.faq-cat h2 { font-size: 21px; margin-bottom: 6px; }
+.faq-cat .count { color: var(--text-muted); font-size: 13px; margin-bottom: 18px; display:block; }
+details.qa {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 2px;
+}
+details.qa summary {
+  cursor: pointer; list-style: none; font-weight:600; font-size: 15.5px;
+  display:flex; justify-content:space-between; align-items:center; gap: 16px;
+  color: var(--text-primary);
+}
+html[data-lang="ar"] details.qa summary { font-weight: 600; }
+details.qa summary::-webkit-details-marker { display:none; }
+details.qa summary .chev { color: var(--text-muted); flex-shrink:0; transition: transform .2s ease; }
+details.qa[open] summary .chev { transform: rotate(90deg); }
+html[data-lang="ar"] details.qa[open] summary .chev { transform: rotate(-90deg); }
+details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-top: 10px; max-width: 68ch; line-height:1.65; }
+.search-box {
+  display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px; margin-bottom: 32px;
+}
+.search-box input {
+  border:none; background:transparent; outline:none; font: inherit; color: var(--text-primary); flex:1; min-width:0;
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.no-results { display:none; color: var(--text-muted); font-size:14px; padding: 24px 0; }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a class="brand" href="/quran-atlas/faq" aria-label="Quran Atlas">
+      <img src="assets/img/crescent.png" alt="" />
+      <span data-en>Quran Atlas</span>
+      <span data-ar>أطلس القرآن</span>
+    </a>
+    <div class="nav-actions">
+      <button class="pill-btn" id="langToggle" type="button">
+        <span data-en>العربية</span>
+        <span data-ar>English</span>
+      </button>
+      <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span id="themeIcon">&#9788;</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<a id="top"></a>
+<section class="hero">
+  <div class="hero-inner" style="padding-top:56px;padding-bottom:56px;gap:14px;">
+    <p class="eyebrow"><span data-en>Frequently Asked Questions</span><span data-ar>الأسئلة الشائعة</span></p>
+    <h1 style="font-size:clamp(28px,4.6vw,42px)"><span data-en>Everything about Quran Atlas</span><span data-ar>كل ما يخص أطلس القرآن</span></h1>
+    <p class="lede" style="font-size:16px">
+      <span data-en>How-tos for every tab and feature &mdash; organised by category, in Arabic and English.</span>
+      <span data-ar>دليل استخدام لكل تبويب وميزة، مُصنّف بالعربية والإنجليزية.</span>
+    </p>
+  </div>
+</section>
+
+<section class="block wrap">
+  <div class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9.6 9.6c.3-1.4 1.5-2.2 2.7-2.2 1.4 0 2.6.9 2.6 2.3 0 1.5-1.6 1.9-2.3 2.9-.3.5-.4 1-.4 1.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="12" cy="16.6" r=".9" fill="currentColor"/></svg>
+    <input type="text" id="faqSearch" data-en-ph="Search the FAQ&hellip;" data-ar-ph="ابحث في الأسئلة الشائعة…" placeholder="Search the FAQ&hellip;" />
+  </div>
+  <div class="faq-layout">
+    <nav class="faq-nav" aria-label="FAQ categories"><a href="#getting-started"><span data-en>Getting Started</span><span data-ar>البداية</span></a><a href="#explore"><span data-en>The Explore Tab</span><span data-ar>تبويب استكشف</span></a><a href="#quran-tab"><span data-en>The Quran Tab</span><span data-ar>تبويب القرآن</span></a><a href="#search"><span data-en>Search</span><span data-ar>البحث</span></a><a href="#bookmarks"><span data-en>Bookmarks</span><span data-ar>الإشارات المرجعية</span></a><a href="#daily-verse"><span data-en>Daily Verse</span><span data-ar>آية اليوم</span></a><a href="#workspace"><span data-en>Your Workspace</span><span data-ar>مكتبتي</span></a><a href="#verse-tools"><span data-en>Inside a Verse</span><span data-ar>داخل الآية</span></a><a href="#settings"><span data-en>Settings & Customisation</span><span data-ar>الإعدادات والتخصيص</span></a><a href="#backup"><span data-en>Backup, Sync & Your Data</span><span data-ar>النسخ الاحتياطي والمزامنة وبياناتك</span></a><a href="#widgets"><span data-en>Widgets</span><span data-ar>الودجات</span></a><a href="#accessibility"><span data-en>Language & Accessibility</span><span data-ar>اللغة وإمكانية الوصول</span></a></nav>
+    <div id="faqContent">
+      
+        <div class="faq-cat" id="getting-started">
+          <h2><span data-en>Getting Started</span><span data-ar>البداية</span></h2>
+          <span class="count"><span data-en>4 questions</span><span data-ar>4 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What is Quran Atlas?</span><span data-ar>ما هو أطلس القرآن؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Quran Atlas is a bilingual Quran companion for reading, studying, and reflecting — organised by topic, not just by surah. Every feature works fully in both Arabic and English.</span><span data-ar>أطلس القرآن هو رفيق ثنائي اللغة للقراءة والدراسة والتأمل في القرآن الكريم، مُنظّم حسب الموضوع وليس فقط حسب السورة. تعمل كل ميزة فيه بالكامل باللغتين العربية والإنجليزية.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I switch between Arabic and English?</span><span data-ar>كيف أبدّل بين العربية والإنجليزية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Open the menu (☰) in the top-left corner, or go to Settings → General → Language. You can switch anytime — nothing you've saved is affected.</span><span data-ar>افتح القائمة (☰) أعلى يسار الشاشة، أو انتقل إلى الإعدادات ← عام ← اللغة. يمكنك التبديل في أي وقت دون أن يتأثر أي شيء حفظته.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Do I need an account to use Quran Atlas?</span><span data-ar>هل أحتاج إلى حساب لاستخدام أطلس القرآن؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>No. Everything is stored on your device, and if you enable iCloud backup, your library syncs privately through your own Apple ID — no separate account or sign-up required.</span><span data-ar>لا حاجة لذلك. يُحفظ كل شيء على جهازك، وإذا فعّلت النسخ الاحتياطي عبر iCloud، تُزامَن مكتبتك بخصوصية عبر معرف Apple الخاص بك، دون الحاجة إلى حساب منفصل أو تسجيل.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What are the four main tabs?</span><span data-ar>ما هي التبويبات الرئيسية الأربعة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Explore (browse the Quran by topic), Quran (read verse by verse), Bookmarks (everything you've saved), and Daily Verse (a new verse and reflection space each day).</span><span data-ar>استكشف (تصفح القرآن حسب الموضوع)، القرآن (اقرأ آيةً آية)، الإشارات المرجعية (كل ما حفظته)، وآية اليوم (آية جديدة ومساحة للتأمل كل يوم).</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="explore">
+          <h2><span data-en>The Explore Tab</span><span data-ar>تبويب استكشف</span></h2>
+          <span class="count"><span data-en>5 questions</span><span data-ar>5 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What's inside the Explore tab?</span><span data-ar>ماذا يحتوي تبويب استكشف؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Three sections at the top: Categories, Packs, and Workspace. Categories groups Quran topics like Faith, Worship, or the Prophets; Packs are curated verse collections; Workspace is your own personal library.</span><span data-ar>ثلاثة أقسام أعلى الشاشة: موضوعات، وباقات، ومكتبتي. يجمع قسم «موضوعات» آيات القرآن حسب المحور مثل الإيمان أو العبادة أو الأنبياء، بينما «باقات» هي مجموعات آيات مُعدّة مسبقًا، و«مكتبتي» هي مساحتك الشخصية.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do Categories work?</span><span data-ar>كيف تعمل الموضوعات؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Tap a category to see its topics, tap a topic to see its subtopics, and tap a subtopic to see the actual verses — each shown with a short preview you can tap to read in full.</span><span data-ar>اضغط على أي فئة لعرض مواضيعها، ثم اضغط على أي موضوع لعرض مواضيعه الفرعية، ثم اضغط على أحدها لعرض آياته الفعلية — تظهر كل آية بمعاينة قصيرة يمكنك الضغط عليها لقراءتها كاملة.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What does the “CORE” badge mean on a verse?</span><span data-ar>ماذا تعني شارة «أساسية» على آية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>It marks the verse most central to that topic — a quick way to know where to start if a topic has several related verses.</span><span data-ar>تشير إلى الآية الأكثر ارتباطًا مباشرة بالموضوع، لتساعدك على معرفة من أين تبدأ إن كان للموضوع آيات مرتبطة عديدة.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What is “Continue Studying”?</span><span data-ar>ما هي «متابعة الدراسة»؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>A card at the top of Explore that remembers the last verse you spent real time on, so you can pick up exactly where you left off. Tap the arrow beside it to see a short list of other verses you recently viewed.</span><span data-ar>بطاقة أعلى تبويب استكشف تتذكر آخر آية قضيت وقتًا حقيقيًا في قراءتها، لتتمكن من المتابعة من حيث توقفت تمامًا. اضغط على السهم بجانبها لعرض قائمة مختصرة بالآيات الأخرى التي شاهدتها مؤخرًا.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What is Workspace?</span><span data-ar>ما هي «مكتبتي»؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Your own space to organise verses into personal topics and subtopics, group notes into Collections, and build Reference Cards for a scenario you want to revisit. Nothing here is preloaded — you build it as you go.</span><span data-ar>مساحتك الخاصة لتنظيم الآيات ضمن مواضيع وموضوعات فرعية من إنشائك، وتجميع الملاحظات ضمن «مجموعات»، وإنشاء «بطاقات مرجعية» لموقف تريد الرجوع إليه لاحقًا. لا شيء هنا مُعد مسبقًا؛ أنت من يبنيها تدريجيًا.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="quran-tab">
+          <h2><span data-en>The Quran Tab</span><span data-ar>تبويب القرآن</span></h2>
+          <span class="count"><span data-en>7 questions</span><span data-ar>7 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I read the Quran verse by verse?</span><span data-ar>كيف أقرأ القرآن آيةً آية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Open the Quran tab, tap any surah from the list, and it opens in the reader with the full Arabic text (and translation, if enabled).</span><span data-ar>افتح تبويب القرآن، واضغط على أي سورة من القائمة لفتحها في القارئ مع النص العربي الكامل (والترجمة، إن كانت مفعّلة).</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What does “Continue Reading” do, and how is it different from “Continue Studying”?</span><span data-ar>ما وظيفة «متابعة القراءة»، وكيف تختلف عن «متابعة الدراسة»؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Continue Reading (on the Quran tab) remembers your place in sequential reading — the last verse you opened while browsing a surah. Continue Studying (on Explore) tracks deeper engagement with a verse anywhere in the app. They're intentionally separate, so searching or bookmarking a verse elsewhere never disturbs your reading spot.</span><span data-ar>تتذكر «متابعة القراءة» (في تبويب القرآن) موضعك في القراءة المتسلسلة، أي آخر آية فتحتها أثناء تصفح سورة ما. أما «متابعة الدراسة» (في تبويب استكشف) فتتتبع تفاعلك الأعمق مع أي آية في أي مكان بالتطبيق. الميزتان منفصلتان عمدًا، بحيث لا يؤثر البحث عن آية أو حفظها في مكان آخر على موضع قراءتك.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Can I read in Arabic only, English only, or both?</span><span data-ar>هل يمكنني القراءة بالعربية فقط أو الإنجليزية فقط أو كلتيهما؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — use the view-mode toggle in the Quran tab (or Settings → Quran → Default Display) to switch between Arabic, English, or both together.</span><span data-ar>نعم، استخدم مبدّل وضع العرض في تبويب القرآن (أو الإعدادات ← القرآن ← العرض الافتراضي) للتبديل بين العربية فقط أو الإنجليزية فقط أو كلتيهما معًا.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What is tajweed coloring?</span><span data-ar>ما هو تلوين التجويد؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>An optional colour-coding of the Arabic text that highlights tajweed (recitation) rules. Turn it on or off anytime in Settings → Quran → Tajweed Coloring.</span><span data-ar>تلوين اختياري للنص العربي يبرز أحكام التجويد. يمكنك تفعيله أو إيقافه في أي وقت من الإعدادات ← القرآن ← تلوين التجويد.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I jump straight to a specific verse?</span><span data-ar>كيف أنتقل مباشرة إلى آية معينة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Tap the compass “Go To” icon at the top of the Quran tab, enter a surah and (optionally) an ayah number, and it takes you straight there.</span><span data-ar>اضغط على أيقونة البوصلة «انتقل إلى» أعلى تبويب القرآن، أدخل اسم السورة ورقم الآية (اختياريًا)، وستنتقل إليها مباشرة.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How does audio recitation work?</span><span data-ar>كيف تعمل التلاوة الصوتية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Tap the play button on any verse to hear it recited; long-press it to play continuously from that verse to the end of the surah. Choose your reciter in Settings → Quran → Default Reciter.</span><span data-ar>اضغط على زر التشغيل بجانب أي آية لسماع تلاوتها، أو اضغط مطولًا لتشغيل التلاوة بشكل متواصل من تلك الآية حتى نهاية السورة. اختر القارئ من الإعدادات ← القرآن ← القارئ الافتراضي.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Can I zoom in on the Arabic text?</span><span data-ar>هل يمكنني تكبير النص العربي؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — pinch to zoom directly on the reading screen, or adjust Quran Font Size and Line Spacing in Settings → Quran.</span><span data-ar>نعم، يمكنك التكبير بحركة القرص مباشرة على شاشة القراءة، أو ضبط حجم خط القرآن وتباعد الأسطر من الإعدادات ← القرآن.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="search">
+          <h2><span data-en>Search</span><span data-ar>البحث</span></h2>
+          <span class="count"><span data-en>3 questions</span><span data-ar>3 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What can I search for?</span><span data-ar>عن ماذا يمكنني البحث؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Any word or phrase in the Quran's verse text (Arabic or English), a surah by name, or a topic or theme.</span><span data-ar>يمكنك البحث عن أي كلمة أو عبارة في نص القرآن (عربيًا أو إنجليزيًا)، أو عن اسم سورة، أو عن موضوع أو محور معيّن.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What shows up before I type anything?</span><span data-ar>ماذا يظهر قبل أن أكتب أي شيء؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Your Recent Searches, a Recently Viewed list of verses, and a set of Search Categories — ready-made topic chips you can tap straight into.</span><span data-ar>تظهر عمليات بحثك الأخيرة، وقائمة بالآيات التي شاهدتها مؤخرًا، ومجموعة من «فئات البحث» الجاهزة التي يمكنك الضغط عليها مباشرة.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Can I save my own search terms into a category?</span><span data-ar>هل يمكنني إضافة مصطلحات بحث خاصة بي إلى فئة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — custom terms you add join the Search Categories list alongside the built-in ones.</span><span data-ar>نعم، تنضم المصطلحات المخصصة التي تضيفها إلى قائمة «فئات البحث» جنبًا إلى جنب مع الفئات المدمجة مسبقًا.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="bookmarks">
+          <h2><span data-en>Bookmarks</span><span data-ar>الإشارات المرجعية</span></h2>
+          <span class="count"><span data-en>3 questions</span><span data-ar>3 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I bookmark a verse?</span><span data-ar>كيف أحفظ آية كإشارة مرجعية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Open any verse and tap the bookmark icon — or long-press a verse row for a quick-action menu that includes Bookmark, without opening it first.</span><span data-ar>افتح أي آية واضغط على أيقونة الإشارة المرجعية، أو اضغط مطولًا على صف الآية لعرض قائمة إجراءات سريعة تتضمن خيار الحفظ دون الحاجة لفتحها أولًا.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Can I organise bookmarks into groups?</span><span data-ar>هل يمكنني تنظيم الإشارات المرجعية ضمن مجموعات؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — create named Bookmark Groups (for example, “Friday reminders”) and assign each bookmark to one. “All Bookmarks” always shows everything, regardless of group.</span><span data-ar>نعم، يمكنك إنشاء «مجموعات إشارات مرجعية» بأسماء مخصصة (مثل «تذكيرات يوم الجمعة») وتصنيف كل إشارة ضمن إحداها. يعرض قسم «جميع الإشارات المرجعية» كل شيء دائمًا، بغض النظر عن التصنيف.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Can I share a group of bookmarks?</span><span data-ar>هل يمكنني مشاركة مجموعة من الإشارات المرجعية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — use the share icon at the top of the Bookmarks tab to export or share a group.</span><span data-ar>نعم، استخدم أيقونة المشاركة أعلى تبويب الإشارات المرجعية لتصدير مجموعة أو مشاركتها.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="daily-verse">
+          <h2><span data-en>Daily Verse</span><span data-ar>آية اليوم</span></h2>
+          <span class="count"><span data-en>3 questions</span><span data-ar>3 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What is the Daily Verse tab?</span><span data-ar>ما هو تبويب آية اليوم؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>A new featured verse every day, with the same actions as any other verse (bookmark, share, notes, and more), plus a Reflection space to write your own thoughts tied to that date.</span><span data-ar>يعرض آية مميزة جديدة كل يوم، مع كل الإجراءات المتاحة لأي آية أخرى (الحفظ، المشاركة، الملاحظات، وغيرها)، بالإضافة إلى مساحة «تأمل» لكتابة أفكارك الخاصة المرتبطة بذلك اليوم.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Where do my past reflections go?</span><span data-ar>أين تذهب تأملاتي السابقة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>They're saved automatically under “My Past Reflections” in the same tab, so you can look back on what you wrote on any given day.</span><span data-ar>تُحفظ تلقائيًا ضمن «تأملاتي السابقة» في التبويب نفسه، بحيث يمكنك مراجعة ما كتبته في أي يوم سابق.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Can I see today's verse without opening the app?</span><span data-ar>هل يمكنني رؤية آية اليوم دون فتح التطبيق؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — add the Quran Atlas widget to your Home Screen or Lock Screen. See the Widgets section below.</span><span data-ar>نعم، أضِف ودجت أطلس القرآن إلى الشاشة الرئيسية أو شاشة القفل. راجع قسم الودجات أدناه.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="workspace">
+          <h2><span data-en>Your Workspace</span><span data-ar>مكتبتي</span></h2>
+          <span class="count"><span data-en>3 questions</span><span data-ar>3 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What's the difference between Topics, Collections, and Reference Cards?</span><span data-ar>ما الفرق بين المواضيع والمجموعات والبطاقات المرجعية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Topics are your own verse groupings, with subtopics, similar to the app's own Categories but built by you. Collections group related notes or verses under one theme. Reference Cards are single-purpose cards for a specific scenario or question — the verse plus your own framing, ready to reopen instantly.</span><span data-ar>«المواضيع» هي تجميعات آيات خاصة بك، مع مواضيع فرعية، على غرار أقسام التطبيق نفسها ولكن من بنائك أنت. «المجموعات» تجمع الملاحظات أو الآيات المرتبطة بمحور واحد. أما «البطاقات المرجعية» فهي بطاقات مخصصة لموقف أو سؤال محدد، تضم الآية مع صياغتك الخاصة، جاهزة لإعادة فتحها فورًا.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I add a verse to my Workspace?</span><span data-ar>كيف أضيف آية إلى مكتبتي؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>From any open verse, tap “Add to Topic” (or use the same long-press quick action), then choose or create the topic to add it to.</span><span data-ar>من أي آية مفتوحة، اضغط على «أضِف إلى موضوع» (أو استخدم الإجراء السريع بالضغط المطوّل)، ثم اختر أو أنشئ الموضوع الذي تريد إضافتها إليه.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I create a Reference Card?</span><span data-ar>كيف أنشئ بطاقة مرجعية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Open a verse, tap “Add to Reference Card,” then give it a title and describe the scenario it's for.</span><span data-ar>افتح الآية، اضغط على «أضِف إلى بطاقة مرجعية»، ثم أدخل عنوانًا ووصفًا للموقف الذي أنشأتها من أجله.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="verse-tools">
+          <h2><span data-en>Inside a Verse</span><span data-ar>داخل الآية</span></h2>
+          <span class="count"><span data-en>4 questions</span><span data-ar>4 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What can I do from an open verse?</span><span data-ar>ماذا يمكنني أن أفعل من داخل آية مفتوحة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Bookmark it, share it, add it to a Topic or Reference Card, read Tafsir (multiple sources, Arabic and English), switch translations, write a private Note, record a Voice Memo, and browse Discussion Starters for that verse.</span><span data-ar>يمكنك حفظها، مشاركتها، إضافتها إلى موضوع أو بطاقة مرجعية، قراءة التفسير (من عدة مصادر بالعربية والإنجليزية)، تبديل الترجمة، كتابة ملاحظة خاصة، تسجيل مذكرة صوتية، وتصفح «أسئلة للنقاش» حول تلك الآية.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What are Discussion Starters?</span><span data-ar>ما هي «أسئلة للنقاش»؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Short, ready-made conversation prompts tied to a verse — useful for study circles, dawah, or a family discussion.</span><span data-ar>أسئلة قصيرة جاهزة مرتبطة بآية معينة، مفيدة لحلقات الدراسة أو الدعوة أو النقاش العائلي.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Are my notes and voice memos private?</span><span data-ar>هل ملاحظاتي ومذكراتي الصوتية خاصة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes. Notes sync with iCloud backup like the rest of your library; voice memos are stored locally on your device only and are never included in backup or sync.</span><span data-ar>نعم. تُزامن الملاحظات عبر النسخ الاحتياطي على iCloud مثل باقي مكتبتك، أما المذكرات الصوتية فتُحفظ محليًا على جهازك فقط ولا تُشمل أبدًا في النسخ الاحتياطي أو المزامنة.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I switch tafsir or translation sources?</span><span data-ar>كيف أبدّل مصدر التفسير أو الترجمة؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Open a verse, then use the Tafsir or Translation selector inside the verse view to pick from the available sources.</span><span data-ar>افتح الآية، ثم استخدم قائمة اختيار التفسير أو الترجمة داخل شاشة الآية لاختيار المصدر الذي تريده.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="settings">
+          <h2><span data-en>Settings & Customisation</span><span data-ar>الإعدادات والتخصيص</span></h2>
+          <span class="count"><span data-en>3 questions</span><span data-ar>3 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What can I customise?</span><span data-ar>ماذا يمكنني تخصيصه؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Language, theme (Auto/Light/Dark), text size, default reciter and translation, default display mode, tajweed coloring, Quran font size and line spacing, playback speed, and repeat mode.</span><span data-ar>يمكنك تخصيص اللغة، والمظهر (تلقائي/فاتح/داكن)، وحجم النص، والقارئ والترجمة الافتراضيين، ووضع العرض الافتراضي، وتلوين التجويد، وحجم خط القرآن وتباعد الأسطر، وسرعة التشغيل، ووضع التكرار.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Where do I find Settings?</span><span data-ar>أين أجد الإعدادات؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Tap the menu icon (☰) in the top-left corner from any tab, then choose Settings.</span><span data-ar>اضغط على أيقونة القائمة (☰) أعلى يسار الشاشة من أي تبويب، ثم اختر «الإعدادات».</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I reset something back to default?</span><span data-ar>كيف أعيد شيئًا إلى إعداداته الافتراضية؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Most sliders (font size, line spacing) have their own Reset button beside them; “Restore Defaults” in Settings → Data & Backup resets app preferences entirely.</span><span data-ar>تحتوي معظم أشرطة التمرير (حجم الخط، تباعد الأسطر) على زر إعادة تعيين خاص بها، بينما تعيد «استعادة الإعدادات الافتراضية» في الإعدادات ← البيانات والنسخ الاحتياطي جميع تفضيلات التطبيق إلى حالتها الأصلية.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="backup">
+          <h2><span data-en>Backup, Sync & Your Data</span><span data-ar>النسخ الاحتياطي والمزامنة وبياناتك</span></h2>
+          <span class="count"><span data-en>4 questions</span><span data-ar>4 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>How does backup work?</span><span data-ar>كيف يعمل النسخ الاحتياطي؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Turn on Library Backup in Settings → Data & Backup to sync privately through your own iCloud account — no separate sign-up. Your topics, bookmarks, collections, reference cards, notes, reflections, custom categories, and settings are included.</span><span data-ar>فعّل «النسخ الاحتياطي للمكتبة» من الإعدادات ← البيانات والنسخ الاحتياطي للمزامنة الخاصة عبر حساب iCloud الخاص بك، دون الحاجة لتسجيل منفصل. يشمل ذلك مواضيعك، وإشاراتك المرجعية، ومجموعاتك، وبطاقاتك المرجعية، وملاحظاتك، وتأملاتك، وفئاتك المخصصة، وإعداداتك.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>What's NOT backed up?</span><span data-ar>ما الذي لا يُشمل في النسخ الاحتياطي؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Voice memos stay local to the device they were recorded on and are never included in iCloud backup, export, or restore.</span><span data-ar>تبقى المذكرات الصوتية محفوظة محليًا على الجهاز الذي سُجلت عليه فقط، ولا تُشمل أبدًا في النسخ الاحتياطي على iCloud أو التصدير أو الاستعادة.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I move my library to a new phone?</span><span data-ar>كيف أنقل مكتبتي إلى هاتف جديد؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>If iCloud backup was on, just sign in with the same Apple ID and it restores automatically. Otherwise, use Export Data on the old device and Import Data on the new one (Settings → Data & Backup).</span><span data-ar>إذا كان النسخ الاحتياطي على iCloud مفعّلًا، يكفي تسجيل الدخول بنفس معرف Apple لتتم الاستعادة تلقائيًا. أما إن لم يكن مفعّلًا، فاستخدم «تصدير البيانات» من الجهاز القديم و«استيراد البيانات» على الجهاز الجديد (الإعدادات ← البيانات والنسخ الاحتياطي).</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>I restored a backup — how do I know what came back?</span><span data-ar>استعدت نسخة احتياطية — كيف أعرف ما الذي عاد؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>A summary appears right after restoring, listing exactly what was recovered (bookmarks, notes, topics, and so on) and how many of each.</span><span data-ar>يظهر ملخص فور اكتمال الاستعادة يوضح بالتحديد ما تمت استعادته (الإشارات المرجعية، الملاحظات، المواضيع، وغيرها) وعدد كل نوع.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="widgets">
+          <h2><span data-en>Widgets</span><span data-ar>الودجات</span></h2>
+          <span class="count"><span data-en>2 questions</span><span data-ar>2 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>What does the Quran Atlas widget show?</span><span data-ar>ماذا يعرض ودجت أطلس القرآن؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Today's featured verse in Arabic with its translation and reference, right on your Home Screen or Lock Screen — no need to open the app.</span><span data-ar>يعرض آية اليوم المميزة بالعربية مع ترجمتها ومصدرها، مباشرة على الشاشة الرئيسية أو شاشة القفل، دون الحاجة لفتح التطبيق.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>How do I add it?</span><span data-ar>كيف أضيفه؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Long-press your Home Screen (or Lock Screen in edit mode), tap the add-widget button, search for “Quran Atlas,” and choose a size.</span><span data-ar>اضغط مطولًا على الشاشة الرئيسية (أو شاشة القفل في وضع التعديل)، ثم اضغط على زر إضافة ودجت، وابحث عن «أطلس القرآن»، واختر الحجم المناسب.</span></p>
+            </details>
+        </div>
+        <div class="faq-cat" id="accessibility">
+          <h2><span data-en>Language & Accessibility</span><span data-ar>اللغة وإمكانية الوصول</span></h2>
+          <span class="count"><span data-en>3 questions</span><span data-ar>3 سؤال</span></span>
+          
+            <details class="qa">
+              <summary>
+                <span><span data-en>Is the whole app available in Arabic, not just the Quran text?</span><span data-ar>هل التطبيق بأكمله متاح بالعربية، وليس فقط نص القرآن؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — every screen, label, and setting is fully translated and laid out right-to-left when Arabic is selected.</span><span data-ar>نعم، تُترجم كل شاشة وتسمية وإعداد بالكامل، ويُعرض التطبيق من اليمين إلى اليسار عند اختيار اللغة العربية.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>Does the app support VoiceOver and other accessibility settings?</span><span data-ar>هل يدعم التطبيق VoiceOver وإعدادات إمكانية الوصول الأخرى؟</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Yes — buttons and controls carry accessibility labels, and animations respect your device's Reduce Motion setting.</span><span data-ar>نعم، تحمل الأزرار وعناصر التحكم تسميات لإمكانية الوصول، وتراعي الحركات إعداد «تقليل الحركة» في جهازك.</span></p>
+            </details>
+            <details class="qa">
+              <summary>
+                <span><span data-en>I still have a question that's not answered here.</span><span data-ar>لا يزال لدي سؤال غير مُجاب عليه هنا.</span></span>
+                <span class="chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </summary>
+              <p class="answer"><span data-en>Reach out anytime from Support in the app menu, or email support@marsa-digital.com — we read every message.</span><span data-ar>تواصل معنا في أي وقت عبر «الدعم» من قائمة التطبيق، أو راسلنا على support@marsa-digital.com — نقرأ كل رسالة تصلنا.</span></p>
+            </details>
+        </div>
+      <p class="no-results" id="noResults">
+        <span data-en>No matching questions. Try a different word, or</span>
+        <span data-ar>لا توجد أسئلة مطابقة. جرّب كلمة أخرى، أو</span>
+        <a href="mailto:support@marsa-digital.com"><span data-en>email support</span><span data-ar>راسل الدعم</span></a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-links">
+      <a href="mailto:support@marsa-digital.com"><span data-en>Email Support</span><span data-ar>البريد الإلكتروني للدعم</span></a>
+      <a href="/quran-atlas/faq"><span data-en>FAQ</span><span data-ar>الأسئلة الشائعة</span></a>
+      <a href="/quran-atlas/privacy"><span data-en>Privacy Policy</span><span data-ar>سياسة الخصوصية</span></a>
+      <a href="/quran-atlas"><span data-en>Website</span><span data-ar>الموقع الإلكتروني</span></a>
+    </div>
+    <p class="footer-note">
+      <span data-en>&copy; Marsa Digital &middot; Quran Atlas</span>
+      <span data-ar>&copy; مرسى ديجيتال &middot; أطلس القرآن</span>
+    </p>
+  </div>
+</footer>
+
+
+<script>
+(function() {
+  var root = document.documentElement;
+  var THEME_KEY = 'qa-theme', LANG_KEY = 'qa-lang';
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    document.getElementById('themeIcon').textContent = t === 'dark' ? String.fromCharCode(9789) : String.fromCharCode(9788);
+    localStorage.setItem(THEME_KEY, t);
+  }
+  function applyLang(l) {
+    root.setAttribute('lang', l);
+    root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+    root.setAttribute('data-lang', l);
+    localStorage.setItem(LANG_KEY, l);
+  }
+
+  var savedTheme = localStorage.getItem(THEME_KEY);
+  applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  var savedLang = localStorage.getItem(LANG_KEY) || root.getAttribute('data-lang') || 'en';
+  applyLang(savedLang);
+
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  document.getElementById('langToggle').addEventListener('click', function() {
+    applyLang(root.getAttribute('data-lang') === 'ar' ? 'en' : 'ar');
+  });
+})();
+</script>
+
+<script>
+(function() {
+  var input = document.getElementById('faqSearch');
+  var cats = document.querySelectorAll('.faq-cat');
+  var noResults = document.getElementById('noResults');
+  var root = document.documentElement;
+
+  function updatePlaceholder() {
+    var lang = root.getAttribute('data-lang');
+    input.placeholder = lang === 'ar' ? input.getAttribute('data-ar-ph') : input.getAttribute('data-en-ph');
+  }
+  new MutationObserver(updatePlaceholder).observe(root, { attributes: true, attributeFilter: ['data-lang'] });
+  updatePlaceholder();
+
+  input.addEventListener('input', function() {
+    var q = input.value.trim().toLowerCase();
+    var anyVisible = false;
+    cats.forEach(function(cat) {
+      var items = cat.querySelectorAll('details.qa');
+      var catHasMatch = false;
+      items.forEach(function(item) {
+        var text = item.textContent.toLowerCase();
+        var match = q === '' || text.indexOf(q) !== -1;
+        item.style.display = match ? '' : 'none';
+        if (match) catHasMatch = true;
+      });
+      cat.style.display = catHasMatch ? '' : 'none';
+      if (catHasMatch) anyVisible = true;
+      if (q !== '' && catHasMatch) {
+        items.forEach(function(item) {
+          if (item.style.display !== 'none') item.open = true;
+        });
+      }
+    });
+    noResults.style.display = anyVisible ? 'none' : 'block';
+  });
+})();
+</script>
+</body>
+</html>

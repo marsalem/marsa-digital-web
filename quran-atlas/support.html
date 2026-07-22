@@ -1,53 +1,369 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr" data-lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quran Atlas — Support</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #EAF1F8; color: #10243D; }
-    .header { background: linear-gradient(145deg, #0F2233, #326499); color: white; padding: 48px 24px; text-align: center; }
-    .header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-    .header p { opacity: 0.8; }
-    .content { max-width: 640px; margin: 0 auto; padding: 48px 24px; }
-    .section { background: white; border-radius: 18px; padding: 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    h2 { font-size: 1.1rem; font-weight: 700; color: #326499; margin-bottom: 12px; }
-    p, li { font-size: 0.95rem; color: #3D5570; line-height: 1.7; }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 6px; }
-    a { color: #326499; }
-    footer { text-align: center; padding: 32px; color: #8FA8BD; font-size: 0.85rem; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title data-en="Support &mdash; Quran Atlas" data-ar="الدعم — أطلس القرآن">Support &mdash; Quran Atlas</title>
+<style>
+
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'UthmanicHafs'; src:url('assets/fonts/UthmanicHafs.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
+:root {
+  --ink: #0B1220;
+  --ink-2: #121D33;
+  --ink-3: #182746;
+  --paper: #EAF1FB;
+  --paper-2: #FFFFFF;
+  --paper-3: #F5F9FF;
+  --accent: #3E7BFA;
+  --accent-soft: #6D9EF5;
+  --accent-dim: #2C5FCB;
+  --mist: #D6E4F0;
+
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --text-primary: #1F4E8A;
+  --text-secondary: #4C6C93;
+  --text-muted: #7C93B3;
+  --border: rgba(31,78,138,0.14);
+  --hero-image: url('assets/img/bg-light.jpg');
+  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--ink);
+    --surface: var(--ink-2);
+    --surface-2: var(--ink-3);
+    --text-primary: var(--mist);
+    --text-secondary: #9FB6D6;
+    --text-muted: #6E8DAA;
+    --border: rgba(214,228,240,0.14);
+    --hero-image: url('assets/img/bg-dark.jpg');
+    --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--ink);
+  --surface: var(--ink-2);
+  --surface-2: var(--ink-3);
+  --text-primary: var(--mist);
+  --text-secondary: #9FB6D6;
+  --text-muted: #6E8DAA;
+  --border: rgba(214,228,240,0.14);
+  --hero-image: url('assets/img/bg-dark.jpg');
+  --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
+}
+:root[data-theme="light"] {
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --text-primary: #1F4E8A;
+  --text-secondary: #4C6C93;
+  --text-muted: #7C93B3;
+  --border: rgba(31,78,138,0.14);
+  --hero-image: url('assets/img/bg-light.jpg');
+  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
+}
+
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .35s ease, color .35s ease;
+}
+html[data-lang="ar"] body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+html[data-lang="ar"] [data-en] { display:none; }
+html[data-lang="en"] [data-ar] { display:none; }
+h1, h2, h3 { font-weight:700; text-wrap: balance; margin:0; }
+html[data-lang="ar"] h1, html[data-lang="ar"] h2, html[data-lang="ar"] h3 { font-weight:600; }
+p { margin:0; }
+a { color: var(--accent); text-decoration:none; }
+a:hover { color: var(--accent-dim); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px;
+}
+button { font-family:inherit; cursor:pointer; }
+
+.eyebrow {
+  font-size: 12px; font-weight:600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); display:inline-flex; align-items:center; gap:8px;
+}
+html[data-lang="ar"] .eyebrow { letter-spacing: 0; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+.prose { max-width: 65ch; }
+html[data-lang="ar"] .prose { max-width: 72ch; }
+
+.nav {
+  position: sticky; top:0; z-index:40;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.nav-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 16px 28px; max-width: 1080px; margin:0 auto; gap: 16px;
+}
+.brand { display:flex; align-items:center; gap:10px; }
+.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; }
+.brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; }
+html[data-lang="ar"] .brand span { font-weight:600; }
+.nav-actions { display:flex; align-items:center; gap:10px; }
+.pill-btn {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-primary);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight:600;
+  display:flex; align-items:center; gap:6px;
+}
+.pill-btn:hover { border-color: var(--accent-soft); color: var(--accent); }
+
+.hero {
+  position: relative; overflow:hidden;
+  background-image: var(--hero-image);
+  background-size: cover; background-position: center bottom;
+}
+.hero::after {
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%);
+}
+.hero-inner {
+  position:relative; z-index:2; max-width: 780px; margin:0 auto;
+  padding: 96px 28px 120px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap: 22px;
+}
+.hero-mark { width:128px; height:128px; filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
+.hero-mark img { width:100%; height:100%; object-fit:contain; }
+@media (prefers-color-scheme: dark) { .hero-mark { filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55)); } }
+:root[data-theme="dark"] .hero-mark { filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55)); }
+:root[data-theme="light"] .hero-mark { filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
+.hero h1 { font-size: clamp(32px, 5.5vw, 52px); line-height:1.08; letter-spacing:-0.02em; }
+.hero p.lede { font-size: 18px; color: var(--text-secondary); max-width: 46ch; }
+.hero-quran-flourish {
+  font-family:'UthmanicHafs'; font-size: 15px; color: var(--text-muted); opacity:.85;
+  letter-spacing: 0.02em;
+}
+.hero-actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+.btn-primary {
+  background: var(--accent); color:#fff; border:none; border-radius: 12px;
+  padding: 13px 24px; font-size:15px; font-weight:600; display:inline-flex; align-items:center; gap:8px;
+  box-shadow: 0 12px 28px -12px rgba(62,123,250,0.55);
+}
+.btn-primary:hover { background: var(--accent-dim); }
+.btn-secondary {
+  background: var(--surface); color: var(--text-primary); border:1px solid var(--border);
+  border-radius: 12px; padding: 13px 22px; font-size:15px; font-weight:600;
+}
+.btn-secondary:hover { border-color: var(--accent-soft); }
+
+section.block { padding: 64px 0; }
+.section-head { margin-bottom: 32px; display:flex; flex-direction:column; gap:10px; }
+.section-head h2 { font-size: 26px; letter-spacing:-0.01em; }
+.section-head p { color: var(--text-secondary); font-size: 15px; }
+
+.card-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 16px; }
+.card {
+  background: var(--surface); border:1px solid var(--border); border-radius: 16px;
+  padding: 22px; display:flex; flex-direction:column; gap: 10px;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--accent-soft); }
+.card .icon {
+  width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); flex-shrink:0;
+}
+.card h3 { font-size:16px; }
+.card p { color: var(--text-secondary); font-size: 14px; line-height:1.55; }
+.card .go { font-size:13px; font-weight:600; color:var(--accent); margin-top:auto; display:flex; align-items:center; gap:6px; }
+
+.faq-callout {
+  background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, var(--surface)), var(--surface));
+  border:1px solid var(--border); border-radius:20px; padding: 32px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px;
+}
+.faq-callout h3 { font-size: 20px; margin-bottom:6px; }
+.faq-callout p { color: var(--text-secondary); font-size:14px; max-width:46ch; }
+
+footer { border-top:1px solid var(--border); padding: 36px 0 48px; }
+.footer-row { display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; align-items:center; }
+.footer-links { display:flex; gap:18px; flex-wrap:wrap; }
+.footer-links a { color: var(--text-secondary); font-size:13px; }
+.footer-links a:hover { color:var(--accent); }
+.footer-note { color: var(--text-muted); font-size:12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+@media (max-width: 640px) {
+  .hero-inner { padding: 72px 20px 96px; }
+  section.block { padding: 48px 0; }
+}
+
+
+.hero { min-height: 46vh; display:flex; align-items:flex-end; }
+
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>🌙 Quran Atlas Support</h1>
-    <p>We're here to help</p>
-  </div>
-  <div class="content">
-    <div class="section">
-      <h2>Contact Us</h2>
-      <p>For questions, feedback, or bug reports, please email us at:<br/>
-      <a href="mailto:support@marsa-digital.com">support@marsa-digital.com</a></p>
-      <p style="margin-top:12px">We aim to respond within 48 hours.</p>
-    </div>
-    <div class="section">
-      <h2>Frequently Asked Questions</h2>
-      <ul>
-        <li><strong>How do I add a verse?</strong> Navigate into any topic or subtopic, then tap the + Verse button.</li>
-        <li><strong>How do I back up my data?</strong> Go to Settings (⚙️) → Export Data to save a backup file.</li>
-        <li><strong>How do I share a topic?</strong> Open any topic and tap the Share button to generate a shareable link.</li>
-        <li><strong>Is the Quran text included?</strong> Yes — the full Quran with English translation is downloaded automatically on first launch.</li>
-        <li><strong>Does it work in Arabic?</strong> Yes — the entire app is available in Arabic, including topics, search, and interface.</li>
-        <li><strong>How do I switch languages?</strong> Tap the English / عربي toggle in the top bar at any time.</li>
-      </ul>
-    </div>
-    <div class="section">
-      <h2>About Quran Atlas</h2>
-      <p>Quran Atlas is developed by Marsa Digital. Version 1.0</p>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a class="brand" href="/quran-atlas/support" aria-label="Quran Atlas">
+      <img src="assets/img/crescent.png" alt="" />
+      <span data-en>Quran Atlas</span>
+      <span data-ar>أطلس القرآن</span>
+    </a>
+    <div class="nav-actions">
+      <button class="pill-btn" id="langToggle" type="button">
+        <span data-en>العربية</span>
+        <span data-ar>English</span>
+      </button>
+      <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span id="themeIcon">&#9788;</span>
+      </button>
     </div>
   </div>
-  <footer>© 2026 Marsa Digital · <a href="/quran-atlas/privacy">Privacy Policy</a></footer>
+</nav>
+
+<a id="top"></a>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-mark"><img src="assets/img/crescent.png" alt="" /></div>
+    <p class="eyebrow"><span data-en>Support &amp; Help Centre</span><span data-ar>الدعم ومركز المساعدة</span></p>
+    <h1><span data-en>How can we help?</span><span data-ar>كيف يمكننا مساعدتك؟</span></h1>
+    <p class="lede">
+      <span data-en>Answers for every tab and feature in Quran Atlas, plus a direct line to the team if you need one.</span>
+      <span data-ar>إجابات لكل تبويب وميزة في أطلس القرآن، بالإضافة إلى تواصل مباشر مع الفريق عند الحاجة.</span>
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="/quran-atlas/faq">
+        <span data-en>Browse the FAQ</span><span data-ar>تصفح الأسئلة الشائعة</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn-secondary" href="mailto:support@marsa-digital.com">
+        <span data-en>Email us</span><span data-ar>راسلنا</span>
+      </a>
+    </div>
+    <p class="hero-quran-flourish" dir="rtl">أطلس القرآن</p>
+  </div>
+</section>
+
+<section class="block wrap">
+  <div class="section-head">
+    <h2><span data-en>Get in touch</span><span data-ar>تواصل معنا</span></h2>
+    <p><span data-en>Everything you need, in one place.</span><span data-ar>كل ما تحتاجه، في مكان واحد.</span></p>
+  </div>
+  <div class="card-grid">
+    
+    <a class="card" href="mailto:support@marsa-digital.com" style="text-decoration:none">
+      <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M4.5 6.5l7.5 6 7.5-6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3><span data-en>Email Support</span><span data-ar>البريد الإلكتروني للدعم</span></h3>
+      <p><span data-en>A direct line to the team. We aim to reply within 1–2 business days.</span><span data-ar>تواصل مباشر مع الفريق. نسعى للرد خلال يوم إلى يومي عمل.</span></p>
+      <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+    <a class="card" href="/quran-atlas/faq" style="text-decoration:none">
+      <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9.6 9.6c.3-1.4 1.5-2.2 2.7-2.2 1.4 0 2.6.9 2.6 2.3 0 1.5-1.6 1.9-2.3 2.9-.3.5-.4 1-.4 1.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="12" cy="16.6" r=".9" fill="currentColor"/></svg></div>
+      <h3><span data-en>Frequently Asked Questions</span><span data-ar>الأسئلة الشائعة</span></h3>
+      <p><span data-en>How-tos for every tab and feature, in Arabic and English.</span><span data-ar>دليل استخدام لكل تبويب وميزة، بالعربية والإنجليزية.</span></p>
+      <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+    <a class="card" href="/quran-atlas/privacy" style="text-decoration:none">
+      <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5l6.5 2.4v5c0 4.2-2.7 7.4-6.5 9.6-3.8-2.2-6.5-5.4-6.5-9.6v-5L12 3.5z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M9 12l2.1 2.1L15.3 9.6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3><span data-en>Privacy Policy</span><span data-ar>سياسة الخصوصية</span></h3>
+      <p><span data-en>What we collect, what we don't, and how your data stays yours.</span><span data-ar>ما الذي نجمعه وما لا نجمعه، وكيف تبقى بياناتك ملكًا لك.</span></p>
+      <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+    <a class="card" href="/quran-atlas" style="text-decoration:none">
+      <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3.6 12h16.8M12 3.6c2.6 2.3 4 5.2 4 8.4s-1.4 6.1-4 8.4c-2.6-2.3-4-5.2-4-8.4s1.4-6.1 4-8.4z" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></div>
+      <h3><span data-en>Website</span><span data-ar>الموقع الإلكتروني</span></h3>
+      <p><span data-en>More about Quran Atlas and what's next.</span><span data-ar>المزيد عن أطلس القرآن وما هو قادم.</span></p>
+      <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+    <a class="card" href="https://apps.apple.com/app/id6781110875?action=write-review" style="text-decoration:none">
+      <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.6l2.5 5.2 5.7.7-4.2 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.2-4 5.7-.7L12 3.6z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/></svg></div>
+      <h3><span data-en>Rate Quran Atlas</span><span data-ar>قيّم أطلس القرآن</span></h3>
+      <p><span data-en>If the app has been useful to you, a review helps others find it.</span><span data-ar>إن كان التطبيق مفيدًا لك، فتقييمك يساعد آخرين على إيجاده.</span></p>
+      <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+    <a class="card" href="https://apps.apple.com/app/id6781110875" style="text-decoration:none">
+      <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 5.5c2-1 5-1 7 .3 2-1.3 5-1.3 7-.3v13c-2-1-5-1-7 .3-2-1.3-5-1.3-7-.3v-13z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M11.5 5.8v13" stroke="currentColor" stroke-width="1.4"/></svg></div>
+      <h3><span data-en>App Store Page</span><span data-ar>صفحة App Store</span></h3>
+      <p><span data-en>View Quran Atlas on the App Store.</span><span data-ar>شاهد أطلس القرآن على App Store.</span></p>
+      <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+  </div>
+</section>
+
+<section class="block wrap">
+  <div class="faq-callout">
+    <div>
+      <h3><span data-en>Looking for a specific how-to?</span><span data-ar>تبحث عن طريقة استخدام محددة؟</span></h3>
+      <p><span data-en>The FAQ covers every tab, every feature, and how your data is backed up &mdash; organised by category so you can jump straight to what you need.</span>
+         <span data-ar>تغطي الأسئلة الشائعة كل تبويب وكل ميزة وكيفية النسخ الاحتياطي لبياناتك، مُصنّفة بحيث يمكنك الانتقال مباشرة إلى ما تحتاجه.</span></p>
+    </div>
+    <a class="btn-primary" href="/quran-atlas/faq"><span data-en>Open FAQ</span><span data-ar>افتح الأسئلة الشائعة</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-links">
+      <a href="mailto:support@marsa-digital.com"><span data-en>Email Support</span><span data-ar>البريد الإلكتروني للدعم</span></a>
+      <a href="/quran-atlas/faq"><span data-en>FAQ</span><span data-ar>الأسئلة الشائعة</span></a>
+      <a href="/quran-atlas/privacy"><span data-en>Privacy Policy</span><span data-ar>سياسة الخصوصية</span></a>
+      <a href="/quran-atlas"><span data-en>Website</span><span data-ar>الموقع الإلكتروني</span></a>
+    </div>
+    <p class="footer-note">
+      <span data-en>&copy; Marsa Digital &middot; Quran Atlas</span>
+      <span data-ar>&copy; مرسى ديجيتال &middot; أطلس القرآن</span>
+    </p>
+  </div>
+</footer>
+
+
+<script>
+(function() {
+  var root = document.documentElement;
+  var THEME_KEY = 'qa-theme', LANG_KEY = 'qa-lang';
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    document.getElementById('themeIcon').textContent = t === 'dark' ? String.fromCharCode(9789) : String.fromCharCode(9788);
+    localStorage.setItem(THEME_KEY, t);
+  }
+  function applyLang(l) {
+    root.setAttribute('lang', l);
+    root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+    root.setAttribute('data-lang', l);
+    localStorage.setItem(LANG_KEY, l);
+  }
+
+  var savedTheme = localStorage.getItem(THEME_KEY);
+  applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  var savedLang = localStorage.getItem(LANG_KEY) || root.getAttribute('data-lang') || 'en';
+  applyLang(savedLang);
+
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  document.getElementById('langToggle').addEventListener('click', function() {
+    applyLang(root.getAttribute('data-lang') === 'ar' ? 'en' : 'ar');
+  });
+})();
+</script>
+
 </body>
 </html>
