@@ -32,7 +32,7 @@
   --text-secondary: #4C6C93;
   --text-muted: #7C93B3;
   --border: rgba(31,78,138,0.14);
-  --hero-image: url('assets/img/bg-light.jpg');
+  --hero-image: url('assets/img/bg-light.svg');
   --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
 }
 
@@ -45,7 +45,7 @@
     --text-secondary: #9FB6D6;
     --text-muted: #6E8DAA;
     --border: rgba(214,228,240,0.14);
-    --hero-image: url('assets/img/bg-dark.jpg');
+    --hero-image: url('assets/img/bg-dark.svg');
     --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
   }
 }
@@ -58,7 +58,7 @@
   --text-secondary: #9FB6D6;
   --text-muted: #6E8DAA;
   --border: rgba(214,228,240,0.14);
-  --hero-image: url('assets/img/bg-dark.jpg');
+  --hero-image: url('assets/img/bg-dark.svg');
   --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
 }
 :root[data-theme="light"] {
@@ -69,7 +69,7 @@
   --text-secondary: #4C6C93;
   --text-muted: #7C93B3;
   --border: rgba(31,78,138,0.14);
-  --hero-image: url('assets/img/bg-light.jpg');
+  --hero-image: url('assets/img/bg-light.svg');
   --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
 }
 
@@ -140,23 +140,19 @@ html[data-lang="ar"] .brand span { font-weight:600; }
   position: relative; overflow:hidden;
   min-height: 30vh;
 }
-/* Photo is a narrow portrait crop (415x900) — background-size:cover was
-   scaling it up several times over on wide viewports to fill the
-   full-bleed hero, which both pixelated it and cropped away everything
-   but a thin sliver near the very bottom (pushing the wave up near the
-   visible top). contain (not cover) shows the whole photo, unscaled,
-   at native-or-smaller size — a prior attempt to also feather its edges
-   via aspect-ratio + mask-image rendered as fully invisible on real
-   Safari (both iOS and macOS), so this deliberately stays as plain,
-   maximally-compatible background-size:contain instead. */
+/* --hero-image is an SVG (gradient + soft wave shape), not a raster
+   photo — vector, so background-size:cover can scale it to fill the
+   full-bleed hero at any viewport width with no pixelation, unlike the
+   old JPG this replaced (which needed contain + edge-blending tricks
+   that turned out unreliable across browsers; see git history). */
 .hero-photo {
   position:absolute; inset:0; z-index:0;
   background-image: var(--hero-image);
-  background-size: contain; background-repeat: no-repeat; background-position: center bottom;
+  background-size: cover; background-repeat: no-repeat; background-position: center bottom;
 }
 .hero::after {
   content:""; position:absolute; inset:0; z-index:1;
-  /* Light mode: bg-light.jpg is a low-contrast pale wave, so a heavy fade
+  /* Light mode: the artwork is a low-contrast pale wave, so a heavy fade
      erased it almost entirely — stay much more transparent, only going
      fully opaque right at the very bottom edge so it still blends
      seamlessly into the section below. */
