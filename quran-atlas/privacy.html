@@ -1,81 +1,349 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr" data-lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quran Atlas — Privacy Policy</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #EAF1F8; color: #10243D; }
-    .header { background: linear-gradient(145deg, #0F2233, #326499); color: white; padding: 48px 24px; text-align: center; }
-    .header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-    .header p { opacity: 0.8; font-size: 0.95rem; }
-    .content { max-width: 640px; margin: 0 auto; padding: 48px 24px; }
-    .section { background: white; border-radius: 18px; padding: 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    h2 { font-size: 1.1rem; font-weight: 700; color: #326499; margin-bottom: 12px; }
-    p { font-size: 0.95rem; color: #3D5570; line-height: 1.7; margin-bottom: 10px; }
-    p:last-child { margin-bottom: 0; }
-    a { color: #326499; }
-    footer { text-align: center; padding: 32px; color: #8FA8BD; font-size: 0.85rem; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title data-en="Privacy Policy &mdash; Quran Atlas" data-ar="سياسة الخصوصية — أطلس القرآن">Privacy Policy &mdash; Quran Atlas</title>
+<style>
+
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'UthmanicHafs'; src:url('assets/fonts/UthmanicHafs.woff2') format('woff2'); font-weight:400; font-display:swap; }
+
+:root {
+  --ink: #0B1220;
+  --ink-2: #121D33;
+  --ink-3: #182746;
+  --paper: #EAF1FB;
+  --paper-2: #FFFFFF;
+  --paper-3: #F5F9FF;
+  --accent: #3E7BFA;
+  --accent-soft: #6D9EF5;
+  --accent-dim: #2C5FCB;
+  --mist: #D6E4F0;
+
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --text-primary: #1F4E8A;
+  --text-secondary: #4C6C93;
+  --text-muted: #7C93B3;
+  --border: rgba(31,78,138,0.14);
+  --hero-image: url('assets/img/bg-light.jpg');
+  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--ink);
+    --surface: var(--ink-2);
+    --surface-2: var(--ink-3);
+    --text-primary: var(--mist);
+    --text-secondary: #9FB6D6;
+    --text-muted: #6E8DAA;
+    --border: rgba(214,228,240,0.14);
+    --hero-image: url('assets/img/bg-dark.jpg');
+    --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--ink);
+  --surface: var(--ink-2);
+  --surface-2: var(--ink-3);
+  --text-primary: var(--mist);
+  --text-secondary: #9FB6D6;
+  --text-muted: #6E8DAA;
+  --border: rgba(214,228,240,0.14);
+  --hero-image: url('assets/img/bg-dark.jpg');
+  --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
+}
+:root[data-theme="light"] {
+  --bg: var(--paper);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --text-primary: #1F4E8A;
+  --text-secondary: #4C6C93;
+  --text-muted: #7C93B3;
+  --border: rgba(31,78,138,0.14);
+  --hero-image: url('assets/img/bg-light.jpg');
+  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
+}
+
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background .35s ease, color .35s ease;
+}
+html[data-lang="ar"] body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+html[data-lang="ar"] [data-en] { display:none; }
+html[data-lang="en"] [data-ar] { display:none; }
+h1, h2, h3 { font-weight:700; text-wrap: balance; margin:0; }
+html[data-lang="ar"] h1, html[data-lang="ar"] h2, html[data-lang="ar"] h3 { font-weight:600; }
+p { margin:0; }
+a { color: var(--accent); text-decoration:none; }
+a:hover { color: var(--accent-dim); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px;
+}
+button { font-family:inherit; cursor:pointer; }
+
+.eyebrow {
+  font-size: 12px; font-weight:600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); display:inline-flex; align-items:center; gap:8px;
+}
+html[data-lang="ar"] .eyebrow { letter-spacing: 0; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+.prose { max-width: 65ch; }
+html[data-lang="ar"] .prose { max-width: 72ch; }
+
+.nav {
+  position: sticky; top:0; z-index:40;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.nav-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 16px 28px; max-width: 1080px; margin:0 auto; gap: 16px;
+}
+.brand { display:flex; align-items:center; gap:10px; }
+.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; }
+.brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; }
+html[data-lang="ar"] .brand span { font-weight:600; }
+.nav-actions { display:flex; align-items:center; gap:10px; }
+.pill-btn {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-primary);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight:600;
+  display:flex; align-items:center; gap:6px;
+}
+.pill-btn:hover { border-color: var(--accent-soft); color: var(--accent); }
+
+.hero {
+  position: relative; overflow:hidden;
+  background-image: var(--hero-image);
+  background-size: cover; background-position: center bottom;
+  min-height: 30vh;
+}
+.hero::after {
+  content:""; position:absolute; inset:0;
+  /* Light mode: bg-light.jpg is a low-contrast pale wave, so a heavy fade
+     erased it almost entirely — stay much more transparent, only going
+     fully opaque right at the very bottom edge so it still blends
+     seamlessly into the section below. */
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 4%, transparent) 0%, color-mix(in srgb, var(--bg) 25%, transparent) 65%, var(--bg) 100%);
+}
+@media (prefers-color-scheme: dark) {
+  .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%); }
+}
+:root[data-theme="dark"] .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%); }
+.hero-inner {
+  position:relative; z-index:2; max-width: 780px; margin:0 auto;
+  padding: 56px 28px 48px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap: 16px;
+}
+.hero-mark { width:88px; height:88px; filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
+.hero-mark img { width:100%; height:100%; object-fit:contain; }
+@media (prefers-color-scheme: dark) { .hero-mark { filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55)); } }
+:root[data-theme="dark"] .hero-mark { filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55)); }
+:root[data-theme="light"] .hero-mark { filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
+.hero h1 { font-size: clamp(28px, 4.6vw, 42px); line-height:1.1; letter-spacing:-0.02em; }
+.hero p.lede { font-size: 16px; color: var(--text-secondary); max-width: 46ch; }
+.hero .updated { font-size: 13px; color: var(--text-muted); }
+
+section.block { padding: 56px 0; }
+.section-head { margin-bottom: 32px; display:flex; flex-direction:column; gap:10px; }
+.section-head h2 { font-size: 26px; letter-spacing:-0.01em; }
+.section-head p { color: var(--text-secondary); font-size: 15px; }
+
+.policy { display:flex; flex-direction:column; gap:16px; max-width: 720px; margin:0 auto; }
+.policy-section {
+  background: var(--surface); border:1px solid var(--border); border-radius: 16px;
+  padding: 26px 28px;
+}
+.policy-section h2 { font-size: 17px; color: var(--accent); margin-bottom: 10px; }
+.policy-section p { color: var(--text-secondary); font-size: 14.5px; line-height:1.7; }
+.policy-section p + p { margin-top: 10px; }
+.policy-section a { font-weight:600; }
+
+footer { border-top:1px solid var(--border); padding: 36px 0 48px; }
+.footer-row { display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; align-items:center; }
+.footer-links { display:flex; gap:18px; flex-wrap:wrap; }
+.footer-links a { color: var(--text-secondary); font-size:13px; }
+.footer-links a:hover { color:var(--accent); }
+.footer-note { color: var(--text-muted); font-size:12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+@media (max-width: 640px) {
+  .hero-inner { padding: 44px 20px 36px; }
+  section.block { padding: 40px 0; }
+}
+
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>🌙 Privacy Policy</h1>
-    <p>Last updated: July 2026</p>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a class="brand" href="/quran-atlas/privacy" aria-label="Quran Atlas">
+      <img src="assets/img/crescent.png" alt="" />
+      <span data-en>Quran Atlas</span>
+      <span data-ar>أطلس القرآن</span>
+    </a>
+    <div class="nav-actions">
+      <button class="pill-btn" id="langToggle" type="button">
+        <span data-en>العربية</span>
+        <span data-ar>English</span>
+      </button>
+      <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span id="themeIcon">&#9788;</span>
+      </button>
+    </div>
   </div>
-  <div class="content">
+</nav>
 
-    <div class="section">
-      <h2>Overview</h2>
-      <p>Quran Atlas is developed by Marsa Digital. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights.</p>
+<a id="top"></a>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-mark"><img src="assets/img/crescent.png" alt="" /></div>
+    <p class="eyebrow"><span data-en>Privacy &amp; Data</span><span data-ar>الخصوصية والبيانات</span></p>
+    <h1><span data-en>Your data stays yours</span><span data-ar>بياناتك تبقى ملكًا لك</span></h1>
+    <p class="lede">
+      <span data-en>No accounts, no tracking, no ads. Everything you create stays on your device, or in your own iCloud account if you turn on backup.</span>
+      <span data-ar>لا حسابات، ولا تتبّع، ولا إعلانات. كل ما تُنشئه يبقى على جهازك، أو في حساب iCloud الخاص بك إن فعّلت النسخ الاحتياطي.</span>
+    </p>
+    <p class="updated"><span data-en>Last updated: July 24, 2026</span><span data-ar>آخر تحديث: 24 يوليو 2026</span></p>
+  </div>
+</section>
+
+<section class="block wrap">
+  <div class="policy">
+
+    <div class="policy-section">
+      <h2><span data-en>Overview</span><span data-ar>نظرة عامة</span></h2>
+      <p><span data-en>Quran Atlas is developed by Marsa Digital. We're committed to protecting your privacy — this policy explains what data we collect, how we use it, and your rights.</span>
+         <span data-ar>أطلس القرآن من تطوير مرسى ديجيتال. نحن ملتزمون بحماية خصوصيتك — توضّح هذه السياسة ما الذي نجمعه من بيانات، وكيف نستخدمها، وما هي حقوقك.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Data We Collect</h2>
-      <p><strong>We do not collect any personal information.</strong> Quran Atlas does not require an account, login, or any personally identifiable information to use.</p>
-      <p>All data you create in the app — topics, verses, notes, bookmarks, and voice memos — is stored locally on your device. If you enable iCloud sync, this data is synced to your personal iCloud account and is never accessible to us.</p>
+    <div class="policy-section">
+      <h2><span data-en>Data We Collect</span><span data-ar>البيانات التي نجمعها</span></h2>
+      <p><span data-en><strong>We do not collect any personal information.</strong> Quran Atlas does not require an account, login, or sign-up of any kind.</span>
+         <span data-ar><strong>نحن لا نجمع أي معلومات شخصية.</strong> لا يتطلب أطلس القرآن حسابًا أو تسجيل دخول أو اشتراكًا من أي نوع.</span></p>
+      <p><span data-en>Everything you create in the app — topics, bookmarks, collections, reference cards, notes, reflections, and custom categories — is stored locally on your device.</span>
+         <span data-ar>كل ما تُنشئه داخل التطبيق — المواضيع، والإشارات المرجعية، والمجموعات، والبطاقات المرجعية، والملاحظات، والتأملات، والفئات المخصصة — يُحفظ محليًا على جهازك.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Data Storage</h2>
-      <p>Your content is stored in two places:</p>
-      <p><strong>On your device:</strong> All topics, notes, bookmarks, and settings are saved locally using your device's storage.</p>
-      <p><strong>iCloud (optional):</strong> If you enable iCloud sync in Settings, your data is backed up to your personal Apple iCloud account. This is governed by Apple's privacy policy and is not accessible to Marsa Digital.</p>
+    <div class="policy-section">
+      <h2><span data-en>Data Storage &amp; iCloud Backup</span><span data-ar>تخزين البيانات والنسخ الاحتياطي عبر iCloud</span></h2>
+      <p><span data-en><strong>On your device:</strong> all topics, bookmarks, collections, reference cards, notes, reflections, and settings are saved locally using your device's own storage.</span>
+         <span data-ar><strong>على جهازك:</strong> تُحفظ جميع المواضيع والإشارات المرجعية والمجموعات والبطاقات المرجعية والملاحظات والتأملات والإعدادات محليًا باستخدام تخزين جهازك.</span></p>
+      <p><span data-en><strong>iCloud (optional):</strong> if you turn on Library Backup in Settings → Data &amp; Backup, this content syncs privately through your own Apple iCloud account. This is governed by Apple's own privacy policy and is never accessible to Marsa Digital.</span>
+         <span data-ar><strong>iCloud (اختياري):</strong> إذا فعّلت «النسخ الاحتياطي للمكتبة» من الإعدادات ← البيانات والنسخ الاحتياطي، تُزامَن هذه البيانات بخصوصية عبر حساب iCloud الخاص بك. يخضع ذلك لسياسة خصوصية Apple ولا يمكن لمرسى ديجيتال الوصول إليه إطلاقًا.</span></p>
+      <p><span data-en><strong>Voice memos are the one exception:</strong> they're stored locally on your device only and are never included in iCloud backup or sync. If you switch devices or delete the app, your voice memos will not be restored.</span>
+         <span data-ar><strong>المذكرات الصوتية هي الاستثناء الوحيد:</strong> تُحفظ محليًا على جهازك فقط، ولا تُشمل أبدًا في النسخ الاحتياطي أو المزامنة عبر iCloud. إذا غيّرت جهازك أو حذفت التطبيق، فلن يتم استرجاع مذكراتك الصوتية.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Topic Sharing</h2>
-      <p>When you share a topic, verse, or reference card — as text, a PDF, or an exported data file — it's sent directly through your device's own share sheet (for example Messages, Mail, or AirDrop) to whatever destination you choose. No data passes through our servers — sharing happens entirely on your device, directly to the recipient or app you select.</p>
+    <div class="policy-section">
+      <h2><span data-en>Topic Sharing</span><span data-ar>مشاركة الموضوعات</span></h2>
+      <p><span data-en>When you share a topic, verse, or reference card — as text, a PDF, or an exported data file — it's sent directly through your device's own share sheet (for example Messages, Mail, or AirDrop) to whatever destination you choose. No data passes through our servers — sharing happens entirely on your device, directly to the recipient or app you select.</span>
+         <span data-ar>عندما تشارك موضوعًا أو آية أو بطاقة مرجعية — كنص، أو ملف PDF، أو ملف بيانات مُصدَّر — يُرسَل ذلك مباشرة عبر قائمة المشاركة الخاصة بجهازك (مثل الرسائل، أو البريد، أو AirDrop) إلى الوجهة التي تختارها. لا تمرّ أي بيانات عبر خوادمنا — تتم المشاركة بالكامل من جهازك، مباشرة إلى المستلم أو التطبيق الذي تحدده.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Quran Content</h2>
-      <p>The Quran text, translations, Tafsir (commentary), and audio recitations are fetched from public third-party sources as you use the app, and cached on your device for offline use. We do not log or store any information about which verses you read, search for, or listen to.</p>
+    <div class="policy-section">
+      <h2><span data-en>Quran Content</span><span data-ar>محتوى القرآن</span></h2>
+      <p><span data-en>The core Quran text, along with several translations and tafsir sources, is bundled with the app and works fully offline from first launch. Additional translations, additional tafsir sources, and audio recitations are fetched from public third-party sources as you use the app, and cached on your device for offline use afterward. We do not log or store any information about which verses you read, search for, or listen to.</span>
+         <span data-ar>يُرفَق النص القرآني الأساسي، إلى جانب عدة ترجمات ومصادر تفسير، مع التطبيق ويعمل بلا اتصال بالكامل منذ أول تشغيل. أما الترجمات ومصادر التفسير الإضافية، والتلاوات الصوتية، فتُجلَب من مصادر عامة تابعة لجهات خارجية أثناء استخدامك للتطبيق، وتُخزَّن مؤقتًا على جهازك بعد ذلك للاستخدام دون اتصال. نحن لا نسجّل أو نخزّن أي معلومات عن الآيات التي تقرؤها أو تبحث عنها أو تستمع إليها.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Analytics & Tracking</h2>
-      <p>Quran Atlas does not use any analytics, tracking, or advertising SDKs. We do not track your usage, share data with third parties, or display ads.</p>
+    <div class="policy-section">
+      <h2><span data-en>Analytics &amp; Tracking</span><span data-ar>التحليلات والتتبع</span></h2>
+      <p><span data-en>Quran Atlas does not use any analytics, tracking, or advertising SDKs. We do not track your usage, share data with third parties, or display ads.</span>
+         <span data-ar>لا يستخدم أطلس القرآن أي أدوات تحليلات أو تتبع أو إعلانات. نحن لا نتتبع استخدامك، ولا نشارك بياناتك مع أي طرف ثالث، ولا نعرض إعلانات.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Children's Privacy</h2>
-      <p>Quran Atlas does not collect any personal data from users of any age. The app is safe for all ages.</p>
+    <div class="policy-section">
+      <h2><span data-en>Children's Privacy</span><span data-ar>خصوصية الأطفال</span></h2>
+      <p><span data-en>Quran Atlas does not collect any personal data from users of any age. The app is safe for all ages.</span>
+         <span data-ar>لا يجمع أطلس القرآن أي بيانات شخصية من المستخدمين من أي عمر. التطبيق آمن لجميع الأعمار.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Changes to This Policy</h2>
-      <p>If we update this privacy policy, we will post the updated version here with a new date. We encourage you to review this page periodically.</p>
+    <div class="policy-section">
+      <h2><span data-en>Changes to This Policy</span><span data-ar>التغييرات على هذه السياسة</span></h2>
+      <p><span data-en>If we update this privacy policy, we will post the updated version here with a new date. We encourage you to review this page periodically.</span>
+         <span data-ar>إذا قمنا بتحديث سياسة الخصوصية هذه، سننشر النسخة المحدثة هنا مع تاريخ جديد. نشجعك على مراجعة هذه الصفحة بين الحين والآخر.</span></p>
     </div>
 
-    <div class="section">
-      <h2>Contact</h2>
-      <p>If you have any questions about this privacy policy, please contact us at:<br/>
-      <a href="mailto:support@marsa-digital.com">support@marsa-digital.com</a></p>
+    <div class="policy-section">
+      <h2><span data-en>Contact</span><span data-ar>تواصل معنا</span></h2>
+      <p>
+        <span data-en>If you have any questions about this privacy policy, please contact us at:</span>
+        <span data-ar>إذا كانت لديك أي أسئلة حول سياسة الخصوصية هذه، يرجى التواصل معنا عبر:</span>
+        <br/><a href="mailto:support@marsa-digital.com">support@marsa-digital.com</a>
+      </p>
     </div>
 
   </div>
-  <footer>© 2026 Marsa Digital · <a href="/quran-atlas/support">Support</a></footer>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-links">
+      <a href="mailto:support@marsa-digital.com"><span data-en>Email Support</span><span data-ar>البريد الإلكتروني للدعم</span></a>
+      <a href="/quran-atlas/faq"><span data-en>FAQ</span><span data-ar>الأسئلة الشائعة</span></a>
+      <a href="/quran-atlas/support"><span data-en>Support</span><span data-ar>الدعم</span></a>
+      <a href="/quran-atlas"><span data-en>Website</span><span data-ar>الموقع الإلكتروني</span></a>
+    </div>
+    <p class="footer-note">
+      <span data-en>&copy; Marsa Digital &middot; Quran Atlas</span>
+      <span data-ar>&copy; مرسى ديجيتال &middot; أطلس القرآن</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var root = document.documentElement;
+  var THEME_KEY = 'qa-theme', LANG_KEY = 'qa-lang';
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    document.getElementById('themeIcon').textContent = t === 'dark' ? String.fromCharCode(9789) : String.fromCharCode(9788);
+    localStorage.setItem(THEME_KEY, t);
+  }
+  function applyLang(l) {
+    root.setAttribute('lang', l);
+    root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+    root.setAttribute('data-lang', l);
+    localStorage.setItem(LANG_KEY, l);
+  }
+
+  var savedTheme = localStorage.getItem(THEME_KEY);
+  applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  var savedLang = localStorage.getItem(LANG_KEY) || root.getAttribute('data-lang') || 'en';
+  applyLang(savedLang);
+
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  document.getElementById('langToggle').addEventListener('click', function() {
+    applyLang(root.getAttribute('data-lang') === 'ar' ? 'en' : 'ar');
+  });
+})();
+</script>
+
 </body>
 </html>

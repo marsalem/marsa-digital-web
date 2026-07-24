@@ -138,11 +138,19 @@ html[data-lang="ar"] .brand span { font-weight:600; }
 }
 .hero::after {
   content:""; position:absolute; inset:0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%);
+  /* Light mode: bg-light.jpg is a low-contrast pale wave, so a heavy fade
+     erased it almost entirely — stay much more transparent, only going
+     fully opaque right at the very bottom edge so it still blends
+     seamlessly into the section below. */
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 4%, transparent) 0%, color-mix(in srgb, var(--bg) 25%, transparent) 65%, var(--bg) 100%);
 }
+@media (prefers-color-scheme: dark) {
+  .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%); }
+}
+:root[data-theme="dark"] .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%); }
 .hero-inner {
   position:relative; z-index:2; max-width: 780px; margin:0 auto;
-  padding: 96px 28px 120px; text-align:center;
+  padding: 96px 28px 64px; text-align:center;
   display:flex; flex-direction:column; align-items:center; gap: 22px;
 }
 .hero-mark { width:128px; height:128px; filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
@@ -152,10 +160,6 @@ html[data-lang="ar"] .brand span { font-weight:600; }
 :root[data-theme="light"] .hero-mark { filter: drop-shadow(0 18px 34px rgba(20,60,140,0.35)); }
 .hero h1 { font-size: clamp(32px, 5.5vw, 52px); line-height:1.08; letter-spacing:-0.02em; }
 .hero p.lede { font-size: 18px; color: var(--text-secondary); max-width: 46ch; }
-.hero-quran-flourish {
-  font-family:'UthmanicHafs'; font-size: 15px; color: var(--text-muted); opacity:.85;
-  letter-spacing: 0.02em;
-}
 .hero-actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
 .btn-primary {
   background: var(--accent); color:#fff; border:none; border-radius: 12px;
@@ -208,12 +212,16 @@ footer { border-top:1px solid var(--border); padding: 36px 0 48px; }
   * { transition: none !important; animation: none !important; }
 }
 @media (max-width: 640px) {
-  .hero-inner { padding: 72px 20px 96px; }
+  .hero-inner { padding: 72px 20px 56px; }
   section.block { padding: 48px 0; }
+  .hero + section.block { padding-top: 20px; }
 }
 
 
 .hero { min-height: 46vh; display:flex; align-items:flex-end; }
+/* Tighten the gap between the hero buttons and the "Get in touch" heading
+   right after it — only the section immediately following the hero. */
+.hero + section.block { padding-top: 32px; }
 
 </style>
 </head>
@@ -256,7 +264,6 @@ footer { border-top:1px solid var(--border); padding: 36px 0 48px; }
         <span data-en>Email us</span><span data-ar>راسلنا</span>
       </a>
     </div>
-    <p class="hero-quran-flourish" dir="rtl">أطلس القرآن</p>
   </div>
 </section>
 
