@@ -1,404 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 720 2200"
-    width="720"
-    height="2200">
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 2200" width="720" height="2200">
 <defs>
 
-<!-- ========================================================= -->
-<!-- BACKGROUND -->
-<!-- ========================================================= -->
-
-<linearGradient id="bgGradient"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1">
-
-    <stop offset="0%" stop-color="#FDFEFF"/>
-    <stop offset="22%" stop-color="#F6FAFF"/>
-    <stop offset="48%" stop-color="#EDF5FF"/>
-    <stop offset="76%" stop-color="#E6F0FB"/>
-    <stop offset="100%" stop-color="#DEEAF8"/>
-
+<linearGradient id="bgGradient" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#FDFEFF"/>
+  <stop offset="22%" stop-color="#F6FAFF"/>
+  <stop offset="48%" stop-color="#EDF5FF"/>
+  <stop offset="76%" stop-color="#E6F0FB"/>
+  <stop offset="100%" stop-color="#DEEAF8"/>
 </linearGradient>
 
-<!-- ========================================================= -->
-<!-- SKY GLOW -->
-<!-- ========================================================= -->
-
-<radialGradient id="skyGlow"
-                cx="50%"
-                cy="-8%"
-                r="65%">
-
-    <stop offset="0%"
-          stop-color="#FFFFFF"
-          stop-opacity=".98"/>
-
-    <stop offset="38%"
-          stop-color="#DDEEFF"
-          stop-opacity=".45"/>
-
-    <stop offset="100%"
-          stop-color="#FFFFFF"
-          stop-opacity="0"/>
-
-</radialGradient>
-
-<!-- ========================================================= -->
-<!-- CENTER HAZE -->
-<!-- ========================================================= -->
-
-<radialGradient id="centerGlow"
-                cx="50%"
-                cy="48%"
-                r="72%">
-
-    <stop offset="0%"
-          stop-color="#BFD9FF"
-          stop-opacity=".36"/>
-
-    <stop offset="55%"
-          stop-color="#DDEBFF"
-          stop-opacity=".12"/>
-
-    <stop offset="100%"
-          stop-color="#FFFFFF"
-          stop-opacity="0"/>
-
-</radialGradient>
-
-<!-- ========================================================= -->
-<!-- WAVE FILL -->
-<!-- ========================================================= -->
-
-<linearGradient id="waveFill"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1">
-
-    <stop offset="0%" stop-color="#D8EBFF"/>
-    <stop offset="22%" stop-color="#C6E0FF"/>
-    <stop offset="60%" stop-color="#A7CCFF"/>
-    <stop offset="100%" stop-color="#8DBBFA"/>
-
+<linearGradient id="waveFill" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#D8EBFF"/>
+  <stop offset="22%" stop-color="#C6E0FF"/>
+  <stop offset="60%" stop-color="#A7CCFF"/>
+  <stop offset="100%" stop-color="#8DBBFA"/>
 </linearGradient>
 
-<!-- ========================================================= -->
-<!-- WAVE HIGHLIGHT -->
-<!-- ========================================================= -->
-
-<linearGradient id="waveHighlight"
-                x1="0"
-                y1="0"
-                x2="1"
-                y2="0">
-
-    <stop offset="0%" stop-color="#FFFFFF"/>
-    <stop offset="40%" stop-color="#FDFEFF"/>
-    <stop offset="100%" stop-color="#EAF4FF"/>
-
+<linearGradient id="waveHighlight" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0%" stop-color="#FFFFFF"/>
+  <stop offset="40%" stop-color="#FDFEFF"/>
+  <stop offset="100%" stop-color="#EAF4FF"/>
 </linearGradient>
 
-<!-- ========================================================= -->
-<!-- VIGNETTE -->
-<!-- ========================================================= -->
-
-<radialGradient id="vignette"
-                cx="50%"
-                cy="45%"
-                r="88%">
-
-    <stop offset="72%"
-          stop-color="#FFFFFF"
-          stop-opacity="0"/>
-
-    <stop offset="100%"
-          stop-color="#B9CBE5"
-          stop-opacity=".18"/>
-
-</radialGradient>
-
-<!-- ========================================================= -->
-<!-- MAIN GLOW -->
-<!-- ========================================================= -->
-
-<filter id="waveGlow"
-        x="-60%"
-        y="-60%"
-        width="220%"
-        height="220%">
-
-    <feGaussianBlur
-        stdDeviation="16"
-        result="blur"/>
-
-    <feColorMatrix
-        in="blur"
-        type="matrix"
-        values="
-        1 0 0 0 0
-        0 1 0 0 0
-        0 0 1 0 0
-        0 0 0 1.8 0"/>
-
-    <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-    </feMerge>
-
+<filter id="waveGlow" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur stdDeviation="16" result="blur"/>
+  <feColorMatrix in="blur" type="matrix" values="
+    1 0 0 0 0
+    0 1 0 0 0
+    0 0 1 0 0
+    0 0 0 1.8 0"/>
+  <feMerge>
+    <feMergeNode/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
 </filter>
 
-<!-- ========================================================= -->
-<!-- SMALL GLOW -->
-<!-- ========================================================= -->
-
-<filter id="smallGlow"
-        x="-50%"
-        y="-50%"
-        width="200%"
-        height="200%">
-
-    <feGaussianBlur stdDeviation="4"/>
-
+<filter id="smallGlow" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur stdDeviation="4"/>
 </filter>
 
-</defs><rect x="0" y="0" width="720" height="640" fill="#FDFEFF"/>
-<g transform="translate(0,640)"><!-- ========================================================= -->
-<!-- BASE BACKGROUND -->
-<!-- ========================================================= -->
+</defs>
+<rect x="0" y="0" width="720" height="640" fill="#FDFEFF"/>
+<g transform="translate(0,640)">
 
-<rect
-    x="0"
-    y="0"
-    width="720"
-    height="1560"
-    fill="url(#bgGradient)"/>
+<rect x="0" y="0" width="720" height="1560" fill="url(#bgGradient)"/>
 
-<!-- ========================================================= -->
-<!-- TOP SKY GLOW -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="-120"
-    rx="520"
-    ry="280"
-    fill="url(#skyGlow)"
-    opacity=".98"/>
-
-<!-- ========================================================= -->
-<!-- SECONDARY TOP BLOOM -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="20"
-    rx="360"
-    ry="200"
-    fill="#FFFFFF"
-    opacity=".55"
-    filter="url(#waveGlow)"/>
-
-<!-- ========================================================= -->
-<!-- CENTER ATMOSPHERIC HAZE -->
-<!-- ========================================================= -->
-
-<rect
-    x="0"
-    y="0"
-    width="720"
-    height="1560"
-    fill="url(#centerGlow)"
-    opacity=".90"/>
-
-<!-- ========================================================= -->
-<!-- LARGE SOFT BLUE BLOOM -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="620"
-    rx="420"
-    ry="360"
-    fill="#D7E9FF"
-    opacity=".22"
-    filter="url(#waveGlow)"/>
-
-<!-- ========================================================= -->
-<!-- LOWER HAZE -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="1180"
-    rx="460"
-    ry="260"
-    fill="#C9E1FF"
-    opacity=".18"
-    filter="url(#waveGlow)"/>
-
-<!-- ========================================================= -->
-<!-- SUBTLE EDGE SHADING -->
-<!-- ========================================================= -->
-
-<linearGradient
-    id="bottomShade"
-    x1="0"
-    y1="0"
-    x2="0"
-    y2="1">
-
-    <stop offset="0%"
-          stop-color="#FFFFFF"
-          stop-opacity="0"/>
-
-    <stop offset="100%"
-          stop-color="#AFC6E3"
-          stop-opacity=".16"/>
-
-</linearGradient>
-
-<rect
-    x="0"
-    y="1080"
-    width="720"
-    height="480"
-    fill="url(#bottomShade)"/>
-
-<!-- ========================================================= -->
-<!-- EDGE VIGNETTE -->
-<!-- ========================================================= -->
-
-<rect
-    x="0"
-    y="0"
-    width="720"
-    height="1560"
-    fill="url(#vignette)"
-    opacity=".85"/>
-
-<!-- ========================================================= -->
-<!-- SOFT FLOATING LIGHT -->
-<!-- ========================================================= -->
-
-<g opacity=".18">
-
-    <circle
-        cx="120"
-        cy="420"
-        r="170"
-        fill="#F8FCFF"
-        filter="url(#waveGlow)"/>
-
-    <circle
-        cx="610"
-        cy="520"
-        r="210"
-        fill="#EAF5FF"
-        filter="url(#waveGlow)"/>
-
-    <circle
-        cx="300"
-        cy="860"
-        r="260"
-        fill="#DCEEFF"
-        filter="url(#waveGlow)"/>
-
-</g>
-
-<!-- ========================================================= -->
-<!-- VERY SUBTLE SHIMMER -->
-<!-- ========================================================= -->
-
-<g opacity=".10">
-
-    <circle cx="80"  cy="210"  r="1.0" fill="#FFFFFF"/>
-    <circle cx="610" cy="300"  r="0.8" fill="#FFFFFF"/>
-    <circle cx="440" cy="520"  r="1.2" fill="#F8FCFF"/>
-    <circle cx="240" cy="780"  r="0.9" fill="#FFFFFF"/>
-    <circle cx="660" cy="980"  r="1.1" fill="#F7FBFF"/>
-    <circle cx="160" cy="1180" r="0.9" fill="#FFFFFF"/>
-    <circle cx="520" cy="1380" r="1.0" fill="#F8FCFF"/>
-
-</g><!-- ========================================================= -->
 <!-- MAIN WAVE -->
-<!-- ========================================================= -->
-
 <path
-    d="
-        M -40 1238
-
-        C 70 1212,
-          165 1222,
-          260 1260
-
-        C 340 1294,
-          410 1334,
-          492 1366
-
-        C 570 1398,
-          645 1402,
-          760 1362
-
-        L760 1560
-        L-40 1560
-        Z
-    "
+    d="M -40 1238 C 70 1212, 165 1222, 260 1260 C 340 1294, 410 1334, 492 1366 C 570 1398, 645 1402, 760 1362 L760 1560 L-40 1560 Z"
     fill="url(#waveFill)"
     opacity=".98"/>
 
-<!-- ========================================================= -->
 <!-- INNER HIGHLIGHT -->
-<!-- ========================================================= -->
-
 <path
-    d="
-        M -40 1246
-
-        C 70 1220,
-          165 1228,
-          260 1264
-
-        C 340 1296,
-          410 1336,
-          492 1366
-
-        C 570 1396,
-          645 1401,
-          760 1364
-
-        L760 1560
-        L-40 1560
-        Z
-    "
+    d="M -40 1246 C 70 1220, 165 1228, 260 1264 C 340 1296, 410 1336, 492 1366 C 570 1396, 645 1401, 760 1364 L760 1560 L-40 1560 Z"
     fill="#F8FCFF"
     opacity=".18"/>
 
-<!-- ========================================================= -->
 <!-- LARGE GLOW -->
-<!-- ========================================================= -->
-
 <path
-    d="
-        M -20 1238
-
-        C 70 1212,
-          165 1222,
-          260 1260
-
-        C 340 1294,
-          410 1334,
-          492 1366
-
-        C 570 1398,
-          645 1402,
-          760 1362
-    "
+    d="M -20 1238 C 70 1212, 165 1222, 260 1260 C 340 1294, 410 1334, 492 1366 C 570 1398, 645 1402, 760 1362"
     fill="none"
     stroke="#EAF5FF"
     stroke-width="3.4"
@@ -406,43 +68,17 @@
     filter="url(#waveGlow)"
     opacity=".96"/>
 
-<!-- ========================================================= -->
 <!-- PRIMARY HIGHLIGHT -->
-<!-- ========================================================= -->
-
 <path
-    d="
-        M -20 1238
-
-        C 70 1212,
-          165 1222,
-          260 1260
-
-        C 340 1294,
-          410 1334,
-          492 1366
-
-        C 570 1398,
-          645 1402,
-          760 1362
-    "
+    d="M -20 1238 C 70 1212, 165 1222, 260 1260 C 340 1294, 410 1334, 492 1366 C 570 1398, 645 1402, 760 1362"
     fill="none"
     stroke="url(#waveHighlight)"
     stroke-width="1.9"
     stroke-linecap="round"/>
 
-<!-- ========================================================= -->
 <!-- BRIGHT CENTER ACCENT -->
-<!-- ========================================================= -->
-
 <path
-    d="
-        M 260 1260
-
-        C 340 1294,
-          410 1334,
-          492 1366
-    "
+    d="M 260 1260 C 340 1294, 410 1334, 492 1366"
     fill="none"
     stroke="#FFFFFF"
     stroke-width="1.3"
@@ -450,172 +86,13 @@
     filter="url(#smallGlow)"
     opacity=".92"/>
 
-<!-- ========================================================= -->
 <!-- LOWER REFLECTION -->
-<!-- ========================================================= -->
-
 <path
-    d="
-        M 0 1268
-
-        C 110 1248,
-          205 1260,
-          320 1300
-
-        C 405 1332,
-          485 1360,
-          590 1388
-    "
+    d="M 0 1268 C 110 1248, 205 1260, 320 1300 C 405 1332, 485 1360, 590 1388"
     fill="none"
     stroke="#AFCDF7"
     stroke-width=".9"
-    opacity=".34"/><!-- ========================================================= -->
-<!-- WAVE BLOOM -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="1315"
-    rx="330"
-    ry="105"
-    fill="#FFFFFF"
-    opacity=".20"
-    filter="url(#waveGlow)"/>
-
-<!-- ========================================================= -->
-<!-- BLUE UNDERGLOW -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="1460"
-    rx="420"
-    ry="170"
-    fill="#BDD8FF"
-    opacity=".18"
-    filter="url(#waveGlow)"/>
-
-<!-- ========================================================= -->
-<!-- SOFT TOP LIGHT -->
-<!-- ========================================================= -->
-
-<ellipse
-    cx="360"
-    cy="-70"
-    rx="560"
-    ry="270"
-    fill="#FFFFFF"
-    opacity=".32"
-    filter="url(#waveGlow)"/>
-
-<!-- ========================================================= -->
-<!-- LEFT / RIGHT EDGE SHADING -->
-<!-- ========================================================= -->
-
-<rect
-    x="0"
-    y="0"
-    width="24"
-    height="1560"
-    fill="#BFD2E9"
-    opacity=".08"/>
-
-<rect
-    x="696"
-    y="0"
-    width="24"
-    height="1560"
-    fill="#BFD2E9"
-    opacity=".08"/>
-
-<!-- ========================================================= -->
-<!-- TOP FADE -->
-<!-- ========================================================= -->
-
-<linearGradient
-    id="topFade"
-    x1="0"
-    y1="0"
-    x2="0"
-    y2="1">
-
-    <stop offset="0%"
-          stop-color="#FFFFFF"
-          stop-opacity=".22"/>
-
-    <stop offset="25%"
-          stop-color="#FFFFFF"
-          stop-opacity="0"/>
-
-</linearGradient>
-
-<rect
-    x="0"
-    y="0"
-    width="720"
-    height="340"
-    fill="url(#topFade)"/>
-
-<!-- ========================================================= -->
-<!-- BOTTOM DEPTH -->
-<!-- ========================================================= -->
-
-<linearGradient
-    id="bottomDepth"
-    x1="0"
-    y1="0"
-    x2="0"
-    y2="1">
-
-    <stop offset="0%"
-          stop-color="#FFFFFF"
-          stop-opacity="0"/>
-
-    <stop offset="100%"
-          stop-color="#AFC9EA"
-          stop-opacity=".20"/>
-
-</linearGradient>
-
-<rect
-    x="0"
-    y="1280"
-    width="720"
-    height="280"
-    fill="url(#bottomDepth)"/>
-
-<!-- ========================================================= -->
-<!-- OPTIONAL VERY SUBTLE FILM GRAIN -->
-<!-- ========================================================= -->
-
-<filter id="noise">
-
-    <feTurbulence
-        type="fractalNoise"
-        baseFrequency=".85"
-        numOctaves="2"
-        seed="12"
-        result="noise"/>
-
-    <feColorMatrix
-        type="saturate"
-        values="0"/>
-
-    <feComponentTransfer>
-
-        <feFuncA
-            type="table"
-            tableValues="0 0 .010"/>
-
-    </feComponentTransfer>
-
-</filter>
-
-<rect
-    width="720"
-    height="1560"
-    filter="url(#noise)"
-    opacity=".28"/>
+    opacity=".34"/>
 
 </g>
 </svg>
