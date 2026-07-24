@@ -121,6 +121,11 @@ html[data-lang="ar"] .prose { max-width: 72ch; }
 }
 .brand { display:flex; align-items:center; gap:10px; }
 .brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; }
+/* RTL: the row visually reverses (icon lands on the right, next to the
+   text), so mirror just this small nav mark to keep its opening facing
+   the text, same as it does in LTR. The large centered hero crescent is
+   intentionally left alone. */
+html[data-lang="ar"] .brand img { transform: scaleX(-1); }
 .brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; }
 html[data-lang="ar"] .brand span { font-weight:600; }
 .nav-actions { display:flex; align-items:center; gap:10px; }
