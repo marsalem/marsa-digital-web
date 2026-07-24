@@ -1,14 +1,110 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 720 1560"
+    width="720"
+    height="1560">
+
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#050A17"/>
-      <stop offset="65%" stop-color="#070D1E"/>
-      <stop offset="100%" stop-color="#0A1226"/>
+
+    <!-- Background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#020613"/>
+      <stop offset="35%" stop-color="#040A1D"/>
+      <stop offset="100%" stop-color="#01030B"/>
     </linearGradient>
-    <filter id="b" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="48"/>
+
+    <!-- Soft vignette -->
+    <radialGradient id="vignette"
+                    cx="50%"
+                    cy="40%"
+                    r="80%">
+      <stop offset="0%" stop-color="#112C80" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity=".45"/>
+    </radialGradient>
+
+    <!-- Wave fill -->
+    <linearGradient id="waveFill"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1">
+      <stop offset="0%" stop-color="#1B4FBF"/>
+      <stop offset="100%" stop-color="#06122F"/>
+    </linearGradient>
+
+    <!-- Glow -->
+    <filter id="waveGlow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%">
+      <feGaussianBlur stdDeviation="10"
+                      result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
+
   </defs>
-  <rect width="1600" height="900" fill="url(#g)"/>
-  <path d="M-100,760 C220,700 460,830 800,760 C1140,690 1380,830 1700,760 L1700,1000 L-100,1000 Z" fill="#2C5FCB" opacity="0.55" filter="url(#b)"/>
+
+  <!-- Background -->
+  <rect width="720"
+        height="1560"
+        fill="url(#bg)"/>
+
+  <!-- Vignette -->
+  <rect width="720"
+        height="1560"
+        fill="url(#vignette)"/>
+
+  <!-- Wave -->
+  <path
+      d="
+      M0 1285
+      C120 1265
+       220 1320
+       360 1370
+      C500 1422
+       610 1415
+       720 1360
+      L720 1560
+      L0 1560
+      Z"
+      fill="url(#waveFill)"/>
+
+  <!-- Glow line -->
+  <path
+      d="
+      M0 1285
+      C120 1265
+       220 1320
+       360 1370
+      C500 1422
+       610 1415
+       720 1360"
+      fill="none"
+      stroke="#7AA8FF"
+      stroke-width="2"
+      filter="url(#waveGlow)"
+      stroke-linecap="round"/>
+
+  <!-- Sharp highlight -->
+  <path
+      d="
+      M0 1285
+      C120 1265
+       220 1320
+       360 1370
+      C500 1422
+       610 1415
+       720 1360"
+      fill="none"
+      stroke="#96BEFF"
+      stroke-width="0.9"
+      stroke-linecap="round"
+      opacity=".95"/>
+
 </svg>
