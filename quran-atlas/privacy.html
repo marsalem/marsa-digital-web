@@ -144,25 +144,15 @@ html[data-lang="ar"] .brand span { font-weight:600; }
    scaling it up several times over on wide viewports to fill the
    full-bleed hero, which both pixelated it and cropped away everything
    but a thin sliver near the very bottom (pushing the wave up near the
-   visible top).
-   Fix: .hero-photo::before is sized via aspect-ratio to exactly match
-   the photo's own 415:900 proportions (height:100% of the hero, width
-   derived) — the same math "contain" would do, but as a real box, so a
-   plain 0%-100% mask gradient lines up with its true edges at any
-   viewport width instead of guessing against the wrong reference box. */
+   visible top). contain (not cover) shows the whole photo, unscaled,
+   at native-or-smaller size — a prior attempt to also feather its edges
+   via aspect-ratio + mask-image rendered as fully invisible on real
+   Safari (both iOS and macOS), so this deliberately stays as plain,
+   maximally-compatible background-size:contain instead. */
 .hero-photo {
   position:absolute; inset:0; z-index:0;
-  display:flex; align-items:flex-end; justify-content:center;
-  pointer-events:none;
-}
-.hero-photo::before {
-  content:"";
-  display:block; height:100%; max-width:100%;
-  aspect-ratio: 415 / 900;
   background-image: var(--hero-image);
-  background-size: cover; background-position: center bottom;
-  mask-image: radial-gradient(ellipse 62% 88% at 50% 100%, #000 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 62% 88% at 50% 100%, #000 30%, transparent 100%);
+  background-size: contain; background-repeat: no-repeat; background-position: center bottom;
 }
 .hero::after {
   content:""; position:absolute; inset:0; z-index:1;
