@@ -1,54 +1,387 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr" data-lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quran Atlas — Topical Quran Study & Dawah</title>
-  <meta name="description" content="Your personal atlas of the Quran. Organize verses by topic, study with Tafsir, and share with others."/>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #EAF1F8; color: #10243D; }
-    .hero { background: linear-gradient(145deg, #0F2233, #326499); color: white; padding: 80px 24px; text-align: center; }
-    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 8px; }
-    .hero p { font-size: 1.2rem; opacity: 0.85; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .badge { display: inline-block; background: black; color: white; padding: 14px 28px; border-radius: 14px; text-decoration: none; font-size: 1rem; font-weight: 600; }
-    .badge:hover { background: #222; }
-    .features { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; padding: 60px 24px; max-width: 900px; margin: 0 auto; }
-    .feature { background: white; border-radius: 18px; padding: 28px; flex: 1; min-width: 250px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    .feature h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #326499; }
-    .feature p { font-size: 0.95rem; color: #5A6A7A; line-height: 1.6; }
-    footer { text-align: center; padding: 32px; color: #8FA8BD; font-size: 0.85rem; border-top: 1px solid #CBDAEA; }
-    footer a { color: #326499; text-decoration: none; }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title data-en="Quran Atlas — Your Quran &amp; Hadith Study Companion" data-ar="أطلس القرآن">Quran Atlas — Your Quran &amp; Hadith Study Companion</title>
+<meta name="description" content="A bilingual companion for reading, studying and reflecting on the Quran and Hadith — organize your own topics, read with tafsir and tajweed, search everything at once, and share what you build.">
+<link rel="stylesheet" href="assets/css/base.css">
+<style>
+
+/* GRADIENTS.light/dark.background from theme.ts, applied directly as the page's own
+   background across its full scrollable height — the app's real 3-color gradient, not a
+   generic hero banner. See docs/marsa-digital-web-redesign-copy-and-plan.md for the full
+   audit trail on why this is a plain 3-stop gradient with no viewport-sizing tricks. */
+body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 70%, var(--bg-grad-3) 100%); }
+/* Dark mode drops the darkest stop (bg-grad-1) entirely, by direct instruction — starts at
+   the mid tone and goes to the light end, instead of the full 3-stop ramp light mode uses. */
+:root[data-theme="dark"] body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
+@media (prefers-color-scheme: dark) {
+  body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
+}
+
+/* No border-bottom here (unlike the shared base.css .nav, which FAQ/privacy/support still
+   use as-is) — this page's nav sits directly on the same continuous gradient as the rest
+   of the page, so a border line under it read as an unwanted seam. */
+.nav { background: color-mix(in srgb, var(--bg-grad-1) 78%, transparent); border-bottom: none; }
+/* Larger brand lockup than the shared base.css default (30px/17px) — this page's own
+   override, not touched in base.css, so FAQ/privacy/support are unaffected. */
+.brand img { width:40px; height:40px; }
+.brand span { font-size:21px; }
+#langToggle { font-size:14px; }
+/* Keep the brand on the left and the language/theme toggles on the right regardless of
+   language — base.css's shared .nav-row lets flexbox's "row" direction follow the
+   document's dir attribute (correct default for most rows), which meant the whole nav
+   visually mirrored in Arabic, pushing the toggles to the left. Forcing physical LTR order
+   on just this row keeps the toggles pinned to the right always; the RTL flip on the brand
+   image (base.css) is no longer needed since the image no longer swaps sides. */
+.nav-row { direction: ltr; }
+html[data-lang="ar"] .brand img { transform: none; }
+:root[data-theme="dark"] .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
+@media (prefers-color-scheme: dark) {
+  .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
+}
+
+.hero { padding:70px 32px 60px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:18px; }
+.hero .mark { width:110px; height:auto; filter: drop-shadow(0 14px 28px rgba(20,60,140,0.35)); }
+:root[data-theme="dark"] .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); }
+@media (prefers-color-scheme: dark) { .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); } }
+.hero h1 { font-size:34px; line-height:1.18; letter-spacing:-0.01em; font-weight:500; max-width:600px; color: var(--hero-title); }
+html[data-lang="ar"] .hero h1 { font-weight:500; }
+.hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); }
+html[data-lang="ar"] .hero .sub { font-size:18.5px; }
+
+/* Official Apple/Google download badges — real artwork, not custom buttons. Apple badge
+   verified live from Apple's own generator (toolbox.marketingtools.apple.com); Google Play
+   badges verified live from play.google.com's own CDN. Sized by height only, width auto,
+   so the official aspect ratio is never distorted.
+
+   Google's official PNG ships with ~33% transparent padding baked into the file (measured:
+   a 168px-tall visible mark inside a 250px canvas) — Apple's SVG has none (its mark fills
+   its viewBox edge-to-edge). Equal CSS height on both was therefore matching invisible
+   canvas sizes, not the actual visible artwork, which is what read as mismatched. The
+   *-trimmed.png assets (built once via Pillow's own alpha-channel bounding box, `im.crop(im.getbbox())`
+   — no pixels inside the visible mark touched, nothing redrawn) crop away only that
+   transparent margin, so the same 48px height now applies to both badges' actual visible
+   marks. Untrimmed originals are kept alongside as the pristine downloaded reference. */
+.store-buttons { display:flex; gap:20px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:14px; }
+.badge-link { display:inline-flex; }
+.badge-img { height:48px; width:auto; display:block; }
+/* Apple ships separate black/white artwork for light/dark backgrounds (not a single asset
+   that adapts) — swap which one is visible per theme, same idea as the data-en/data-ar
+   toggle already used for language. */
+.badge-img.apple-dark { display:none; }
+:root[data-theme="dark"] .badge-img.apple-dark { display:block; }
+:root[data-theme="dark"] .badge-img.apple-light { display:none; }
+@media (prefers-color-scheme: dark) {
+  .badge-img.apple-dark { display:block; }
+  .badge-img.apple-light { display:none; }
+}
+
+.section { max-width:1000px; margin:0 auto; padding:36px 28px; }
+.sec-inner { display:flex; flex-direction:column; gap:16px; }
+/* Two-column alternating layout: text on one side, a screenshot placeholder on the other.
+   .reverse flips which side is which via flex-direction only — the text column's DOM order
+   never changes, so reading order stays consistent for assistive tech either way. */
+.sec-row { display:flex; align-items:center; gap:48px; max-width:900px; margin:0 auto; }
+.sec-row.reverse { flex-direction:row-reverse; }
+.sec-row .sec-copy { flex:1 1 0; min-width:0; }
+.sec-shot { flex:0 0 240px; display:flex; justify-content:center; }
+.shot-placeholder {
+  width:240px; height:500px; border-radius:32px; border:2px dashed var(--border-solid);
+  display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
+  font-size:13px; line-height:1.5; color: var(--text-muted);
+}
+/* Light mode only: the app's own LIGHT_THEME.navigationActiveBackground
+   (rgba(214,230,247,0.98)) — the light blue used to highlight the active tab in the app's
+   bottom dock (a toggle-like selection surface) — applied to this page's own button/card
+   surfaces (the pill toggles and these screenshot-placeholder cards) instead of the
+   generic base.css --surface white. Dark mode is untouched (keeps --surface as before). */
+.shot-placeholder, .pill-btn { background: rgba(214,230,247,0.98); }
+:root[data-theme="dark"] .shot-placeholder,
+:root[data-theme="dark"] .pill-btn { background: var(--surface); }
+@media (prefers-color-scheme: dark) {
+  .shot-placeholder, .pill-btn { background: var(--surface); }
+}
+@media (max-width: 760px) {
+  .sec-row, .sec-row.reverse { flex-direction:column; gap:28px; }
+  .shot-placeholder { width:200px; height:420px; }
+}
+
+.sec-icon { display:inline-flex; color: var(--accent); }
+.section h2 { font-size:24px; font-weight:500; letter-spacing:-0.005em; margin-top:10px; max-width:420px; color: var(--heading); }
+html[data-lang="ar"] .section h2 { font-weight:500; }
+.sec-sub { font-size:17px; line-height:1.65; margin:14px 0 0; text-align:left; color: var(--text-secondary); }
+html[data-lang="ar"] .sec-sub { text-align:right; }
+
+/* Constrained to its own column with the bullet dot and its text both left-aligned inside
+   it — this was previously centered as a full-width list with a fixed-left dot, which left
+   the dot detached from centered text. Dot color matches the text color (not the accent),
+   by direct instruction. */
+.bullets { list-style:none; display:flex; flex-direction:column; gap:9px; margin:6px 0 0; text-align:left; }
+html[data-lang="ar"] .bullets { text-align:right; }
+.bullets li { font-size:17px; line-height:1.5; padding-left:18px; position:relative; color: var(--text-secondary); }
+html[data-lang="ar"] .bullets li { padding-left:0; padding-right:18px; }
+.bullets li::before { content:''; position:absolute; left:0; top:7px; width:6px; height:6px; border-radius:50%; background: var(--text-secondary); }
+html[data-lang="ar"] .bullets li::before { left:auto; right:0; }
+
+.support-strip { max-width:1000px; margin:0 auto; padding:20px 28px 72px; display:flex; flex-wrap:wrap; justify-content:center; column-gap:28px; row-gap:14px; }
+.support-item { display:flex; align-items:center; gap:10px; font-size:18px; color: var(--text-secondary); }
+.si-icon { display:flex; color: var(--accent); }
+
+footer.site-footer { text-align:center; padding:56px 28px 48px; border-top:none; }
+footer.site-footer .closing { font-size:26px; font-weight:500; margin-bottom:32px; color: var(--heading); }
+footer.site-footer .footer-links { margin-top:26px; justify-content:center; }
+footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--text-muted); }
+
+</style>
 </head>
 <body>
-  <div class="hero">
-    <h1>🌙 Quran Atlas</h1>
-    <p>Your personal topical atlas of the Quran — organize verses, study with Tafsir, and share with others.</p>
-    <a class="badge" href="https://apps.apple.com/app/id6781110875">⬇ Download on the App Store</a>
-  </div>
 
-  <div class="features">
-    <div class="feature">
-      <h3>📚 Topical Organization</h3>
-      <p>Create topics and subtopics to organize Quranic verses any way you choose. Add notes, voice memos, and reflections.</p>
-    </div>
-    <div class="feature">
-      <h3>🔍 Full Quran Search</h3>
-      <p>Search all 6,236 verses by keyword or surah name in English or Arabic. Browse the full Quran surah by surah.</p>
-    </div>
-    <div class="feature">
-      <h3>🗂 Reference Cards</h3>
-      <p>Quick-access cards for common dawah scenarios with key verses and conversation starters ready to go.</p>
-    </div>
-    <div class="feature">
-      <h3>🌐 Fully Bilingual</h3>
-      <p>Complete Arabic and English support — topics, verses, notes, search, and interface in both languages.</p>
+<nav class="nav">
+  <div class="nav-row">
+    <a class="brand" href="/quran-atlas" aria-label="Quran Atlas">
+      <img src="assets/img/crescent-nav.png" alt="" />
+      <span data-en>Quran Atlas</span>
+      <span data-ar>أطلس القرآن</span>
+    </a>
+    <div class="nav-actions">
+      <button class="pill-btn" id="langToggle" type="button">
+        <span data-en>العربية</span>
+        <span data-ar>English</span>
+      </button>
+      <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span id="themeIcon" style="display:inline-flex; align-items:center; justify-content:center;">&#9788;</span>
+      </button>
     </div>
   </div>
+</nav>
 
-  <footer>
-    <p>© 2026 Marsa Digital · <a href="/quran-atlas/support">Support</a> · <a href="/quran-atlas/privacy">Privacy Policy</a></p>
-  </footer>
+<section class="hero">
+  <img class="mark" src="assets/img/crescent-hero.png" alt=""/>
+  <h1><span data-en>Your Quran &amp; Hadith study, organized your way.</span><span data-ar>الأطلس الخاص بك في دراستك للقرآن والحديث</span></h1>
+  <p class="sub"><span data-en>A bilingual companion for reading, studying and reflecting on the Quran and Hadith — shaped around your own topics and goals.</span><span data-ar>مساحة خاصة بك لتنظيم دراسة القرآن والحديث وفقاً لأهدافك</span></p>
+  <div class="store-buttons">
+    <!-- App Store: official Apple badge artwork (black+white variants), verified live from
+         Apple's own badge generator (toolbox.marketingtools.apple.com). English only — every
+         Arabic locale code tried against that API (ar, AR, ar-SA, ar-EG, ar-AE, ar_SA) silently
+         returned the identical English badge, so a genuine localized asset could not be
+         confirmed; using the English badge for both languages until one is verified. Links to
+         the app's real, already-live App Store listing (same URL used elsewhere in this repo). -->
+    <a class="badge-link" href="https://apps.apple.com/app/id6781110875" data-en aria-label="Download on the App Store">
+      <img class="badge-img apple-light" src="assets/badges/app-store-badge-black-en.svg" alt="Download on the App Store" height="48">
+      <img class="badge-img apple-dark" src="assets/badges/app-store-badge-white-en.svg" alt="Download on the App Store" height="48">
+    </a>
+    <a class="badge-link" href="https://apps.apple.com/app/id6781110875" data-ar aria-label="تحميل من App Store">
+      <img class="badge-img apple-light" src="assets/badges/app-store-badge-black-en.svg" alt="تحميل من App Store" height="48">
+      <img class="badge-img apple-dark" src="assets/badges/app-store-badge-white-en.svg" alt="تحميل من App Store" height="48">
+    </a>
+    <!-- Google Play: official localized badges, verified live from play.google.com's own CDN
+         (English and Arabic are genuinely distinct artwork, confirmed visually). No production
+         Google Play listing exists yet, so this is inert (no destination) — same as the prior
+         placeholder button had no real link either. Update href once the listing is live. -->
+    <a class="badge-link" href="#" aria-disabled="true" onclick="return false;" data-en aria-label="Get it on Google Play">
+      <img class="badge-img" src="assets/badges/google-play-badge-en-trimmed.png" alt="Get it on Google Play" height="48">
+    </a>
+    <a class="badge-link" href="#" aria-disabled="true" onclick="return false;" data-ar aria-label="احصل عليه من Google Play">
+      <img class="badge-img" src="assets/badges/google-play-badge-ar-trimmed.png" alt="احصل عليه من Google Play" height="48">
+    </a>
+  </div>
+</section>
+
+<section class="section" data-sec="study">
+  <div class="sec-inner">
+    <div class="sec-row">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M260 414 265 416 305 415H345L349 413Q360 408 365 398L367 392L368 376L369 361Q374 363 397.5 365.5Q421 368 428 368Q439 367 449 358Q457 350 460 340Q461 337 478.5 175.0Q496 13 496 6Q495 -8 484 -18Q478 -24 470.5 -26.0Q463 -28 439 -30Q413 -33 404 -28Q388 -20 384 -3Q383 1 376.0 67.5Q369 134 368 136Q368 137 368.0 127.5Q368 118 368.0 101.5Q368 85 368 66Q368 -6 366 -11Q360 -26 346 -31Q341 -32 303.5 -32.0Q266 -32 261.0 -30.0Q256 -28 252 -25L248 -22L244 -25Q240 -28 235.0 -30.0Q230 -32 180.5 -32.5Q131 -33 125 -32Q113 -30 107 -24L104 -21L101 -24Q94 -30 84 -32Q79 -32 64.0 -32.0Q49 -32 44 -32Q26 -29 19 -13L17 -8V168V344L19 349Q24 360 35 365L40 367H64H88L93 365Q104 360 109 349Q111 344 112 322V300L116 302Q120 303 176.5 303.0Q233 303 236 302L240 300V343Q240 386 241 390Q244 407 260 414ZM336 192V384H304H272V192V0H304H336ZM80 168V336H64H48V168V0H64H80ZM425 336Q383 332 381 330Q380 330 380 326Q381 323 398.0 165.5Q415 8 415 4Q416 2 418.0 1.0Q420 0 440.5 2.0Q461 4 462.5 5.5Q464 7 463.5 10.5Q463 14 446.0 172.0Q429 330 428.5 332.0Q428 334 427.0 335.0Q426 336 425 336ZM224 256V272H176H128V256V240H176H224ZM224 136V208H176H128V136V64H176H224ZM224 16V32H176H128V16V0H176H224Z" fill="currentColor"/></g></svg></div>
+        <h2><span data-en>A real study workspace, not just a folder of saved verses.</span><span data-ar>مساحة دراسة حقيقية، لا مجرد مجلد لآيات محفوظة.</span></h2>
+        <p class="sec-sub"><span data-en>Build topics and subtopics around what actually matters to you. Each one is a real page — headings, notes, verse and hadith references, images, links — not a flat list. Attach a voice memo to capture a reflection in the moment, and pick up your Continue Studying card exactly where you left off.</span><span data-ar>أنشئ مواضيع وموضوعات فرعية حول ما يهمّك فعلاً. كل موضوع صفحة حقيقية بحد ذاتها — عناوين، ملاحظات، آيات وأحاديث مرجعية، صور، وروابط — لا مجرد قائمة مسطّحة. أضف مذكرة صوتية لتوثيق خاطرة في لحظتها، وتابع من حيث توقفت عبر بطاقة «متابعة الدراسة».</span></p>
+        <ul class="bullets">
+          <li><span data-en>Multi-level topics and subtopics, entirely yours to define</span><span data-ar>مواضيع وموضوعات فرعية متعددة المستويات، من تصميمك الخاص بالكامل</span></li>
+          <li><span data-en>Page-style notes — headings, references, images, and lists, not just plain text</span><span data-ar>ملاحظات بأسلوب الصفحات — عناوين، مراجع، صور، وقوائم، لا مجرد نص عادي</span></li>
+          <li><span data-en>Voice memos attached to any verse</span><span data-ar>مذكرات صوتية يمكن إرفاقها بأي آية</span></li>
+          <li><span data-en>Curated Categories and Packs to start from, or build your own from scratch</span><span data-ar>فئات وباقات مُعدّة مسبقًا لتبدأ منها، أو ابنِ مكتبتك الخاصة من الصفر</span></li>
+        </ul>
+      </div>
+      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Study workspace</span><span data-ar>لقطة شاشة — مساحة الدراسة</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="read">
+  <div class="sec-inner">
+    <div class="sec-row reverse">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M42 399Q47 400 61 400Q170 397 221 363Q229 358 239.5 348.0Q250 338 253 333Q256 329 256.0 329.0Q256 329 259 333Q262 338 272.5 348.0Q283 358 291 363Q332 390 411 398Q455 402 469 399Q482 397 490 386Q495 380 495.5 364.0Q496 348 496 224Q496 103 495.5 86.0Q495 69 491 63Q486 56 478.5 52.0Q471 48 453 48Q379 48 331 32Q299 22 276 -3Q265 -13 261.5 -15.0Q258 -17 251 -15Q248 -14 236 -3Q219 15 199 25Q154 46 67 47Q39 48 32 52Q24 57 20 65Q17 71 16.5 89.0Q16 107 16 225Q16 348 16.5 364.0Q17 380 22 386Q30 397 42 399ZM81 367Q67 368 57 368H48V224V80H54Q61 79 71.5 79.0Q82 79 100 78Q188 72 232 43L240 38V162Q240 266 239.5 279.0Q239 292 234 302Q227 316 215 327Q177 361 81 367ZM464 224V368H452Q418 367 384 362Q301 349 278 302Q273 292 272.5 279.0Q272 266 272 162Q272 162 272 38L280 43Q311 63 358 72Q400 79 440 79Q451 79 458 80Q458 80 464 80Z" fill="currentColor"/></g></svg></div>
+        <h2><span data-en>Read it your way — Arabic, translation, or the page itself.</span><span data-ar>اقرأه على طريقتك — عربيًا، مترجمًا، أو كصفحة المصحف نفسها.</span></h2>
+        <p class="sec-sub"><span data-en>Switch between Arabic, translation, or both side by side — or open the full Mushaf page view to read exactly as printed. Follow tajweed color-coding, study nine tafsir sources in Arabic and English, and listen with eight reciters, with offline downloads for reading and listening anywhere.</span><span data-ar>بدّل بين العربية، الترجمة، أو كلتيهما جنبًا إلى جنب — أو افتح عرض صفحة المصحف الكامل لتقرأ تمامًا كما هي مطبوعة. تابع تلوين أحكام التجويد، وادرس تسعة مصادر تفسير بالعربية والإنجليزية، واستمع بصوت ثمانية قرّاء، مع تحميل التلاوات للاستماع والقراءة بلا اتصال.</span></p>
+        <ul class="bullets">
+          <li><span data-en>Arabic, translation, or side-by-side reading modes</span><span data-ar>أوضاع قراءة بالعربية، بالترجمة، أو جنبًا إلى جنب</span></li>
+          <li><span data-en>Full 604-page Mushaf view</span><span data-ar>عرض كامل لصفحات المصحف الـ 604</span></li>
+          <li><span data-en>9 tafsir sources — 3 English, 6 Arabic</span><span data-ar>9 مصادر تفسير — 3 بالإنجليزية و6 بالعربية</span></li>
+          <li><span data-en>8 reciters, with offline downloads</span><span data-ar>8 قرّاء، مع إمكانية التحميل للاستماع دون اتصال</span></li>
+          <li><span data-en>Tajweed color-coding</span><span data-ar>تلوين لأحكام التجويد</span></li>
+        </ul>
+      </div>
+      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Reader</span><span data-ar>لقطة شاشة — القارئ</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="search">
+  <div class="sec-inner">
+    <div class="sec-row">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M207 399Q290 405 347 346Q401 288 393 210Q388 159 359 122L354 116L408 62Q462 8 463 4Q466 -5 459.5 -11.5Q453 -18 444 -15Q440 -14 386 40L332 94L326 89Q289 60 238 55Q171 48 117 89Q100 101 87 118Q44 171 48.5 238.5Q53 306 102 353Q147 395 207 399ZM237 367Q237 367 237 367Q212 370 189 364Q150 355 122 326Q88 293 82 246Q73 178 119 129Q161 86 221 86Q261 86 295 107Q331 129 349 167Q363 197 362 231Q361 260 349 285Q324 341 266 360Q252 365 237 367Z" fill="currentColor"/></g></svg></div>
+        <h2><span data-en>Find any verse, in Arabic or English.</span><span data-ar>اعثر على أي آية، بالعربية أو الإنجليزية.</span></h2>
+        <p class="sec-sub"><span data-en>Search the full Quran, your own topics, and Hadith at once — by keyword, root, or surah name, in either language.</span><span data-ar>ابحث في القرآن الكريم كاملاً، وفي مواضيعك الخاصة، وفي الأحاديث في آنٍ واحد — بالكلمة، بالجذر، أو باسم السورة، وبأي من اللغتين.</span></p>
+        <ul class="bullets">
+          <li><span data-en>Search verses, topics, and Hadith together</span><span data-ar>ابحث في الآيات والمواضيع والأحاديث معًا</span></li>
+          <li><span data-en>Arabic root-aware and English stemmed matching</span><span data-ar>بحث يراعي جذور الكلمات بالعربية، واشتقاقاتها بالإنجليزية</span></li>
+          <li><span data-en>Browse the Quran surah by surah</span><span data-ar>تصفّح القرآن سورةً سورة</span></li>
+        </ul>
+      </div>
+      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Search</span><span data-ar>لقطة شاشة — البحث</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="share">
+  <div class="sec-inner">
+    <div class="sec-row reverse">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M248 414Q256 419 265 413Q268 411 308.5 370.5Q349 330 350 327Q354 320 350.0 312.5Q346 305 338 304Q333 303 328.0 307.0Q323 311 300 334L272 361V243Q272 125 271 121Q267 111 256.0 111.0Q245 111 241 121Q240 125 240 243V361L212 334Q189 311 184.0 307.0Q179 303 174 304Q166 305 162.0 312.5Q158 320 162 327Q163 330 204.0 371.0Q245 412 248 414ZM128 271Q128 271 128 271Q134 272 157 272Q177 272 181.0 271.0Q185 270 189 265Q192 262 192.0 256.0Q192 250 189 247Q185 242 180.5 241.0Q176 240 155 240Q129 239 125 237Q118 233 114 225Q112 221 112 120Q112 120 112 18L114 14Q118 7 126 2Q126 2 129 0H256H383L386 2Q394 7 398 14Q398 14 400 18V120V222L397 227Q392 236 383 239Q380 240 356.5 240.0Q333 240 329.5 242.0Q326 244 323.0 247.0Q320 250 320.0 256.0Q320 262 323 265Q327 270 331.5 271.0Q336 272 359 272Q386 272 393 269Q419 261 429 235Q429 235 431 228L432 123Q432 35 431.5 21.5Q431 8 426 -1Q415 -23 390 -30Q384 -32 256.0 -32.0Q128 -32 122 -30Q90 -21 82 10Q80 16 80.0 120.0Q80 224 81 228Q85 245 98.5 257.0Q112 269 128 271Z" fill="currentColor"/></g></svg></div>
+        <h2><span data-en>Turn your study into something you can share.</span><span data-ar>حوّل دراستك إلى شيء يمكنك مشاركته.</span></h2>
+        <p class="sec-sub"><span data-en>Build a Reference Card for a question or scenario you want to revisit — a title, the verses and hadith that answer it, ready to reopen instantly. Build a Playlist to queue up surahs or verse ranges for focused, repeatable listening. Share any of it with a single link that opens straight into Quran Atlas.</span><span data-ar>أنشئ «بطاقة مرجعية» لسؤال أو موقف تريد العودة إليه لاحقًا — عنوان، مع الآيات والأحاديث التي تجيب عنه، جاهزة لإعادة فتحها فورًا. أنشئ «قائمة تشغيل» لترتيب سور أو مقاطع آيات للاستماع المركّز والمتكرر. شارك أيًا منها برابط واحد يفتح مباشرة في أطلس القرآن.</span></p>
+        <ul class="bullets">
+          <li><span data-en>Reference Cards for scenarios and dawah conversations</span><span data-ar>بطاقات مرجعية للمواقف والحوارات الدعوية</span></li>
+          <li><span data-en>Playlists for focused, repeatable recitation listening</span><span data-ar>قوائم تشغيل للاستماع المركّز والمتكرر للتلاوة</span></li>
+          <li><span data-en>One-tap share links for Topics, Reference Cards, and Playlists</span><span data-ar>روابط مشاركة بضغطة واحدة للمواضيع والبطاقات المرجعية وقوائم التشغيل</span></li>
+        </ul>
+      </div>
+      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Share</span><span data-ar>لقطة شاشة — المشاركة</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="hadith">
+  <div class="sec-inner">
+    <div class="sec-row">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M192 416Q241 416 249.5 415.0Q258 414 266 410Q272 407 348.0 331.0Q424 255 426 249Q431 241 431.5 228.0Q432 215 432 128Q432 23 430.0 16.5Q428 10 424.5 2.5Q421 -5 413.0 -13.0Q405 -21 397 -25Q386 -31 372.0 -31.5Q358 -32 256.0 -32.0Q154 -32 140.0 -31.5Q126 -31 115 -25Q107 -21 99.0 -13.0Q91 -5 87.5 2.5Q84 10 82.0 16.5Q80 23 80.0 192.0Q80 361 82.0 367.5Q84 374 87.5 381.5Q91 389 99.0 397.0Q107 405 115.0 409.0Q123 413 128.5 414.0Q134 415 192 416ZM240 327V384H190Q140 384 136 383Q116 378 113 357Q112 351 112.0 192.0Q112 33 113 27Q115 10 131 3L136 0H256H376L382 3Q397 11 399 27Q400 33 400 128V223L340 224Q279 224 275 226Q262 230 252.5 240.5Q243 251 241 264Q240 269 240 327ZM331 256Q331 256 331 256H377L325 309L272 361V314L273 267L275 263Q277 260 281.0 258.0Q285 256 331 256Z" fill="currentColor"/></g></svg></div>
+        <h2><span data-en>Hadith, alongside your Quran study.</span><span data-ar>الأحاديث، إلى جانب دراستك للقرآن.</span></h2>
+        <p class="sec-sub"><span data-en>Browse Bukhari, Muslim, and both 40-Hadith collections offline, with more books available on demand. Add notes and voice memos, and pick up with Continue Hadith.</span><span data-ar>تصفّح صحيح البخاري ومسلم ومجموعتي الأربعين حديثًا دون اتصال، مع إتاحة كتب إضافية عند الطلب. أضف ملاحظات ومذكرات صوتية، وتابع من حيث توقفت عبر «متابعة الأحاديث».</span></p>
+      </div>
+      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Hadith</span><span data-ar>لقطة شاشة — الحديث</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="support-strip">
+  <div class="support-item">
+    <div class="si-icon"><svg viewBox="0 0 512 512" width="20" height="20"><g transform="translate(0,512) scale(1,-1)"><path d="M233 414Q241 415 255.5 415.0Q270 415 278 414Q304 411 327 400Q365 381 388 345Q405 319 412 287Q414 278 416 278Q446 273 464 263Q504 242 511 202Q515 180 507 157Q493 115 440 101Q421 96 364 96H316L312 98Q306 102 304.5 109.0Q303 116 308 122Q311 126 317.5 127.0Q324 128 366 128Q422 129 438 134Q455 139 465 149Q480 164 480 187Q480 220 447 236Q431 244 405 247Q392 248 388 253Q385 257 383 270Q377 313 349 343Q323 372 284 381Q267 385 248 384Q218 382 195 368Q160 347 145 308Q141 299 137.5 296.0Q134 293 125 292Q59 285 39 243Q33 231 33 214Q32 196 37 182Q50 148 92 135Q111 129 157 128Q190 128 195.5 127.0Q201 126 204 122Q209 116 207.5 109.0Q206 102 200 98L196 96H169Q122 95 101 99Q31 114 8 168Q-12 217 12 262Q38 308 104 321L116 324L119 331Q130 352 148 371Q183 408 233 414ZM250 239Q250 239 250 239Q256 241 262 239Q267 237 271 230Q272 227 272 125Q272 125 272 23L292 42Q312 62 315 63Q320 64 324.5 63.0Q329 62 332.5 57.5Q336 53 336 49Q336 43 331.5 37.5Q327 32 301 6Q268 -27 264 -30Q256 -34 248 -30Q244 -27 211 6Q185 32 180.5 37.5Q176 43 176 49Q176 53 179.5 57.5Q183 62 187.5 63.0Q192 64 197 63Q200 62 220 42Q220 42 240 23V125Q240 227 241 230Q244 236 250 239Z" fill="currentColor"/></g></svg></div>
+    <span data-en>Offline audio downloads</span><span data-ar>تحميل التلاوات للاستماع دون اتصال</span>
+  </div>
+  <div class="support-item">
+    <div class="si-icon"><svg viewBox="0 0 512 512" width="20" height="20"><g transform="translate(0,512) scale(1,-1)"><path d="M235 367Q242 368 258.5 367.5Q275 367 282 366Q315 360 342 342Q396 306 412 234Q414 226 414.0 224.5Q414 223 416 222Q431 219 440 216Q484 201 502 165Q514 140 511.5 109.5Q509 79 493 58Q471 28 427 19L418 17L272 16Q126 16 118 17Q50 26 18 79Q-13 131 8 189Q18 219 44.0 239.5Q70 260 106 269L116 271L120 279Q134 311 161 333Q193 361 235 367ZM277 334Q277 334 277 334Q234 341 200 322Q186 314 173 301Q155 283 145 256Q141 246 138.0 243.5Q135 241 125 239Q82 233 58 209Q41 192 35 168Q33 161 33.0 144.5Q33 128 35 121Q48 70 101 53Q114 49 131.0 48.5Q148 48 268 48Q268 48 412 48L421 50Q447 56 462 71Q473 82 477 98Q479 105 479 119Q479 139 472 152Q455 185 407 191Q394 193 390 196Q385 201 383 215Q380 236 373 254Q360 286 334.5 307.5Q309 329 277 334Z" fill="currentColor"/></g></svg></div>
+    <span data-en>iCloud backup — no account required</span><span data-ar>نسخ احتياطي عبر iCloud — دون الحاجة لحساب</span>
+  </div>
+  <div class="support-item">
+    <div class="si-icon"><svg viewBox="0 0 512 512" width="20" height="20"><g transform="translate(0,512) scale(1,-1)"><path d="M188 399Q198 402 204 394Q208 390 208 368V352H274Q341 352 343 350Q350 347 351 341Q352 338 352 337Q354 332 348 325Q345 322 340.5 321.0Q336 320 317 320H293L288 304Q263 233 227 182Q219 171 219.0 170.0Q219 169 236.5 152.0Q254 135 261 129Q272 119 272 112Q272 104 266.0 99.5Q260 95 252.5 96.5Q245 98 215 128L198 145L194 141Q177 122 158 105Q138 86 114.5 68.0Q91 50 84 49Q75 46 68.5 53.5Q62 61 65 70Q67 75 78 82Q108 101 143 134Q174 164 176 169Q177 170 170 179Q152 202 132.5 232.5Q113 263 112 270Q111 276 115 282Q118 286 124.5 287.0Q131 288 136 286Q140 284 150 266Q166 238 188 208L198 195L204 205Q233 249 254 305Q259 318 259.0 319.0Q259 320 152.0 320.0Q45 320 41.5 321.5Q38 323 36 325Q30 332 32 337Q32 338 33 341Q34 347 41 350Q43 352 110 352H176V368Q176 385 177 388Q179 397 188 399ZM361 238Q366 241 372.0 239.5Q378 238 381 233Q383 230 431 117Q471 25 476.0 11.5Q481 -2 478 -7Q472 -19 460 -15Q455 -14 451.5 -8.5Q448 -3 438 20L426 48H368H310L299 22Q285 -10 282 -13Q275 -18 268 -15Q263 -14 259.5 -9.0Q256 -4 256 2Q257 5 305.5 119.0Q354 233 356.0 235.0Q358 237 361 238ZM390 131Q369 182 368 182Q366 180 345.0 130.5Q324 81 324.5 80.5Q325 80 368 80Q368 80 412 81Z" fill="currentColor"/></g></svg></div>
+    <span data-en>Fully bilingual, right-to-left Arabic support</span><span data-ar>دعم كامل ثنائي اللغة، بما فيه العربية من اليمين لليسار</span>
+  </div>
+  <div class="support-item">
+    <div class="si-icon"><svg viewBox="0 0 512 512" width="20" height="20"><g transform="translate(0,512) scale(1,-1)"><path d="M231 415Q239 415 255.0 415.0Q271 415 280 415Q289 414 300 412Q355 401 399.0 364.5Q443 328 464 276Q491 207 472.5 135.5Q454 64 397 18Q344 -24 278.0 -30.5Q212 -37 152 -6Q94 24 61.5 81.5Q29 139 32 205Q35 253 58 296Q79 337 115 366Q143 389 177 401Q204 412 231 415ZM284 382Q284 382 284 382Q275 383 266 384Q266 384 256 384V192V0H261Q267 0 278 1Q327 7 367.0 35.5Q407 64 428 108Q448 147 448 192Q448 217 442 238Q432 279 406 312Q358 371 284 382Z" fill="currentColor"/></g></svg></div>
+    <span data-en>Light and dark themes</span><span data-ar>مظهر فاتح وداكن</span>
+  </div>
+  <div class="support-item">
+    <div class="si-icon"><svg viewBox="0 0 512 512" width="20" height="20"><g transform="translate(0,512) scale(1,-1)"><path d="M233 407Q251 415 255.5 415.5Q260 416 279 407Q328 386 363.0 375.0Q398 364 451 354Q468 351 471 349Q477 346 479 338Q480 334 480.0 310.0Q480 286 479 275Q472 190 433 122Q419 98 401 76Q379 48 352 25Q314 -6 274 -25Q261 -32 256.0 -32.0Q251 -32 238 -25Q198 -6 160 25Q133 48 111 76Q93 98 79 122Q40 190 33 275Q32 286 32.0 310.0Q32 334 33 338Q35 346 41 349Q44 351 61 354Q151 371 233 407ZM270 376Q256 382 255.5 382.0Q255 382 242 376Q167 343 81 326Q65 322 64.5 321.0Q64 320 64.5 299.5Q65 279 66 268Q74 192 112 130Q135 92 171.5 58.5Q208 25 248 5L256 1L264 5Q291 19 319 40Q430 126 445 264Q447 279 447.5 299.5Q448 320 447 321Q447 322 431 326Q347 342 270 376ZM329 286Q329 286 329 286Q331 287 336.0 287.5Q341 288 343 286Q348 284 351 278Q354 272 350 265Q349 262 292 197Q248 146 239.5 137.0Q231 128 226.0 128.0Q221 128 216.0 131.5Q211 135 191 155Q165 180 163 183Q159 189 161.0 196.5Q163 204 170 207Q178 210 185 206Q187 204 206 185Q206 185 224 167L275 226Q326 285 329 286Z" fill="currentColor"/></g></svg></div>
+    <span data-en>No ads</span><span data-ar>بلا إعلانات</span>
+  </div>
+  <div class="support-item">
+    <div class="si-icon"><svg viewBox="0 0 512 512" width="20" height="20"><g transform="translate(0,512) scale(1,-1)"><path d="M269 399Q347 404 404 366Q458 330 463 274Q467 235 444 200Q435 188 410 165Q391 148 389 146Q384 136 397 128Q401 126 411 124Q433 120 443 109Q456 96 456 75Q456 56 442 42Q421 21 387 6Q352 -9 310 -15Q300 -16 279.5 -16.0Q259 -16 249 -14Q159 -2 104 55Q82 78 68 106Q44 155 49.0 207.5Q54 260 86 303Q116 344 165.5 370.0Q215 396 269 399ZM305 367Q299 368 286.0 368.0Q273 368 268 367Q185 360 128 303Q91 266 82.5 216.5Q74 167 96 122Q109 94 133 72Q181 26 255 17Q287 14 315 18Q374 28 413 59Q424 68 424 76Q423 85 418 89Q416 90 404 93Q385 97 375 105Q346 129 360 159Q365 168 389 190Q407 206 413.5 214.0Q420 222 426 234Q439 266 424 298Q416 316 400 329Q361 361 305 367ZM218 335Q236 338 247 325Q262 310 253.5 291.0Q245 272 224 272Q210 272 200.5 282.0Q191 292 192 306Q193 317 200.5 325.5Q208 334 218 335ZM322 335Q330 337 339 334Q349 330 355.0 321.0Q361 312 360 301Q358 283 342 275Q337 273 328.5 273.0Q320 273 315 275Q304 280 299 291Q297 296 297.0 304.0Q297 312 299 317Q306 332 322 335ZM138 271Q150 273 160.0 267.0Q170 261 174 250Q176 245 176 238Q175 219 157 211Q152 209 143.5 209.0Q135 209 131 211Q115 218 112 236Q110 248 118.0 258.5Q126 269 138 271ZM142 167Q153 171 164.0 166.5Q175 162 180 152Q191 131 174 114Q159 99 139.5 107.5Q120 116 120 137Q120 160 142 167ZM245 128Q245 128 245 128Q271 134 290 114Q304 100 304.0 80.5Q304 61 290.0 47.0Q276 33 256.0 33.0Q236 33 222 47Q198 72 214 103Q223 122 245 128Z" fill="currentColor"/></g></svg></div>
+    <span data-en>Multiple color themes for the Quran</span><span data-ar>أنماط ألوان متعددة للقرآن</span>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="closing"><span data-en>Ready to start your own atlas of the Quran &amp; Hadith?</span><span data-ar>هل أنت مستعد لبدء أطلسك الخاص للقرآن والحديث؟</span></div>
+  <div class="store-buttons">
+    <!-- App Store: official Apple badge artwork (black+white variants), verified live from
+         Apple's own badge generator (toolbox.marketingtools.apple.com). English only — every
+         Arabic locale code tried against that API (ar, AR, ar-SA, ar-EG, ar-AE, ar_SA) silently
+         returned the identical English badge, so a genuine localized asset could not be
+         confirmed; using the English badge for both languages until one is verified. Links to
+         the app's real, already-live App Store listing (same URL used elsewhere in this repo). -->
+    <a class="badge-link" href="https://apps.apple.com/app/id6781110875" data-en aria-label="Download on the App Store">
+      <img class="badge-img apple-light" src="assets/badges/app-store-badge-black-en.svg" alt="Download on the App Store" height="48">
+      <img class="badge-img apple-dark" src="assets/badges/app-store-badge-white-en.svg" alt="Download on the App Store" height="48">
+    </a>
+    <a class="badge-link" href="https://apps.apple.com/app/id6781110875" data-ar aria-label="تحميل من App Store">
+      <img class="badge-img apple-light" src="assets/badges/app-store-badge-black-en.svg" alt="تحميل من App Store" height="48">
+      <img class="badge-img apple-dark" src="assets/badges/app-store-badge-white-en.svg" alt="تحميل من App Store" height="48">
+    </a>
+    <!-- Google Play: official localized badges, verified live from play.google.com's own CDN
+         (English and Arabic are genuinely distinct artwork, confirmed visually). No production
+         Google Play listing exists yet, so this is inert (no destination) — same as the prior
+         placeholder button had no real link either. Update href once the listing is live. -->
+    <a class="badge-link" href="#" aria-disabled="true" onclick="return false;" data-en aria-label="Get it on Google Play">
+      <img class="badge-img" src="assets/badges/google-play-badge-en-trimmed.png" alt="Get it on Google Play" height="48">
+    </a>
+    <a class="badge-link" href="#" aria-disabled="true" onclick="return false;" data-ar aria-label="احصل عليه من Google Play">
+      <img class="badge-img" src="assets/badges/google-play-badge-ar-trimmed.png" alt="احصل عليه من Google Play" height="48">
+    </a>
+  </div>
+  <div class="footer-links">
+    <a href="/quran-atlas/faq"><span data-en>FAQ</span><span data-ar>الأسئلة الشائعة</span></a>
+    <a href="/quran-atlas/privacy"><span data-en>Privacy Policy</span><span data-ar>سياسة الخصوصية</span></a>
+    <a href="/quran-atlas/support"><span data-en>Support</span><span data-ar>الدعم</span></a>
+  </div>
+  <div class="copyright">© 2026 Marsa Digital</div>
+</footer>
+
+<script>
+(function() {
+  var root = document.documentElement;
+  var THEME_KEY = 'qa-theme', LANG_KEY = 'qa-lang';
+
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    // Shows the DESTINATION of tapping, not the current state — dark mode shows the sun
+    // (tap to go light), light mode shows the moon (tap to go dark). Moon is Ionicons'
+    // real "moon-outline" glyph (same extraction method as every other icon on this page)
+    // rather than the branded gradient crescent — a flat brand mark next to a plain
+    // Unicode sun read as mismatched in weight/style; an outline icon matches the sun's
+    // simple line style. Nudged -15deg to match the nav crescent's own diagonal lean.
+    var themeIcon = document.getElementById('themeIcon');
+    if (t === 'dark') {
+      themeIcon.innerHTML = '&#9788;';
+      themeIcon.style.transform = 'rotate(-40deg)';
+    } else {
+      themeIcon.innerHTML = '<svg viewBox="32 94 449 450" width="22" height="22"><g transform="translate(0,512) scale(1,-1)"><path d="M164 412Q176 418 183 414Q188 411 191 406Q193 400 188 388Q179 361 177 327Q174 271 197 224Q227 163 287 133Q310 122 332 117Q395 103 451 124Q464 129 469.0 127.0Q474 125 477.5 120.0Q481 115 480 110Q478 102 467 83Q428 16 356 -14Q312 -32 264 -32Q221 -32 182 -17Q136 0 100 36Q71 65 55 100Q32 148 32 200Q32 248 50 292Q66 331 96.5 363.0Q127 395 164 412ZM147 357Q147 357 147 357Q149 365 148.5 365.5Q148 366 141 361Q93 324 74 264Q59 219 66 172Q76 103 126.5 55.0Q177 7 246 1Q279 -2 312 6Q369 19 411 61Q432 82 430 84Q429 85 421 83Q386 78 353 81Q295 87 246.0 120.0Q197 153 170 205Q149 245 145 289Q142 322 147 357Z" fill="currentColor"/></g></svg>';
+      themeIcon.style.transform = 'rotate(-15deg)';
+    }
+    localStorage.setItem(THEME_KEY, t);
+  }
+  function applyLang(l) {
+    root.setAttribute('lang', l);
+    root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+    root.setAttribute('data-lang', l);
+    localStorage.setItem(LANG_KEY, l);
+  }
+
+  var savedTheme = localStorage.getItem(THEME_KEY);
+  applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  var savedLang = localStorage.getItem(LANG_KEY) || root.getAttribute('data-lang') || 'en';
+  applyLang(savedLang);
+
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  document.getElementById('langToggle').addEventListener('click', function() {
+    applyLang(root.getAttribute('data-lang') === 'ar' ? 'en' : 'ar');
+  });
+})();
+</script>
 </body>
 </html>

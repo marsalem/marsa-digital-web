@@ -4,137 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title data-en="Privacy Policy &mdash; Quran Atlas" data-ar="سياسة الخصوصية — أطلس القرآن">Privacy Policy &mdash; Quran Atlas</title>
+<link rel="stylesheet" href="assets/css/base.css">
 <style>
-
-@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
-@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
-@font-face { font-family:'Inter'; src:url('assets/fonts/Inter-Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
-@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
-@font-face { font-family:'IBM Plex Sans Arabic'; src:url('assets/fonts/IBMPlexSansArabic-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
-@font-face { font-family:'UthmanicHafs'; src:url('assets/fonts/UthmanicHafs.woff2') format('woff2'); font-weight:400; font-display:swap; }
-
-:root {
-  --ink: #0B1220;
-  --ink-2: #121D33;
-  --ink-3: #182746;
-  --paper: #EAF1FB;
-  --paper-2: #FFFFFF;
-  --paper-3: #F5F9FF;
-  --accent: #3E7BFA;
-  --accent-soft: #6D9EF5;
-  --accent-dim: #2C5FCB;
-  --mist: #D6E4F0;
-
-  --bg: var(--paper);
-  --surface: var(--paper-2);
-  --surface-2: var(--paper-3);
-  --text-primary: #1F4E8A;
-  --text-secondary: #4C6C93;
-  --text-muted: #7C93B3;
-  --border: rgba(31,78,138,0.14);
-  --hero-image: url('assets/img/bg-light.svg');
-  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: var(--ink);
-    --surface: var(--ink-2);
-    --surface-2: var(--ink-3);
-    --text-primary: var(--mist);
-    --text-secondary: #9FB6D6;
-    --text-muted: #6E8DAA;
-    --border: rgba(214,228,240,0.14);
-    --hero-image: url('assets/img/bg-dark.svg');
-    --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
-  }
-}
-
-:root[data-theme="dark"] {
-  --bg: var(--ink);
-  --surface: var(--ink-2);
-  --surface-2: var(--ink-3);
-  --text-primary: var(--mist);
-  --text-secondary: #9FB6D6;
-  --text-muted: #6E8DAA;
-  --border: rgba(214,228,240,0.14);
-  --hero-image: url('assets/img/bg-dark.svg');
-  --shadow: 0 20px 70px -28px rgba(0,0,0,0.65);
-}
-:root[data-theme="light"] {
-  --bg: var(--paper);
-  --surface: var(--paper-2);
-  --surface-2: var(--paper-3);
-  --text-primary: #1F4E8A;
-  --text-secondary: #4C6C93;
-  --text-muted: #7C93B3;
-  --border: rgba(31,78,138,0.14);
-  --hero-image: url('assets/img/bg-light.svg');
-  --shadow: 0 20px 60px -30px rgba(31,78,138,0.35);
-}
-
-* { box-sizing: border-box; }
-html, body { margin:0; padding:0; }
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  transition: background .35s ease, color .35s ease;
-}
-html[data-lang="ar"] body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
-html[data-lang="ar"] [data-en] { display:none; }
-html[data-lang="en"] [data-ar] { display:none; }
-h1, h2, h3 { font-weight:700; text-wrap: balance; margin:0; }
-html[data-lang="ar"] h1, html[data-lang="ar"] h2, html[data-lang="ar"] h3 { font-weight:600; }
-p { margin:0; }
-a { color: var(--accent); text-decoration:none; }
-a:hover { color: var(--accent-dim); }
-a:focus-visible, button:focus-visible, summary:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px;
-}
-button { font-family:inherit; cursor:pointer; }
-
-.eyebrow {
-  font-size: 12px; font-weight:600; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--accent); display:inline-flex; align-items:center; gap:8px;
-}
-html[data-lang="ar"] .eyebrow { letter-spacing: 0; }
-
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
-.prose { max-width: 65ch; }
-html[data-lang="ar"] .prose { max-width: 72ch; }
-
-.nav {
-  position: sticky; top:0; z-index:40;
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  border-bottom: 1px solid var(--border);
-}
-.nav-row {
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 16px 28px; max-width: 1080px; margin:0 auto; gap: 16px;
-}
-.brand { display:flex; align-items:center; gap:10px; }
-.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; }
-/* RTL: the row visually reverses (icon lands on the right, next to the
-   text), so mirror just this small nav mark to keep its opening facing
-   the text, same as it does in LTR. The large centered hero crescent is
-   intentionally left alone. */
-html[data-lang="ar"] .brand img { transform: scaleX(-1); }
-.brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; }
-html[data-lang="ar"] .brand span { font-weight:600; }
-.nav-actions { display:flex; align-items:center; gap:10px; }
-.pill-btn {
-  border: 1px solid var(--border); background: var(--surface); color: var(--text-primary);
-  border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight:600;
-  display:flex; align-items:center; gap:6px;
-}
-.pill-btn:hover { border-color: var(--accent-soft); color: var(--accent); }
 
 .hero {
   position: relative; overflow:hidden;
@@ -190,13 +61,6 @@ section.block { padding: 56px 0; }
 .policy-section p { color: var(--text-secondary); font-size: 14.5px; line-height:1.7; }
 .policy-section p + p { margin-top: 10px; }
 .policy-section a { font-weight:600; }
-
-footer { border-top:1px solid var(--border); padding: 36px 0 48px; }
-.footer-row { display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; align-items:center; }
-.footer-links { display:flex; gap:18px; flex-wrap:wrap; }
-.footer-links a { color: var(--text-secondary); font-size:13px; }
-.footer-links a:hover { color:var(--accent); }
-.footer-note { color: var(--text-muted); font-size:12px; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
