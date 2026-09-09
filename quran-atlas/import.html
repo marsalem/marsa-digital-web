@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quran Atlas — Shared Topic</title>
+  <title>Quran Atlas — Shared Content</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #EAF1F8; color: #10243D; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
@@ -11,9 +11,9 @@
     .icon { font-size: 3rem; margin-bottom: 16px; }
     h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; color: #10243D; }
     .subtitle { font-size: 1rem; color: #5A6A7A; margin-bottom: 24px; }
-    .topic-box { background: #EAF1F8; border-radius: 16px; padding: 20px; margin-bottom: 24px; border-left: 4px solid #326499; text-align: left; }
-    .topic-name { font-size: 1.2rem; font-weight: 700; color: #326499; margin-bottom: 4px; }
-    .topic-meta { font-size: 0.9rem; color: #7E97AF; }
+    .item-box { background: #EAF1F8; border-radius: 16px; padding: 20px; margin-bottom: 24px; border-left: 4px solid #326499; text-align: left; }
+    .item-name { font-size: 1.2rem; font-weight: 700; color: #326499; margin-bottom: 4px; }
+    .item-meta { font-size: 0.9rem; color: #7E97AF; }
     .btn { display: block; background: #326499; color: white; padding: 16px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1rem; margin-bottom: 12px; }
     .btn:hover { background: #2a5580; }
     .btn-secondary { display: block; background: #EAF1F8; color: #326499; padding: 14px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
@@ -25,18 +25,18 @@
   <div class="card">
     <div class="icon">🌙</div>
     <h1>Quran Atlas</h1>
-    <p class="subtitle">Someone shared a Quran topic with you</p>
+    <p class="subtitle" id="subtitle">Someone shared something with you</p>
 
-    <div class="topic-box" id="topic-box" style="display:none">
-      <div class="topic-name" id="topic-name">Loading...</div>
-      <div class="topic-meta" id="topic-meta"></div>
+    <div class="item-box" id="item-box" style="display:none">
+      <div class="item-name" id="item-name">Loading...</div>
+      <div class="item-meta" id="item-meta"></div>
     </div>
 
     <a class="btn" id="open-app" href="#" style="display:none">Open in Quran Atlas</a>
     <a class="btn" id="download-btn" href="https://apps.apple.com/app/id6781110875" style="display:none">Download Quran Atlas</a>
     <a class="btn-secondary" href="/quran-atlas">Learn More About Quran Atlas</a>
 
-    <p class="error" id="error" style="display:none">Could not read the shared topic. The link may be invalid or expired.</p>
+    <p class="error" id="error" style="display:none">Could not read the shared content. The link may be invalid or expired.</p>
   </div>
 
   <footer>© 2026 Marsa Digital</footer>
@@ -48,17 +48,24 @@
     if (data) {
       try {
         const json = decodeURIComponent(escape(atob(decodeURIComponent(data))));
-        const topic = JSON.parse(json);
+        const payload = JSON.parse(json);
 
-        // Show topic info
-        document.getElementById('topic-name').textContent = topic.name || 'Shared Topic';
-        const subCount = (topic.children || []).length;
-        const verseCount = countVerses(topic);
-        document.getElementById('topic-meta').textContent =
-          `${subCount} subtopic${subCount !== 1 ? 's' : ''} · ${verseCount} verse${verseCount !== 1 ? 's' : ''}`;
-        document.getElementById('topic-box').style.display = 'block';
+        // Two payload shapes share this one page/deep-link receiver:
+        // a wrapped {type:"qatlas_playlist", playlist} envelope (Playlist
+        // Share's own link generator, buildPlaylistShareLink in the app's
+        // utils/sharing.ts), or a bare Topic Node (legacy — every base64
+        // link minted before Playlist sharing existed used this shape,
+        // with no `type` field at all). Checked by shape, not just
+        // `payload.type`, since the legacy Topic shape never had one.
+        if (payload && payload.type === 'qatlas_playlist' && payload.playlist) {
+          showPlaylist(payload.playlist);
+        } else {
+          showTopic(payload);
+        }
 
-        // Deep link to app
+        // Deep link to app — same quranatlas://import?data=... scheme
+        // either way; the app's own handleUrl decides how to route it
+        // (see index.tsx's own comment on this same branching).
         const deepLink = `quranatlas://import?data=${encodeURIComponent(data)}`;
         const openBtn = document.getElementById('open-app');
         openBtn.href = deepLink;
@@ -76,6 +83,24 @@
       }
     } else {
       document.getElementById('error').style.display = 'block';
+    }
+
+    function showTopic(topic) {
+      document.getElementById('subtitle').textContent = 'Someone shared a Quran topic with you';
+      document.getElementById('item-name').textContent = topic.name || 'Shared Topic';
+      const subCount = (topic.children || []).length;
+      const verseCount = countVerses(topic);
+      document.getElementById('item-meta').textContent =
+        `${subCount} subtopic${subCount !== 1 ? 's' : ''} · ${verseCount} verse${verseCount !== 1 ? 's' : ''}`;
+      document.getElementById('item-box').style.display = 'block';
+    }
+
+    function showPlaylist(playlist) {
+      document.getElementById('subtitle').textContent = 'Someone shared a Quran playlist with you';
+      document.getElementById('item-name').textContent = playlist.name || 'Shared Playlist';
+      const count = (playlist.items || []).length;
+      document.getElementById('item-meta').textContent = `${count} surah${count !== 1 ? 's' : ''}`;
+      document.getElementById('item-box').style.display = 'block';
     }
 
     function countVerses(node) {
