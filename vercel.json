@@ -1,1 +1,6 @@
-{"cleanUrls": true}
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/quran-atlas/import", "destination": "/api/import-preview" }
+  ]
+}
