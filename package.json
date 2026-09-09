@@ -1,0 +1,11 @@
+{
+  "name": "marsa-digital-web",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "@upstash/ratelimit": "^2.0.5",
+    "@upstash/redis": "^1.34.3"
+  }
+}

@@ -42,45 +42,63 @@
   <footer>© 2026 Marsa Digital</footer>
 
   <script>
+    // Share Service — this URL carries only a short share ID, never the
+    // shared content itself, regardless of whether it's 1 reference card
+    // or a large topic tree: /api/share/:id (Vercel serverless function,
+    // ../api/share/[id].js) fetches the actual payload from Upstash
+    // Redis (marsa-digital-web's own Share Service — see that repo's
+    // lib/shareService.js for the full design). This is deliberate and
+    // uniform — no separate "small payload -> URL-embedded" path exists
+    // or should be reintroduced.
+    //
+    // PRIVACY: a share ID is an unguessable link, not an authenticated
+    // credential — anyone who has this URL can view what it points to
+    // until it expires (1 year by default). There's no login/access
+    // list. Same model as an "anyone with the link can view" Google
+    // Docs/Notion share. Don't add copy to this page that implies
+    // stronger privacy than that.
     const params = new URLSearchParams(window.location.search);
-    const data = params.get('data');
+    const id = params.get('id');
 
-    if (data) {
-      try {
-        const json = decodeURIComponent(escape(atob(decodeURIComponent(data))));
-        const payload = JSON.parse(json);
+    if (id) {
+      fetch(`/api/share/${encodeURIComponent(id)}`)
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then(payload => {
+          // Two payload shapes share this one page/deep-link receiver: a
+          // wrapped {type:"qatlas_playlist", playlist} envelope (Playlist
+          // Share's own generator, buildPlaylistShareLink in the app's
+          // utils/sharing.ts), or a bare Topic Node (legacy shape, still
+          // used for Topic sharing today — no `type` field at all).
+          if (payload && payload.type === 'qatlas_playlist' && payload.playlist) {
+            showPlaylist(payload.playlist);
+          } else {
+            showTopic(payload);
+          }
 
-        // Two payload shapes share this one page/deep-link receiver:
-        // a wrapped {type:"qatlas_playlist", playlist} envelope (Playlist
-        // Share's own link generator, buildPlaylistShareLink in the app's
-        // utils/sharing.ts), or a bare Topic Node (legacy — every base64
-        // link minted before Playlist sharing existed used this shape,
-        // with no `type` field at all). Checked by shape, not just
-        // `payload.type`, since the legacy Topic shape never had one.
-        if (payload && payload.type === 'qatlas_playlist' && payload.playlist) {
-          showPlaylist(payload.playlist);
-        } else {
-          showTopic(payload);
-        }
+          // Deep link to app — quranatlas://import?id=... carries the
+          // SAME short id, not the fetched payload. The app's own
+          // handleUrl fetches /api/share/:id itself rather than trusting
+          // whatever this page already fetched, for the same "URL only
+          // ever carries an id" uniformity — see index.tsx's own comment
+          // on this branch.
+          const deepLink = `quranatlas://import?id=${encodeURIComponent(id)}`;
+          const openBtn = document.getElementById('open-app');
+          openBtn.href = deepLink;
+          openBtn.style.display = 'block';
 
-        // Deep link to app — same quranatlas://import?data=... scheme
-        // either way; the app's own handleUrl decides how to route it
-        // (see index.tsx's own comment on this same branching).
-        const deepLink = `quranatlas://import?data=${encodeURIComponent(data)}`;
-        const openBtn = document.getElementById('open-app');
-        openBtn.href = deepLink;
-        openBtn.style.display = 'block';
+          // Show download button
+          document.getElementById('download-btn').style.display = 'block';
 
-        // Show download button
-        document.getElementById('download-btn').style.display = 'block';
-
-        // Try to open app automatically
-        window.location.href = deepLink;
-
-      } catch(e) {
-        document.getElementById('error').style.display = 'block';
-        document.getElementById('download-btn').style.display = 'block';
-      }
+          // Try to open app automatically
+          window.location.href = deepLink;
+        })
+        .catch(() => {
+          document.getElementById('error').style.display = 'block';
+          document.getElementById('download-btn').style.display = 'block';
+        });
     } else {
       document.getElementById('error').style.display = 'block';
     }
