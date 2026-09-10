@@ -152,6 +152,16 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
       <span data-ar>أطلس القرآن</span>
     </a>
     <div class="nav-actions">
+      <!-- Primary nav destination into the site's Help/FAQ + Support content
+           (faq.html) — one link, not two, per explicit "do not create separate
+           primary-nav items for FAQ and Support" direction. Plain .pill-btn
+           reuse (same component as the toggles beside it) rather than new
+           nav-link styling, since this page previously had no nav links at
+           all to establish a pattern from. -->
+      <a class="pill-btn" href="/quran-atlas/faq">
+        <span data-en>Help &amp; Support</span>
+        <span data-ar>المساعدة والدعم</span>
+      </a>
       <button class="pill-btn" id="langToggle" type="button">
         <span data-en>العربية</span>
         <span data-ar>English</span>
@@ -339,9 +349,10 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
     </a>
   </div>
   <div class="footer-links">
-    <a href="/quran-atlas/faq"><span data-en>FAQ</span><span data-ar>الأسئلة الشائعة</span></a>
+    <!-- Merged FAQ + Support into one link — same "single Help & Support
+         destination" rule as the nav pill above, not two separate ones. -->
+    <a href="/quran-atlas/faq"><span data-en>Help &amp; Support</span><span data-ar>المساعدة والدعم</span></a>
     <a href="/quran-atlas/privacy"><span data-en>Privacy Policy</span><span data-ar>سياسة الخصوصية</span></a>
-    <a href="/quran-atlas/support"><span data-en>Support</span><span data-ar>الدعم</span></a>
   </div>
   <div class="copyright">© 2026 Marsa Digital</div>
 </footer>

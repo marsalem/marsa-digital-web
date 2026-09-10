@@ -2,5 +2,8 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/quran-atlas/import", "destination": "/api/import-preview" }
+  ],
+  "redirects": [
+    { "source": "/quran-atlas/support", "destination": "/quran-atlas/faq#contact", "permanent": true }
   ]
 }

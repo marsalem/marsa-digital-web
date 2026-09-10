@@ -85,8 +85,29 @@ section.block { padding: 64px 0; }
   border: 1px solid transparent;
 }
 .faq-nav a:hover { background: var(--surface); color: var(--text-primary); }
+/* HELP / SUPPORT group labels above the sidebar's two link groups — this
+   page now covers both (Support's useful content folded in below, see the
+   #contact section), so the sidebar needs to say which group is which
+   rather than presenting all 17 links as one undifferentiated list. Plain
+   text, not a link, so no color/hover state of its own. */
+.faq-nav-heading {
+  font-size: 11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color: var(--text-muted); padding: 14px 12px 4px;
+}
+.faq-nav-heading:first-child { padding-top: 2px; }
+@media (max-width: 860px) {
+  /* Forces its own line in the wrapped-pill row layout below 860px —
+     without this it would sit inline between pills as a stray label with
+     nothing visually separating the two groups. */
+  .faq-nav-heading { width:100%; padding-top:10px; }
+}
 .faq-cat { margin-bottom: 44px; scroll-margin-top: 90px; }
 .faq-cat h2 { font-size: 21px; margin-bottom: 6px; }
+/* Only used by the new #contact section's Email Support card (support.html's
+   own copy of this rule, needed here now that .arrow-fwd appears on this
+   page too) — RTL: this arrow means "go forward" (open), and reading
+   direction runs right-to-left in Arabic, so it should point left instead. */
+html[data-lang="ar"] .arrow-fwd { transform: scaleX(-1); }
 .faq-cat .count { color: var(--text-muted); font-size: 13px; margin-bottom: 18px; display:block; }
 details.qa {
   border-bottom: 1px solid var(--border);
@@ -154,7 +175,33 @@ details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-to
     <input type="text" id="faqSearch" data-en-ph="Search the FAQ&hellip;" data-ar-ph="ابحث في الأسئلة الشائعة…" placeholder="Search the FAQ&hellip;" />
   </div>
   <div class="faq-layout">
-    <nav class="faq-nav" aria-label="FAQ categories"><a href="#getting-started"><span data-en>Getting Started</span><span data-ar>البداية</span></a><a href="#explore"><span data-en>The Explore Tab</span><span data-ar>تبويب استكشف</span></a><a href="#quran-tab"><span data-en>The Quran Tab</span><span data-ar>تبويب القرآن</span></a><a href="#search"><span data-en>Search</span><span data-ar>البحث</span></a><a href="#bookmarks"><span data-en>Bookmarks</span><span data-ar>الإشارات المرجعية</span></a><a href="#daily-verse"><span data-en>Daily Verse</span><span data-ar>آية اليوم</span></a><a href="#workspace"><span data-en>Your Workspace</span><span data-ar>مكتبتي</span></a><a href="#verse-tools"><span data-en>Inside a Verse</span><span data-ar>داخل الآية</span></a><a href="#settings"><span data-en>Settings & Customisation</span><span data-ar>الإعدادات والتخصيص</span></a><a href="#backup"><span data-en>Backup, Sync & Your Data</span><span data-ar>النسخ الاحتياطي والمزامنة وبياناتك</span></a><a href="#widgets"><span data-en>Widgets</span><span data-ar>الودجات</span></a><a href="#accessibility"><span data-en>Language & Accessibility</span><span data-ar>اللغة وإمكانية الوصول</span></a></nav>
+    <nav class="faq-nav" aria-label="Help and Support categories">
+      <div class="faq-nav-heading"><span data-en>Help</span><span data-ar>المساعدة</span></div>
+      <a href="#getting-started"><span data-en>Getting Started</span><span data-ar>البداية</span></a>
+      <a href="#explore"><span data-en>The Explore Tab</span><span data-ar>تبويب استكشف</span></a>
+      <a href="#quran-tab"><span data-en>The Quran Tab</span><span data-ar>تبويب القرآن</span></a>
+      <a href="#search"><span data-en>Search</span><span data-ar>البحث</span></a>
+      <a href="#bookmarks"><span data-en>Bookmarks</span><span data-ar>الإشارات المرجعية</span></a>
+      <a href="#daily-verse"><span data-en>Daily Verse</span><span data-ar>آية اليوم</span></a>
+      <a href="#workspace"><span data-en>Your Workspace</span><span data-ar>مكتبتي</span></a>
+      <a href="#verse-tools"><span data-en>Inside a Verse</span><span data-ar>داخل الآية</span></a>
+      <a href="#settings"><span data-en>Settings & Customisation</span><span data-ar>الإعدادات والتخصيص</span></a>
+      <a href="#backup"><span data-en>Backup, Sync & Your Data</span><span data-ar>النسخ الاحتياطي والمزامنة وبياناتك</span></a>
+      <a href="#widgets"><span data-en>Widgets</span><span data-ar>الودجات</span></a>
+      <a href="#accessibility"><span data-en>Language & Accessibility</span><span data-ar>اللغة وإمكانية الوصول</span></a>
+      <!-- SUPPORT group — support.html's own useful content (it had almost
+           nothing unique beyond these links), folded in here per explicit
+           "incorporate Support into the FAQ/Help page" direction. Only
+           "Contact Support" scrolls within this page (#contact, below) —
+           the other four are the same direct external/internal links
+           support.html's own cards used, not duplicated content. -->
+      <div class="faq-nav-heading"><span data-en>Support</span><span data-ar>الدعم</span></div>
+      <a href="#contact"><span data-en>Contact Support</span><span data-ar>تواصل مع الدعم</span></a>
+      <a href="https://apps.apple.com/app/id6781110875?action=write-review"><span data-en>Rate the App</span><span data-ar>قيّم التطبيق</span></a>
+      <a href="https://apps.apple.com/app/id6781110875"><span data-en>App Store</span><span data-ar>App Store</span></a>
+      <a href="/quran-atlas/privacy"><span data-en>Privacy</span><span data-ar>الخصوصية</span></a>
+      <a href="/quran-atlas"><span data-en>Website</span><span data-ar>الموقع الإلكتروني</span></a>
+    </nav>
     <div id="faqContent">
       
         <div class="faq-cat" id="getting-started">
@@ -525,6 +572,25 @@ details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-to
               <p class="answer"><span data-en>Reach out anytime from Support in the app menu, or email support@marsa-digital.com — we read every message.</span><span data-ar>تواصل معنا في أي وقت عبر «الدعم» من قائمة التطبيق، أو راسلنا على support@marsa-digital.com — نقرأ كل رسالة تصلنا.</span></p>
             </details>
         </div>
+        <!-- Support content folded in from the now-retired support.html —
+             same "Contact Support" card/copy that page used. The other
+             four items support.html linked to (Rate the App, App Store,
+             Privacy, Website) are direct links in the SUPPORT sidebar
+             group above rather than duplicated here, since they don't
+             need their own on-page content, just somewhere to go. -->
+        <div class="faq-cat" id="contact">
+          <h2><span data-en>Contact Support</span><span data-ar>تواصل مع الدعم</span></h2>
+          <p style="color:var(--text-secondary); font-size:14.5px; line-height:1.6; max-width:56ch; margin-bottom:18px;">
+            <span data-en>Didn't find what you were looking for above? Reach the team directly.</span>
+            <span data-ar>لم تجد ما تبحث عنه أعلاه؟ تواصل مع الفريق مباشرة.</span>
+          </p>
+          <a class="card" href="mailto:support@marsa-digital.com" style="text-decoration:none; max-width:340px;">
+            <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M4.5 6.5l7.5 6 7.5-6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3><span data-en>Email Support</span><span data-ar>البريد الإلكتروني للدعم</span></h3>
+            <p><span data-en>A direct line to the team. We aim to reply within 1–2 business days.</span><span data-ar>تواصل مباشر مع الفريق. نسعى للرد خلال يوم إلى يومي عمل.</span></p>
+            <span class="go"><span data-en>Open</span><span data-ar>فتح</span> <svg class="arrow-fwd" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13.5M13 6.5L19 12l-6 5.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </div>
       <p class="no-results" id="noResults">
         <span data-en>No matching questions. Try a different word, or</span>
         <span data-ar>لا توجد أسئلة مطابقة. جرّب كلمة أخرى، أو</span>
@@ -539,7 +605,11 @@ details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-to
   <div class="wrap footer-row">
     <div class="footer-links">
       <a href="mailto:support@marsa-digital.com"><span data-en>Email Support</span><span data-ar>البريد الإلكتروني للدعم</span></a>
-      <a href="/quran-atlas/faq"><span data-en>FAQ</span><span data-ar>الأسئلة الشائعة</span></a>
+      <!-- Relabeled from "FAQ" to match the single "Help & Support" label
+           used everywhere else this page is linked from (index.html/
+           privacy.html footers, index.html's nav pill) — this page IS that
+           destination now, see its own SUPPORT sidebar group below. -->
+      <a href="/quran-atlas/faq"><span data-en>Help &amp; Support</span><span data-ar>المساعدة والدعم</span></a>
       <a href="/quran-atlas/privacy"><span data-en>Privacy Policy</span><span data-ar>سياسة الخصوصية</span></a>
       <a href="/quran-atlas"><span data-en>Website</span><span data-ar>الموقع الإلكتروني</span></a>
     </div>
@@ -601,6 +671,16 @@ details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-to
     var anyVisible = false;
     cats.forEach(function(cat) {
       var items = cat.querySelectorAll('details.qa');
+      // #contact has no details.qa items (it's a static Contact Support
+      // card, not searchable Q&A) — without this, the loop below never
+      // finds a match for it, so cat.style.display gets set to 'none' the
+      // very first time this handler runs (even on clearing back to an
+      // empty query) and it never comes back. Categories with nothing to
+      // filter are simply never hidden by search. Deliberately NOT folded
+      // into `anyVisible` — that flag drives the "no matching questions"
+      // empty state, which should still fire on a genuine zero-FAQ-match
+      // search even though Contact Support itself stays on screen.
+      if (items.length === 0) { cat.style.display = ''; return; }
       var catHasMatch = false;
       items.forEach(function(item) {
         var text = item.textContent.toLowerCase();
