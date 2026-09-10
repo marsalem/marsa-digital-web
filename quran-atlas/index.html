@@ -43,9 +43,15 @@ html[data-lang="ar"] .brand img { transform: none; }
 }
 
 .hero { padding:70px 32px 60px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:18px; }
-.hero .mark { width:110px; height:auto; filter: drop-shadow(0 14px 28px rgba(20,60,140,0.35)); }
+/* Light mode only — same recolor as base.css's .brand img, see that
+   rule's own comment (saturate/brightness only, no hue-rotate — an
+   earlier version's hue-rotate shifted this into reading as teal).
+   Chained onto the existing drop-shadow (filter accepts multiple
+   functions) rather than replacing it. */
+.hero .mark { width:110px; height:auto; filter: saturate(0.70) brightness(0.85) drop-shadow(0 14px 28px rgba(20,60,140,0.35)); }
 :root[data-theme="dark"] .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); }
 @media (prefers-color-scheme: dark) { .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); } }
+:root[data-theme="light"] .hero .mark { filter: saturate(0.70) brightness(0.85) drop-shadow(0 14px 28px rgba(20,60,140,0.35)); }
 .hero h1 { font-size:34px; line-height:1.18; letter-spacing:-0.01em; font-weight:500; max-width:600px; color: var(--hero-title); }
 html[data-lang="ar"] .hero h1 { font-weight:500; }
 .hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); }

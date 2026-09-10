@@ -190,7 +190,23 @@ html[data-lang="ar"] .prose { max-width: 72ch; }
   padding: 16px 28px; max-width: 1080px; margin:0 auto; gap: 16px;
 }
 .brand { display:flex; align-items:center; gap:10px; }
-.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; }
+/* Light mode only — the crescent's default vivid blue (same asset as the
+   app icon) was reported as not sitting well against light mode's pale
+   backgrounds. Muted via filter rather than swapping in a different asset,
+   so it stays the exact same glossy/gradient artwork everywhere, just
+   recolored. A first pass added hue-rotate(-15deg) to chase the playlist
+   artwork's own grayer "Crescent, Blue & Sand" palette, but that also
+   shifted the rendered hue from ~220° to ~206° (measured on the actual
+   rendered pixels, not eyeballed) — enough to read as teal rather than
+   blue, reported directly. Dropping the hue-rotate and relying on
+   saturate/brightness alone keeps the same ~210-220° hue as the original
+   asset and the site's own --accent (#2B5FA0, hue ~213°), just calmer and
+   less glossy. Dark mode is explicitly untouched (filter:none below)
+   since only light mode was reported as a problem. */
+.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; filter: saturate(0.70) brightness(0.85); }
+@media (prefers-color-scheme: dark) { .brand img { filter: none; } }
+:root[data-theme="dark"] .brand img { filter: none; }
+:root[data-theme="light"] .brand img { filter: saturate(0.70) brightness(0.85); }
 html[data-lang="ar"] .brand img { transform: scaleX(-1); }
 .brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; color:var(--text-primary); }
 html[data-lang="ar"] .brand span { font-weight:600; }
