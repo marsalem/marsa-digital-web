@@ -24,7 +24,13 @@
   --ink-2: #121D33;
   --ink-3: #182746;
   --paper: #EAF1FB;
-  --paper-2: #FFFFFF;
+  /* Was pure #FFFFFF — every "white" box (search box, cards, pill-btn
+     hover) read as flatly white against this page's blue gradient
+     background, reported directly. Switched to the app's own real
+     surfaceCard value (LIGHT_THEME.surfaceCard, "slightly off-white card
+     bg") rather than inventing a new tint — same light-blue-off-white the
+     app itself uses for topic/pack cards. */
+  --paper-2: #FAFCFE;
   --paper-3: #F5F9FF;
 
   --accent: #2B5FA0;        /* LIGHT_THEME.accent / iconPrimary */
@@ -40,7 +46,7 @@
 
   --surface: var(--paper-2);
   --surface-2: var(--paper-3);
-  --card: #FFFFFF;
+  --card: var(--paper-2);   /* was a separate literal #FFFFFF — same fix, same value */
   --border: rgba(31,78,138,0.14);
   --border-solid: #B0C8DE;
 
@@ -121,7 +127,7 @@
   --bg-grad-3: #E4F0FC;
   --surface: var(--paper-2);
   --surface-2: var(--paper-3);
-  --card: #FFFFFF;
+  --card: var(--paper-2);
   --border: rgba(31,78,138,0.14);
   --border-solid: #B0C8DE;
   --accent: #2B5FA0;

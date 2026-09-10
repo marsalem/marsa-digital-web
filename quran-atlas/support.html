@@ -12,31 +12,26 @@
    left instead of right. */
 html[data-lang="ar"] .arrow-fwd { transform: scaleX(-1); }
 
-.hero {
-  position: relative; overflow:hidden;
-}
-/* --hero-image is an SVG (gradient + soft wave shape), not a raster
-   photo — vector, so background-size:cover can scale it to fill the
-   full-bleed hero at any viewport width with no pixelation, unlike the
-   old JPG this replaced (which needed contain + edge-blending tricks
-   that turned out unreliable across browsers; see git history). */
-.hero-photo {
-  position:absolute; inset:0; z-index:0;
-  background-image: var(--hero-image);
-  background-size: cover; background-repeat: no-repeat; background-position: center bottom;
-}
-.hero::after {
-  content:""; position:absolute; inset:0; z-index:1;
-  /* Light mode: the artwork is a low-contrast pale wave, so a heavy fade
-     erased it almost entirely — stay much more transparent, only going
-     fully opaque right at the very bottom edge so it still blends
-     seamlessly into the section below. */
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 4%, transparent) 0%, color-mix(in srgb, var(--bg) 25%, transparent) 65%, var(--bg) 100%);
-}
+/* Same page background and nav treatment as index.html (the main site) —
+   copied verbatim from that page's own local overrides, not base.css's
+   shared flat-color default this page previously used, per explicit
+   "same bg color and visual treatment as the main page" request (applied
+   to faq.html and privacy.html too). */
+body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 70%, var(--bg-grad-3) 100%); }
+:root[data-theme="dark"] body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
 @media (prefers-color-scheme: dark) {
-  .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%); }
+  body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
 }
-:root[data-theme="dark"] .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%); }
+.nav { background: color-mix(in srgb, var(--bg-grad-1) 78%, transparent); border-bottom: none; }
+:root[data-theme="dark"] .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
+@media (prefers-color-scheme: dark) {
+  .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
+}
+
+/* Dropped the wave-photo background (.hero-photo div removed from the
+   markup below) + its fade overlay — index.html's own hero has neither;
+   it's a plain container sitting directly on the gradient body, so this
+   page's hero now matches that exactly. */
 .hero-inner {
   position:relative; z-index:2; max-width: 780px; margin:0 auto;
   padding: 96px 28px 64px; text-align:center;
@@ -119,7 +114,6 @@ section.block { padding: 64px 0; }
 
 <a id="top"></a>
 <section class="hero">
-  <div class="hero-photo"></div>
   <div class="hero-inner">
     <div class="hero-mark"><img src="assets/img/crescent.png" alt="" /></div>
     <p class="eyebrow"><span data-en>Support &amp; Help Centre</span><span data-ar>الدعم ومركز المساعدة</span></p>
