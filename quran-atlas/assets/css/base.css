@@ -225,6 +225,16 @@ html[data-lang="ar"] .brand span { font-weight:600; }
   border: 1px solid var(--border-solid); background: var(--surface); color: var(--text-primary);
   border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight:600;
   display:flex; align-items:center; gap:6px;
+  /* Explicit height — without it, this button's height comes purely from
+     its own content, so a themeToggle (22px icon), a langToggle/Help &
+     Support (text, ~21px line-height), and a Home button (18px icon) each
+     settled at a different natural height, most visibly the 18px Home
+     icon rendering ~4px shorter than the 22px theme icon beside it,
+     reported directly. Fixed height + align-items:center makes every
+     variant the same height regardless of what's inside; width still
+     varies naturally with content (text vs. icon-only), which is
+     expected and fine. */
+  height: 40px;
 }
 /* Light mode only — the app's own LIGHT_THEME.navigationActiveBackground
    (rgba(214,230,247,0.98), the light blue used to highlight the active
