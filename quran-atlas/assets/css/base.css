@@ -40,7 +40,11 @@
   --mist: #D6E4F0;
 
   --bg: #CCDCEC;             /* LIGHT_THEME.background — flat page color */
-  --bg-grad-1: #B8CEEA;      /* GRADIENTS.light.background */
+  /* Slightly lighter than GRADIENTS.light.background's raw #B8CEEA — the
+     darker top-of-page stop read a bit heavy, reported directly. Same
+     hue/saturation, only lightness raised (~213°, ~54% sat, L 0.82→0.85),
+     so it stays the same blue rather than drifting toward gray or green. */
+  --bg-grad-1: #C4D6ED;
   --bg-grad-2: #CCE0F4;
   --bg-grad-3: #E4F0FC;
 
@@ -122,7 +126,7 @@
 }
 :root[data-theme="light"] {
   --bg: #CCDCEC;
-  --bg-grad-1: #B8CEEA;
+  --bg-grad-1: #C4D6ED;
   --bg-grad-2: #CCE0F4;
   --bg-grad-3: #E4F0FC;
   --surface: var(--paper-2);
