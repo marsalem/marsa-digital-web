@@ -24,10 +24,9 @@ body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2)
    use as-is) — this page's nav sits directly on the same continuous gradient as the rest
    of the page, so a border line under it read as an unwanted seam. */
 .nav { background: color-mix(in srgb, var(--bg-grad-1) 78%, transparent); border-bottom: none; }
-/* Larger brand lockup than the shared base.css default (30px/17px) — this page's own
-   override, not touched in base.css, so FAQ/privacy/support are unaffected. */
-.brand img { width:40px; height:40px; }
-.brand span { font-size:21px; }
+/* Brand lockup size (40px/21px) now lives in base.css's shared default —
+   was a local-only override here, which left it visibly smaller on
+   faq/privacy/support, reported directly; see that rule's own comment. */
 /* langToggle previously had its own font-size:14px here, one point larger than
    every other page's toggle buttons (and this page's own themeToggle) — removed
    so the nav-actions row's buttons (lang/theme/Home/Help & Support) are the same

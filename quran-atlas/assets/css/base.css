@@ -209,12 +209,16 @@ html[data-lang="ar"] .prose { max-width: 72ch; }
    asset and the site's own --accent (#2B5FA0, hue ~213°), just calmer and
    less glossy. Dark mode is explicitly untouched (filter:none below)
    since only light mode was reported as a problem. */
-.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; filter: saturate(0.70) brightness(0.90); }
+/* 40px/21px, not the original 30px/17px — matched to index.html's own
+   brand lockup size (previously a local-only override there), so the logo
+   at the top reads the same size on every page instead of noticeably
+   smaller on faq/privacy/support, reported directly. */
+.brand img { width:40px; height:40px; flex-shrink:0; object-fit:contain; filter: saturate(0.70) brightness(0.90); }
 @media (prefers-color-scheme: dark) { .brand img { filter: none; } }
 :root[data-theme="dark"] .brand img { filter: none; }
 :root[data-theme="light"] .brand img { filter: saturate(0.70) brightness(0.90); }
 html[data-lang="ar"] .brand img { transform: scaleX(-1); }
-.brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; color:var(--text-primary); }
+.brand span { font-weight:700; font-size:21px; letter-spacing:-0.01em; color:var(--text-primary); }
 html[data-lang="ar"] .brand span { font-weight:600; }
 .nav-actions { display:flex; align-items:center; gap:10px; }
 .pill-btn {
