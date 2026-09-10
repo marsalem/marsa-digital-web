@@ -203,10 +203,10 @@ html[data-lang="ar"] .prose { max-width: 72ch; }
    asset and the site's own --accent (#2B5FA0, hue ~213°), just calmer and
    less glossy. Dark mode is explicitly untouched (filter:none below)
    since only light mode was reported as a problem. */
-.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; filter: saturate(0.70) brightness(0.85); }
+.brand img { width:30px; height:30px; flex-shrink:0; object-fit:contain; filter: saturate(0.70) brightness(0.90); }
 @media (prefers-color-scheme: dark) { .brand img { filter: none; } }
 :root[data-theme="dark"] .brand img { filter: none; }
-:root[data-theme="light"] .brand img { filter: saturate(0.70) brightness(0.85); }
+:root[data-theme="light"] .brand img { filter: saturate(0.70) brightness(0.90); }
 html[data-lang="ar"] .brand img { transform: scaleX(-1); }
 .brand span { font-weight:700; font-size:17px; letter-spacing:-0.01em; color:var(--text-primary); }
 html[data-lang="ar"] .brand span { font-weight:600; }
