@@ -301,7 +301,7 @@ footer.site-footer { text-align:center; padding:20px 0 32px; font-size:12px; col
 
 <nav class="nav">
   <div class="nav-row">
-    <a class="brand" href="/quran-atlas" aria-label="Quran Atlas">
+    <a class="brand" href="/quran-atlas/" aria-label="Quran Atlas">
       <img src="/quran-atlas/assets/img/crescent.png" alt="" />
       <span data-en>Quran Atlas</span>
       <span data-ar>أطلس القرآن</span>
@@ -321,7 +321,7 @@ footer.site-footer { text-align:center; padding:20px 0 32px; font-size:12px; col
 <main>
   <div class="card">
     ${bodyHtml}
-    <a class="learn-more" href="/quran-atlas">${bilingual('Learn more about Quran Atlas', 'اعرف المزيد عن أطلس القرآن')}</a>
+    <a class="learn-more" href="/quran-atlas/">${bilingual('Learn more about Quran Atlas', 'اعرف المزيد عن أطلس القرآن')}</a>
   </div>
 </main>
 
