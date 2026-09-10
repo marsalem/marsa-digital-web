@@ -28,7 +28,11 @@ body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2)
    override, not touched in base.css, so FAQ/privacy/support are unaffected. */
 .brand img { width:40px; height:40px; }
 .brand span { font-size:21px; }
-#langToggle { font-size:14px; }
+/* langToggle previously had its own font-size:14px here, one point larger than
+   every other page's toggle buttons (and this page's own themeToggle) — removed
+   so the nav-actions row's buttons (lang/theme/Home/Help & Support) are the same
+   size and shape everywhere; only Home (icon-only) and Help & Support (two-word
+   label) naturally differ in width from their own content, not from styling. */
 /* Keep the brand on the left and the language/theme toggles on the right regardless of
    language — base.css's shared .nav-row lets flexbox's "row" direction follow the
    document's dir attribute (correct default for most rows), which meant the whole nav
@@ -100,14 +104,15 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
 }
 /* Light mode only: the app's own LIGHT_THEME.navigationActiveBackground
    (rgba(214,230,247,0.98)) — the light blue used to highlight the active tab in the app's
-   bottom dock (a toggle-like selection surface) — applied to this page's own button/card
-   surfaces (the pill toggles and these screenshot-placeholder cards) instead of the
-   generic base.css --surface white. Dark mode is untouched (keeps --surface as before). */
-.shot-placeholder, .pill-btn { background: rgba(214,230,247,0.98); }
-:root[data-theme="dark"] .shot-placeholder,
-:root[data-theme="dark"] .pill-btn { background: var(--surface); }
+   bottom dock (a toggle-like selection surface) — applied to these screenshot-placeholder
+   cards instead of the generic base.css --surface white. Dark mode is untouched (keeps
+   --surface as before). The pill toggles' own version of this same tint now lives in
+   base.css's shared .pill-btn rule instead (so faq/privacy/support's toggles match this
+   page's, not just this page's own) — see that rule's own comment. */
+.shot-placeholder { background: rgba(214,230,247,0.98); }
+:root[data-theme="dark"] .shot-placeholder { background: var(--surface); }
 @media (prefers-color-scheme: dark) {
-  .shot-placeholder, .pill-btn { background: var(--surface); }
+  .shot-placeholder { background: var(--surface); }
 }
 @media (max-width: 760px) {
   .sec-row, .sec-row.reverse { flex-direction:column; gap:28px; }

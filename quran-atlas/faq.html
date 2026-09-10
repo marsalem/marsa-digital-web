@@ -72,7 +72,9 @@ section.block { padding: 64px 0; }
 /* .card / .card-grid / footer base styles now live in assets/css/base.css */
 
 .faq-callout {
-  background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, var(--surface)), var(--surface));
+  /* Flat color, not a gradient — "no gradients within text boxes" request.
+     Same subtle accent-tinted wash the gradient started from, just solid. */
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
   border:1px solid var(--border); border-radius:20px; padding: 32px;
   display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px;
 }
@@ -176,7 +178,7 @@ details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-to
         <span data-ar>English</span>
       </button>
       <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme">
-        <span id="themeIcon">&#9788;</span>
+        <span id="themeIcon" style="display:inline-flex; align-items:center; justify-content:center;">&#9788;</span>
       </button>
     </div>
   </div>
@@ -653,7 +655,18 @@ details.qa p.answer { color: var(--text-secondary); font-size: 14.5px; margin-to
 
   function applyTheme(t) {
     root.setAttribute('data-theme', t);
-    document.getElementById('themeIcon').textContent = t === 'dark' ? String.fromCharCode(9789) : String.fromCharCode(9788);
+    // Same real Ionicons "moon-outline" glyph as index.html's own theme
+    // toggle (not the plain Unicode moon this used to show) — matched for
+    // "identical icons across pages" consistency; see index.html's own
+    // comment on this same block for the full rationale.
+    var themeIcon = document.getElementById('themeIcon');
+    if (t === 'dark') {
+      themeIcon.innerHTML = '&#9788;';
+      themeIcon.style.transform = 'rotate(-40deg)';
+    } else {
+      themeIcon.innerHTML = '<svg viewBox="32 94 449 450" width="22" height="22"><g transform="translate(0,512) scale(1,-1)"><path d="M164 412Q176 418 183 414Q188 411 191 406Q193 400 188 388Q179 361 177 327Q174 271 197 224Q227 163 287 133Q310 122 332 117Q395 103 451 124Q464 129 469.0 127.0Q474 125 477.5 120.0Q481 115 480 110Q478 102 467 83Q428 16 356 -14Q312 -32 264 -32Q221 -32 182 -17Q136 0 100 36Q71 65 55 100Q32 148 32 200Q32 248 50 292Q66 331 96.5 363.0Q127 395 164 412ZM147 357Q147 357 147 357Q149 365 148.5 365.5Q148 366 141 361Q93 324 74 264Q59 219 66 172Q76 103 126.5 55.0Q177 7 246 1Q279 -2 312 6Q369 19 411 61Q432 82 430 84Q429 85 421 83Q386 78 353 81Q295 87 246.0 120.0Q197 153 170 205Q149 245 145 289Q142 322 147 357Z" fill="currentColor"/></g></svg>';
+      themeIcon.style.transform = 'rotate(-15deg)';
+    }
     localStorage.setItem(THEME_KEY, t);
   }
   function applyLang(l) {
