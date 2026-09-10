@@ -7,15 +7,30 @@
 <link rel="stylesheet" href="assets/css/base.css">
 <style>
 
-.hero {
-  position: relative; overflow:hidden;
-  background-image: var(--hero-image);
-  background-size: cover; background-position: center bottom;
+/* Same page background and nav treatment as index.html (the main site) —
+   copied verbatim from that page's own local overrides, not base.css's
+   shared flat-color default that FAQ/privacy/support previously used, per
+   explicit "same bg color and visual treatment as the main page" request.
+   Scoped to this page only — privacy.html/support.html keep their own
+   existing look, not part of this request. */
+body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 70%, var(--bg-grad-3) 100%); }
+:root[data-theme="dark"] body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
+@media (prefers-color-scheme: dark) {
+  body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
 }
-.hero::after {
-  content:""; position:absolute; inset:0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, var(--bg) 96%);
+/* No border-bottom, same reasoning as index.html's own identical rule —
+   this page's nav now sits on the same continuous gradient as the rest of
+   the page, so a border line under it would read as an unwanted seam. */
+.nav { background: color-mix(in srgb, var(--bg-grad-1) 78%, transparent); border-bottom: none; }
+:root[data-theme="dark"] .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
+@media (prefers-color-scheme: dark) {
+  .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
 }
+
+/* Dropped the wave-photo background + fade overlay this hero used to have
+   (still used by privacy.html/support.html, untouched) — index.html's own
+   hero has neither; it's a plain container sitting directly on the
+   gradient body, so this page's hero now matches that exactly. */
 .hero-inner {
   position:relative; z-index:2; max-width: 780px; margin:0 auto;
   padding: 96px 28px 120px; text-align:center;
