@@ -2,7 +2,7 @@
   "name": "marsa-digital-web",
   "private": true,
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "dependencies": {
     "@upstash/ratelimit": "^2.0.5",
