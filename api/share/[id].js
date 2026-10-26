@@ -14,10 +14,17 @@
 // The one console.error below logs only err.message.
 
 const { getShare } = require('../../lib/shareService');
+const { checkReadShareRateLimit } = require('../../lib/rateLimit');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  const { success: withinRateLimit } = await checkReadShareRateLimit(req);
+  if (!withinRateLimit) {
+    res.status(429).json({ error: 'Too many requests. Please try again shortly.' });
     return;
   }
 

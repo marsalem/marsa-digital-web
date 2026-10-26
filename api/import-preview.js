@@ -25,6 +25,7 @@
 // payload contents, including in error paths.
 
 const { getShare } = require('../lib/shareService');
+const { checkReadShareRateLimit } = require('../lib/rateLimit');
 
 function escapeHtml(value) {
   return String(value)
@@ -209,6 +210,39 @@ function bilingual(en, ar) {
   return `<span data-en>${escapeHtml(en)}</span><span data-ar>${escapeHtml(ar)}</span>`;
 }
 
+// ── Report UI ──
+// Only offered when the share actually resolved (resolutionState==='ok')
+// — an already-expired/invalid link has no content left to investigate,
+// so there's nothing a report against it would accomplish. Plain vanilla
+// JS (no bundler, no dependency) posting straight to POST /api/report —
+// same no-build-step convention every other script on this page already
+// uses. REPORT_REASON options are hardcoded here (not imported from
+// lib/shareConstants.js's REPORT_REASONS) because this is static markup
+// baked into an HTML string, not a module that can require() another
+// module's runtime value into a <select> — if the reason list in
+// shareConstants.js ever changes, this list must be updated by hand to
+// match (api/report.js is the actual source of truth/enforcement; this
+// is just the form that produces one of its accepted values).
+function reportSectionHtml(shareId) {
+  return `
+      <div class="report-section" data-share-id="${escapeHtml(shareId)}">
+        <button class="report-toggle" id="reportToggle" type="button">${bilingual('Report this content', 'الإبلاغ عن هذا المحتوى')}</button>
+        <div class="report-form" id="reportForm" hidden>
+          <label class="report-label" for="reportReason">${bilingual('Reason', 'السبب')}</label>
+          <select class="report-select" id="reportReason">
+            <option value="hate_speech" data-en="Hate speech" data-ar="خطاب كراهية">Hate speech</option>
+            <option value="harassment" data-en="Harassment or threats" data-ar="تحرش أو تهديد">Harassment or threats</option>
+            <option value="sexual_content" data-en="Sexual content" data-ar="محتوى جنسي">Sexual content</option>
+            <option value="spam" data-en="Spam or scam" data-ar="رسائل غير مرغوبة أو احتيال">Spam or scam</option>
+            <option value="other" data-en="Other" data-ar="أخرى">Other</option>
+          </select>
+          <textarea class="report-details" id="reportDetails" maxlength="1000" placeholder="Optional details" rows="3"></textarea>
+          <button class="cta primary report-submit" id="reportSubmit" type="button">${bilingual('Submit report', 'إرسال البلاغ')}</button>
+          <p class="report-status" id="reportStatus"></p>
+        </div>
+      </div>`;
+}
+
 function renderPage({ id, resolutionState, description }) {
   // resolutionState: 'ok' | 'not_found' | 'malformed'
   const pageTitle = description ? `${description.pageTitle} — Quran Atlas` : 'Quran Atlas — Shared Content';
@@ -245,7 +279,8 @@ function renderPage({ id, resolutionState, description }) {
       <div class="store-buttons">
         <a class="cta primary" href="${escapeHtml(deepLink)}">${bilingual('Open in Quran Atlas', 'افتح في أطلس القرآن')}</a>
         <a class="cta secondary-store" href="https://apps.apple.com/app/id6781110875">${APPLE_ICON}${bilingual('Download Quran Atlas', 'تحميل أطلس القرآن')}</a>
-      </div>`;
+      </div>
+      ${reportSectionHtml(id)}`;
   } else {
     const errorCopy = resolutionState === 'not_found'
       ? bilingual('This link has expired or no longer exists.', 'انتهت صلاحية هذا الرابط أو لم يعد موجودًا.')
@@ -295,6 +330,15 @@ html[data-lang="ar"] .item-box { text-align:right; }
 .cta.secondary-store { background: var(--surface); color: var(--accent); border:1px solid var(--border-solid); }
 .learn-more { font-size:13px; color: var(--text-secondary); margin-top:4px; }
 footer.site-footer { text-align:center; padding:20px 0 32px; font-size:12px; color: var(--text-muted); }
+.report-section { width:100%; margin-top:4px; }
+.report-toggle { background:none; border:none; font-family:inherit; font-size:12.5px; color: var(--text-muted); text-decoration:underline; cursor:pointer; padding:4px; }
+.report-form { width:100%; display:flex; flex-direction:column; gap:8px; margin-top:8px; text-align:left; }
+html[data-lang="ar"] .report-form { text-align:right; }
+.report-label { font-size:12.5px; color: var(--text-secondary); }
+.report-select, .report-details { font-family:inherit; font-size:13.5px; border:1px solid var(--border-solid); border-radius:10px; padding:8px 10px; background: var(--surface); color: var(--heading); width:100%; box-sizing:border-box; }
+.report-details { resize:vertical; }
+.report-submit { padding:10px 18px; font-size:13.5px; }
+.report-status { font-size:12.5px; color: var(--text-secondary); min-height:1em; margin:0; }
 </style>
 </head>
 <body>
@@ -341,6 +385,16 @@ footer.site-footer { text-align:center; padding:20px 0 32px; font-size:12px; col
     root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
     root.setAttribute('data-lang', l);
     localStorage.setItem(LANG_KEY, l);
+    // <option> text can't use the data-en/data-ar span-toggle trick
+    // (browsers render only an <option>'s own textContent, not nested
+    // markup) — swap it directly here instead.
+    var reasonSelect = document.getElementById('reportReason');
+    if (reasonSelect) {
+      Array.prototype.forEach.call(reasonSelect.options, function(opt) {
+        var label = l === 'ar' ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
+        if (label) opt.textContent = label;
+      });
+    }
   }
   var savedTheme = localStorage.getItem(THEME_KEY);
   applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
@@ -352,6 +406,45 @@ footer.site-footer { text-align:center; padding:20px 0 32px; font-size:12px; col
   document.getElementById('langToggle').addEventListener('click', function() {
     applyLang(root.getAttribute('data-lang') === 'ar' ? 'en' : 'ar');
   });
+
+  // Report form — only present when resolutionState==='ok' (see
+  // reportSectionHtml's own call site). Plain fetch() to POST
+  // /api/report; no page navigation, no reload.
+  var reportToggle = document.getElementById('reportToggle');
+  if (reportToggle) {
+    var reportSection = document.querySelector('.report-section');
+    var reportForm = document.getElementById('reportForm');
+    var reportSubmit = document.getElementById('reportSubmit');
+    var reportStatus = document.getElementById('reportStatus');
+    var reportShareId = reportSection.getAttribute('data-share-id');
+    var lang = function() { return root.getAttribute('data-lang') === 'ar' ? 'ar' : 'en'; };
+    var statusText = { submitting: { en: 'Submitting…', ar: 'جارٍ الإرسال…' }, done: { en: 'Thank you — your report has been submitted.', ar: 'شكرًا — تم إرسال بلاغك.' }, error: { en: 'Something went wrong. Please try again.', ar: 'حدث خطأ ما. حاول مرة أخرى.' } };
+
+    reportToggle.addEventListener('click', function() {
+      reportForm.hidden = !reportForm.hidden;
+    });
+
+    reportSubmit.addEventListener('click', function() {
+      reportSubmit.disabled = true;
+      reportStatus.textContent = statusText.submitting[lang()];
+      var reason = document.getElementById('reportReason').value;
+      var details = document.getElementById('reportDetails').value;
+      fetch('/api/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ shareId: reportShareId, reason: reason, details: details }),
+      }).then(function(res) {
+        if (!res.ok) throw new Error('report failed');
+        reportStatus.textContent = statusText.done[lang()];
+        reportSubmit.hidden = true;
+        document.getElementById('reportReason').disabled = true;
+        document.getElementById('reportDetails').disabled = true;
+      }).catch(function() {
+        reportStatus.textContent = statusText.error[lang()];
+        reportSubmit.disabled = false;
+      });
+    });
+  }
 })();
 </script>
 ${redirectScript}
@@ -360,6 +453,12 @@ ${redirectScript}
 }
 
 module.exports = async function handler(req, res) {
+  const { success: withinRateLimit } = await checkReadShareRateLimit(req);
+  if (!withinRateLimit) {
+    res.status(429).json({ error: 'Too many requests. Please try again shortly.' });
+    return;
+  }
+
   const id = typeof req.query.id === 'string' ? req.query.id : undefined;
 
   let resolutionState = 'not_found';
@@ -379,3 +478,11 @@ module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.status(200).send(renderPage({ id, resolutionState, description }));
 };
+
+// Exposed on the exported handler function itself (not a separate named
+// export) so Vercel's own invocation (`require(this file)` called
+// directly as a function) is completely unaffected — these are only used
+// by lib/__tests__/importPreviewReport.test.js to test the report-form
+// markup without duplicating renderPage's own HTML assembly in a test.
+module.exports.describePayload = describePayload;
+module.exports.reportSectionHtml = reportSectionHtml;
