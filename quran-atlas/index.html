@@ -12,7 +12,10 @@
    background across its full scrollable height — the app's real 3-color gradient, not a
    generic hero banner. See docs/marsa-digital-web-redesign-copy-and-plan.md for the full
    audit trail on why this is a plain 3-stop gradient with no viewport-sizing tricks. */
-body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 70%, var(--bg-grad-3) 100%); }
+/* Light mode only — lightened from the app's literal GRADIENTS.light.background tokens
+   (#C4D6ED/#CCE0F4/#E4F0FC) by request; each stop mixed ~35% toward white so the page reads
+   airier while staying in the same blue family. Dark mode (below) is untouched. */
+body { background: linear-gradient(180deg, #D9E4F3 0%, #DEEBF8 70%, #EDF5FD 100%); }
 /* Dark mode drops the darkest stop (bg-grad-1) entirely, by direct instruction — starts at
    the mid tone and goes to the light end, instead of the full 3-stop ramp light mode uses. */
 :root[data-theme="dark"] body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
@@ -23,7 +26,7 @@ body { background: linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2)
 /* No border-bottom here (unlike the shared base.css .nav, which FAQ/privacy/support still
    use as-is) — this page's nav sits directly on the same continuous gradient as the rest
    of the page, so a border line under it read as an unwanted seam. */
-.nav { background: color-mix(in srgb, var(--bg-grad-1) 78%, transparent); border-bottom: none; }
+.nav { background: color-mix(in srgb, #D9E4F3 78%, transparent); border-bottom: none; }
 /* Brand lockup size (40px/21px) now lives in base.css's shared default —
    was a local-only override here, which left it visibly smaller on
    faq/privacy/support, reported directly; see that rule's own comment. */
@@ -99,9 +102,10 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
    each shipped as a light/dark pair. Only one of each pair is display:block at a time — the
    same toggle mechanism as the Apple badge light/dark swap above — so the screenshots always
    match whichever theme the visitor is in rather than being a static asset. */
-.sec-shot { flex:0 0 300px; display:flex; align-items:flex-start; justify-content:center; gap:14px; flex-wrap:wrap; }
+.sec-shot { flex:0 0 380px; display:flex; align-items:flex-start; justify-content:center; gap:16px; flex-wrap:wrap; }
 .sec-shot img {
-  width:140px; height:auto; border-radius:20px; display:block;
+  width:170px; height:auto; border-radius:22px; display:block;
+  border: 1px solid var(--border-solid);
   box-shadow: 0 18px 46px rgba(20,60,140,0.26);
 }
 :root[data-theme="dark"] .sec-shot img { box-shadow: 0 18px 46px rgba(0,0,0,0.45); }
@@ -119,16 +123,16 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
    portrait verse-detail shot, instead of the uniform side-by-side pair every other
    section uses — the landscape image reads poorly at the standard 140px portrait width. */
 .sec-shot.stacked { flex-direction:column; align-items:center; }
-.sec-shot.stacked img.shot-wide { width:280px; }
-.sec-shot.stacked .shot-row { display:flex; gap:12px; justify-content:center; }
-.sec-shot.stacked img.shot-narrow { width:150px; }
+.sec-shot.stacked img.shot-wide { width:340px; }
+.sec-shot.stacked .shot-row { display:flex; gap:14px; justify-content:center; }
+.sec-shot.stacked img.shot-narrow { width:180px; }
 @media (max-width: 760px) {
   .sec-row, .sec-row.reverse { flex-direction:column; gap:28px; }
-  .sec-shot { flex:0 0 auto; gap:10px; }
-  .sec-shot img { width:118px; }
-  .sec-shot.stacked img.shot-wide { width:230px; }
-  .sec-shot.stacked .shot-row { gap:8px; }
-  .sec-shot.stacked img.shot-narrow { width:112px; }
+  .sec-shot { flex:0 0 auto; gap:12px; }
+  .sec-shot img { width:150px; }
+  .sec-shot.stacked img.shot-wide { width:280px; }
+  .sec-shot.stacked .shot-row { gap:10px; }
+  .sec-shot.stacked img.shot-narrow { width:140px; }
 }
 
 .sec-icon { display:inline-flex; color: var(--accent); }
@@ -238,10 +242,10 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         </ul>
       </div>
       <div class="sec-shot">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/study-blocks-light.webp" width="140" height="304" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/study-blocks-dark.webp" width="140" height="304" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/study-addblock-light.webp" width="140" height="304" loading="lazy" alt="The Add Block menu — Ayah, Hadith, Heading, Text, Table, Link, Image, and Mention">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/study-addblock-dark.webp" width="140" height="304" loading="lazy" alt="The Add Block menu — Ayah, Hadith, Heading, Text, Table, Link, Image, and Mention">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/study-blocks-light.webp" width="170" height="369" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/study-blocks-dark.webp" width="170" height="369" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/study-addblock-light.webp" width="170" height="369" loading="lazy" alt="The Add Block menu — Ayah, Hadith, Heading, Text, Table, Link, Image, and Mention">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/study-addblock-dark.webp" width="170" height="369" loading="lazy" alt="The Add Block menu — Ayah, Hadith, Heading, Text, Table, Link, Image, and Mention">
       </div>
     </div>
   </div>
@@ -265,12 +269,12 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         </ul>
       </div>
       <div class="sec-shot stacked">
-        <img class="shot-light shot-wide" src="/quran-atlas/assets/img/screenshots/read-mushaf2page-light.webp" width="280" height="129" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout">
-        <img class="shot-dark shot-wide" src="/quran-atlas/assets/img/screenshots/read-mushaf2page-dark.webp" width="280" height="129" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout">
+        <img class="shot-light shot-wide" src="/quran-atlas/assets/img/screenshots/read-mushaf2page-light.webp" width="340" height="156" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout">
+        <img class="shot-dark shot-wide" src="/quran-atlas/assets/img/screenshots/read-mushaf2page-dark.webp" width="340" height="156" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout">
         <div class="shot-row">
-          <img class="shot-light shot-narrow" src="/quran-atlas/assets/img/screenshots/read-versedetail-light.webp" width="150" height="326" loading="lazy" alt="A verse detail panel showing translation, tafsir, reason for revelation, reflections, lessons, and voice memos">
-          <img class="shot-dark shot-narrow" src="/quran-atlas/assets/img/screenshots/read-versedetail-dark.webp" width="150" height="326" loading="lazy" alt="A verse detail panel showing translation, tafsir, reason for revelation, reflections, lessons, and voice memos">
-          <img class="shot-narrow" src="/quran-atlas/assets/img/screenshots/read-tajweed.webp" width="150" height="326" loading="lazy" alt="Tajweed color-coding applied to the Quran text, rule by rule">
+          <img class="shot-light shot-narrow" src="/quran-atlas/assets/img/screenshots/read-versedetail-light.webp" width="180" height="391" loading="lazy" alt="A verse detail panel showing translation, tafsir, reason for revelation, reflections, lessons, and voice memos">
+          <img class="shot-dark shot-narrow" src="/quran-atlas/assets/img/screenshots/read-versedetail-dark.webp" width="180" height="391" loading="lazy" alt="A verse detail panel showing translation, tafsir, reason for revelation, reflections, lessons, and voice memos">
+          <img class="shot-narrow" src="/quran-atlas/assets/img/screenshots/read-tajweed.webp" width="180" height="391" loading="lazy" alt="Tajweed color-coding applied to the Quran text, rule by rule">
         </div>
       </div>
     </div>
@@ -291,10 +295,10 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         </ul>
       </div>
       <div class="sec-shot">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/organize-bookmarks-light.webp" width="140" height="304" loading="lazy" alt="Bookmarks organized into groups">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/organize-bookmarks-dark.webp" width="140" height="304" loading="lazy" alt="Bookmarks organized into groups">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/organize-highlights-light.webp" width="140" height="304" loading="lazy" alt="Highlight color key with labels like Patience, Gratitude, and Mercy">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/organize-highlights-dark.webp" width="140" height="304" loading="lazy" alt="Highlight color key with labels like Patience, Gratitude, and Mercy">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/organize-bookmarks-light.webp" width="170" height="369" loading="lazy" alt="Bookmarks organized into groups">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/organize-bookmarks-dark.webp" width="170" height="369" loading="lazy" alt="Bookmarks organized into groups">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/organize-highlights-light.webp" width="170" height="369" loading="lazy" alt="Highlight color key with labels like Patience, Gratitude, and Mercy">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/organize-highlights-dark.webp" width="170" height="369" loading="lazy" alt="Highlight color key with labels like Patience, Gratitude, and Mercy">
       </div>
     </div>
   </div>
@@ -314,10 +318,10 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         </ul>
       </div>
       <div class="sec-shot">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/search-results-light.webp" width="140" height="304" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/search-results-dark.webp" width="140" height="304" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/search-categories-light.webp" width="140" height="304" loading="lazy" alt="Search categories — Faith & Belief, Worship, Character, and Afterlife">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/search-categories-dark.webp" width="140" height="304" loading="lazy" alt="Search categories — Faith & Belief, Worship, Character, and Afterlife">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/search-results-light.webp" width="170" height="369" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/search-results-dark.webp" width="170" height="369" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/search-categories-light.webp" width="170" height="369" loading="lazy" alt="Search categories — Faith & Belief, Worship, Character, and Afterlife">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/search-categories-dark.webp" width="170" height="369" loading="lazy" alt="Search categories — Faith & Belief, Worship, Character, and Afterlife">
       </div>
     </div>
   </div>
@@ -338,10 +342,10 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         </ul>
       </div>
       <div class="sec-shot">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/share-refcard-light.webp" width="140" height="304" loading="lazy" alt="A Reference Card grouping verses and Hadith that answer a question">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/share-refcard-dark.webp" width="140" height="304" loading="lazy" alt="A Reference Card grouping verses and Hadith that answer a question">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/share-playlist-light.webp" width="140" height="304" loading="lazy" alt="A Playlist of surahs and ayat with a repeat count for each item">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/share-playlist-dark.webp" width="140" height="304" loading="lazy" alt="A Playlist of surahs and ayat with a repeat count for each item">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/share-refcard-light.webp" width="170" height="369" loading="lazy" alt="A Reference Card grouping verses and Hadith that answer a question">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/share-refcard-dark.webp" width="170" height="369" loading="lazy" alt="A Reference Card grouping verses and Hadith that answer a question">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/share-playlist-light.webp" width="170" height="369" loading="lazy" alt="A Playlist of surahs and ayat with a repeat count for each item">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/share-playlist-dark.webp" width="170" height="369" loading="lazy" alt="A Playlist of surahs and ayat with a repeat count for each item">
       </div>
     </div>
   </div>
@@ -356,10 +360,10 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         <p class="sec-sub"><span data-en>Browse 10 Hadith collections in Arabic and English — Sahih al-Bukhari and Sahih Muslim included, with 8 more to download, including Sunan Abu Dawud, Jami At-Tirmidhi, Sunan an-Nasai, and Sunan Ibn Majah. Add notes and voice memos, and pick up with Continue Hadith.</span><span data-ar>تصفّح 10 مجموعات حديثية بالعربية والإنجليزية — صحيح البخاري وصحيح مسلم متوفّران مباشرة، مع 8 مجموعات إضافية للتحميل، منها سنن أبي داود وجامع الترمذي وسنن النسائي وسنن ابن ماجه. أضف ملاحظات ومذكرات صوتية، وتابع من حيث توقفت عبر «متابعة الأحاديث».</span></p>
       </div>
       <div class="sec-shot">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/hadith-books-light.webp" width="140" height="304" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/hadith-books-dark.webp" width="140" height="304" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/hadith-detail-light.webp" width="140" height="304" loading="lazy" alt="A Hadith detail page with Arabic text, English translation, and related Hadith">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/hadith-detail-dark.webp" width="140" height="304" loading="lazy" alt="A Hadith detail page with Arabic text, English translation, and related Hadith">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/hadith-books-light.webp" width="170" height="369" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/hadith-books-dark.webp" width="170" height="369" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/hadith-detail-light.webp" width="170" height="369" loading="lazy" alt="A Hadith detail page with Arabic text, English translation, and related Hadith">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/hadith-detail-dark.webp" width="170" height="369" loading="lazy" alt="A Hadith detail page with Arabic text, English translation, and related Hadith">
       </div>
     </div>
   </div>
@@ -379,8 +383,8 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         </ul>
       </div>
       <div class="sec-shot">
-        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/everyone-topics-light.webp" width="140" height="304" loading="lazy" alt="Featured Topics for newcomers exploring Islamic beliefs and teachings">
-        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/everyone-topics-dark.webp" width="140" height="304" loading="lazy" alt="Featured Topics for newcomers exploring Islamic beliefs and teachings">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/everyone-topics-light.webp" width="170" height="369" loading="lazy" alt="Featured Topics for newcomers exploring Islamic beliefs and teachings">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/everyone-topics-dark.webp" width="170" height="369" loading="lazy" alt="Featured Topics for newcomers exploring Islamic beliefs and teachings">
       </div>
     </div>
   </div>
