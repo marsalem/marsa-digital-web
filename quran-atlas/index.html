@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title data-en="Quran Atlas — Your Quran &amp; Hadith Study Companion" data-ar="أطلس القرآن">Quran Atlas — Your Quran &amp; Hadith Study Companion</title>
-<meta name="description" content="A bilingual companion for reading, studying and reflecting on the Quran and Hadith — organize your own topics, read with tafsir and tajweed, search everything at once, and share what you build.">
+<title data-en="Quran Atlas: Hadith &amp; Study — Build Your Islamic Library" data-ar="أطلس القرآن">Quran Atlas: Hadith &amp; Study — Build Your Islamic Library</title>
+<meta name="description" content="Build your own library of Islamic knowledge. Organize topics, attach verses and Hadith, add notes and voice memos, and search across everything you save. Study in Arabic and English with tafsir, translations, and offline recitation. For Muslims and anyone curious about Islam.">
 <link rel="stylesheet" href="/quran-atlas/assets/css/base.css">
 <style>
 
@@ -96,26 +96,21 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
 .sec-row.reverse { flex-direction:row-reverse; }
 .sec-row .sec-copy { flex:1 1 0; min-width:0; }
 .sec-shot { flex:0 0 240px; display:flex; justify-content:center; }
-.shot-placeholder {
-  width:240px; height:500px; border-radius:32px; border:2px dashed var(--border-solid);
-  display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
-  font-size:13px; line-height:1.5; color: var(--text-muted);
+/* Real App Store marketing screenshots (480px-wide WebP, ~1:2.17 aspect — the official
+   Apple 16 Pro Max export ratio) standing in for the old dashed-border placeholders.
+   Each already carries its own caption banner baked in from the App Store Connect export,
+   so it reads as a self-contained card rather than a bare device frame. */
+.sec-shot img {
+  width:240px; height:auto; border-radius:28px; display:block;
+  box-shadow: 0 24px 60px rgba(20,60,140,0.28);
 }
-/* Light mode only: the app's own LIGHT_THEME.navigationActiveBackground
-   (rgba(214,230,247,0.98)) — the light blue used to highlight the active tab in the app's
-   bottom dock (a toggle-like selection surface) — applied to these screenshot-placeholder
-   cards instead of the generic base.css --surface white. Dark mode is untouched (keeps
-   --surface as before). The pill toggles' own version of this same tint now lives in
-   base.css's shared .pill-btn rule instead (so faq/privacy/support's toggles match this
-   page's, not just this page's own) — see that rule's own comment. */
-.shot-placeholder { background: rgba(214,230,247,0.98); }
-:root[data-theme="dark"] .shot-placeholder { background: var(--surface); }
+:root[data-theme="dark"] .sec-shot img { box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
 @media (prefers-color-scheme: dark) {
-  .shot-placeholder { background: var(--surface); }
+  .sec-shot img { box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
 }
 @media (max-width: 760px) {
   .sec-row, .sec-row.reverse { flex-direction:column; gap:28px; }
-  .shot-placeholder { width:200px; height:420px; }
+  .sec-shot img { width:200px; }
 }
 
 .sec-icon { display:inline-flex; color: var(--accent); }
@@ -179,8 +174,8 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
 
 <section class="hero">
   <img class="mark" src="/quran-atlas/assets/img/crescent-hero.png" alt=""/>
-  <h1><span data-en>Your Quran &amp; Hadith study, organized your way.</span><span data-ar>الأطلس الخاص بك في دراستك للقرآن والحديث</span></h1>
-  <p class="sub"><span data-en>A bilingual companion for reading, studying and reflecting on the Quran and Hadith — shaped around your own topics and goals.</span><span data-ar>مساحة خاصة بك لتنظيم دراسة القرآن والحديث وفقاً لأهدافك</span></p>
+  <h1><span data-en>Build your own library of Islamic knowledge.</span><span data-ar>ابنِ مكتبتك الخاصة من المعرفة الإسلامية.</span></h1>
+  <p class="sub"><span data-en>A bilingual companion for reading, studying, and reflecting on the Quran and Hadith — organize topics, attach verses and notes, and search across everything you save. For Muslims and anyone curious about Islam.</span><span data-ar>رفيقك ثنائي اللغة لقراءة القرآن والحديث ودراستهما والتأمل فيهما — نظّم مواضيعك، أرفق الآيات والملاحظات، وابحث في كل ما تحفظه. للمسلمين ولكل من يريد التعرف على الإسلام.</span></p>
   <div class="store-buttons">
     <!-- App Store: official Apple badge artwork (black+white variants), verified live from
          Apple's own badge generator (toolbox.marketingtools.apple.com). English only — every
@@ -218,11 +213,13 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         <p class="sec-sub"><span data-en>Build topics and subtopics around what actually matters to you. Each one is a real page — headings, notes, verse and hadith references, images, links — not a flat list. Attach a voice memo to capture a reflection in the moment, and pick up your Continue Studying card exactly where you left off.</span><span data-ar>أنشئ مواضيع وموضوعات فرعية حول ما يهمّك فعلاً. كل موضوع صفحة حقيقية بحد ذاتها — عناوين، ملاحظات، آيات وأحاديث مرجعية، صور، وروابط — لا مجرد قائمة مسطّحة. أضف مذكرة صوتية لتوثيق خاطرة في لحظتها، وتابع من حيث توقفت عبر بطاقة «متابعة الدراسة».</span></p>
         <ul class="bullets">
           <li><span data-en>Build your own multi-level topics and subtopics to create your library</span><span data-ar>أنشئ مواضيع وموضوعات فرعية متعددة المستويات خاصة بك لبناء مكتبتك</span></li>
-          <li><span data-en>Page-style notes — headings, references, images, and lists, not just plain text</span><span data-ar>ملاحظات بأسلوب الصفحات — عناوين، مراجع، صور، وقوائم، لا مجرد نص عادي</span></li>
-          <li><span data-en>Voice memos attached to any verse</span><span data-ar>مذكرات صوتية يمكن إرفاقها بأي آية</span></li>
+          <li><span data-en>Page-style notes — headings, references, images, tables, YouTube links, and mentions linking to other topics</span><span data-ar>ملاحظات بأسلوب الصفحات — عناوين، مراجع، صور، جداول، روابط يوتيوب، وإشارات لمواضيع أخرى، لا مجرد نص عادي</span></li>
+          <li><span data-en>Voice memos attached to any verse or Hadith</span><span data-ar>مذكرات صوتية يمكن إرفاقها بأي آية أو حديث</span></li>
+          <li><span data-en>See everywhere a verse or Hadith appears across your topics and reference cards</span><span data-ar>اطّلع على كل مكان تظهر فيه آية أو حديث عبر مواضيعك وبطاقاتك المرجعية</span></li>
+          <li><span data-en>Curated Categories and Packs to start from, or build your own from scratch</span><span data-ar>فئات وباقات مُعدّة مسبقًا لتبدأ منها، أو ابنِ مكتبتك الخاصة من الصفر</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Study workspace</span><span data-ar>لقطة شاشة — مساحة الدراسة</span></div></div>
+      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/study-workspace.webp" width="240" height="522" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith"></div>
     </div>
   </div>
 </section>
@@ -233,16 +230,18 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
       <div class="sec-copy">
         <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M42 399Q47 400 61 400Q170 397 221 363Q229 358 239.5 348.0Q250 338 253 333Q256 329 256.0 329.0Q256 329 259 333Q262 338 272.5 348.0Q283 358 291 363Q332 390 411 398Q455 402 469 399Q482 397 490 386Q495 380 495.5 364.0Q496 348 496 224Q496 103 495.5 86.0Q495 69 491 63Q486 56 478.5 52.0Q471 48 453 48Q379 48 331 32Q299 22 276 -3Q265 -13 261.5 -15.0Q258 -17 251 -15Q248 -14 236 -3Q219 15 199 25Q154 46 67 47Q39 48 32 52Q24 57 20 65Q17 71 16.5 89.0Q16 107 16 225Q16 348 16.5 364.0Q17 380 22 386Q30 397 42 399ZM81 367Q67 368 57 368H48V224V80H54Q61 79 71.5 79.0Q82 79 100 78Q188 72 232 43L240 38V162Q240 266 239.5 279.0Q239 292 234 302Q227 316 215 327Q177 361 81 367ZM464 224V368H452Q418 367 384 362Q301 349 278 302Q273 292 272.5 279.0Q272 266 272 162Q272 162 272 38L280 43Q311 63 358 72Q400 79 440 79Q451 79 458 80Q458 80 464 80Z" fill="currentColor"/></g></svg></div>
         <h2><span data-en>Read it your way — Arabic, translation, or the page itself.</span><span data-ar>اقرأه على طريقتك — عربيًا، مترجمًا، أو كصفحة المصحف نفسها.</span></h2>
-        <p class="sec-sub"><span data-en>Switch between Arabic, translation, or both side by side — or open the full Mushaf page view to read exactly as printed. Follow tajweed color-coding, study nine tafsir sources in Arabic and English, and listen with eight reciters, with offline downloads for reading and listening anywhere.</span><span data-ar>بدّل بين العربية، الترجمة، أو كلتيهما جنبًا إلى جنب — أو افتح عرض صفحة المصحف الكامل لتقرأ تمامًا كما هي مطبوعة. تابع تلوين أحكام التجويد، وادرس تسعة مصادر تفسير بالعربية والإنجليزية، واستمع بصوت ثمانية قرّاء، مع تحميل التلاوات للاستماع والقراءة بلا اتصال.</span></p>
+        <p class="sec-sub"><span data-en>Switch between Arabic, translation, or both side by side — or open the full Mushaf page view, with a two-page landscape layout, to read exactly as printed. Follow tajweed color-coding across 20 reading themes and 8 Mushaf themes. Study tafsir from Ibn Katheer, Al-Mukhtasar, and others — alongside reasons for revelation, reflections, and lessons — with Saheeh International and Yusuf Ali translations. Listen with 8 reciters, including Alafasy, Sudais, and Husary, adjust playback speed, repeat by surah or ayah, and download for offline listening anywhere.</span><span data-ar>بدّل بين العربية، الترجمة، أو كلتيهما جنبًا إلى جنب — أو افتح عرض صفحة المصحف الكامل، بتخطيط صفحتين بالوضع الأفقي، لتقرأ تمامًا كما هي مطبوعة. تابع تلوين أحكام التجويد عبر 20 نمطًا للقراءة و8 أنماط للمصحف. ادرس التفسير من ابن كثير والمختصر في التفسير وغيرهما — إلى جانب أسباب النزول والخواطر والدروس — مع ترجمتي صحيح إنترناشونال ويوسف علي. استمع بصوت 8 قرّاء، منهم العفاسي والسديس والحصري، واضبط سرعة التشغيل، وكرّر بالسورة أو بالآية، وحمّل للاستماع دون اتصال في أي مكان.</span></p>
         <ul class="bullets">
-          <li><span data-en>Arabic, translation, or side-by-side reading modes</span><span data-ar>أوضاع قراءة بالعربية، بالترجمة، أو جنبًا إلى جنب</span></li>
-          <li><span data-en>Full 604-page Mushaf view</span><span data-ar>عرض كامل لصفحات المصحف الـ 604</span></li>
-          <li><span data-en>9 tafsir sources — 3 English, 6 Arabic</span><span data-ar>9 مصادر تفسير — 3 بالإنجليزية و6 بالعربية</span></li>
-          <li><span data-en>8 reciters, with offline downloads</span><span data-ar>8 قرّاء، مع إمكانية التحميل للاستماع دون اتصال</span></li>
+          <li><span data-en>Arabic, translation, or side-by-side reading modes — 20 themes</span><span data-ar>أوضاع قراءة بالعربية، بالترجمة، أو جنبًا إلى جنب — 20 نمطًا</span></li>
+          <li><span data-en>Full 604-page Mushaf view, with a two-page landscape layout and 8 Mushaf themes</span><span data-ar>عرض كامل لصفحات المصحف الـ 604، بتخطيط صفحتين أفقي و8 أنماط للمصحف</span></li>
+          <li><span data-en>Tafsir from Ibn Katheer, Al-Mukhtasar, and more — 9 sources, 3 English and 6 Arabic</span><span data-ar>تفسير من ابن كثير والمختصر وغيرهما — 9 مصادر، 3 بالإنجليزية و6 بالعربية</span></li>
+          <li><span data-en>Reasons for revelation, reflections, and lessons for every verse</span><span data-ar>أسباب النزول والخواطر والدروس لكل آية</span></li>
+          <li><span data-en>Saheeh International and Yusuf Ali translations</span><span data-ar>ترجمتا صحيح إنترناشونال ويوسف علي</span></li>
+          <li><span data-en>8 reciters — including Alafasy, Sudais, and Husary — with adjustable speed, repeat, and offline downloads</span><span data-ar>8 قرّاء — منهم العفاسي والسديس والحصري — مع إمكانية ضبط السرعة والتكرار والتحميل للاستماع دون اتصال</span></li>
           <li><span data-en>Tajweed color-coding</span><span data-ar>تلوين لأحكام التجويد</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Reader</span><span data-ar>لقطة شاشة — القارئ</span></div></div>
+      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/reader.webp" width="240" height="522" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout, in light and dark theme"></div>
     </div>
   </div>
 </section>
@@ -253,14 +252,14 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
       <div class="sec-copy">
         <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M207 399Q290 405 347 346Q401 288 393 210Q388 159 359 122L354 116L408 62Q462 8 463 4Q466 -5 459.5 -11.5Q453 -18 444 -15Q440 -14 386 40L332 94L326 89Q289 60 238 55Q171 48 117 89Q100 101 87 118Q44 171 48.5 238.5Q53 306 102 353Q147 395 207 399ZM237 367Q237 367 237 367Q212 370 189 364Q150 355 122 326Q88 293 82 246Q73 178 119 129Q161 86 221 86Q261 86 295 107Q331 129 349 167Q363 197 362 231Q361 260 349 285Q324 341 266 360Q252 365 237 367Z" fill="currentColor"/></g></svg></div>
         <h2><span data-en>Find any verse, in Arabic or English.</span><span data-ar>اعثر على أي آية، بالعربية أو الإنجليزية.</span></h2>
-        <p class="sec-sub"><span data-en>Search the full Quran, your own topics, and Hadith at once — by keyword, root, or surah name, in either language.</span><span data-ar>ابحث في القرآن الكريم كاملاً، وفي مواضيعك الخاصة، وفي الأحاديث في آنٍ واحد — بالكلمة، بالجذر، أو باسم السورة، وبأي من اللغتين.</span></p>
+        <p class="sec-sub"><span data-en>Search the full Quran, Hadith, tafsir, and your own library at once — by keyword, root, or surah name, in either language, with related words and synonyms included automatically.</span><span data-ar>ابحث في القرآن الكريم كاملاً، والأحاديث، والتفسير، ومكتبتك الخاصة في آنٍ واحد — بالكلمة، بالجذر، أو باسم السورة، وبأي من اللغتين، مع تضمين الكلمات ذات الصلة والمرادفات تلقائيًا.</span></p>
         <ul class="bullets">
-          <li><span data-en>Search verses, topics, and Hadith together</span><span data-ar>ابحث في الآيات والمواضيع والأحاديث معًا</span></li>
-          <li><span data-en>Arabic root-aware and English stemmed matching</span><span data-ar>بحث يراعي جذور الكلمات بالعربية، واشتقاقاتها بالإنجليزية</span></li>
+          <li><span data-en>Search verses, topics, Hadith, and tafsir together</span><span data-ar>ابحث في الآيات والمواضيع والأحاديث والتفسير معًا</span></li>
+          <li><span data-en>Arabic root-aware matching, and English matching that includes related words and synonyms</span><span data-ar>بحث يراعي جذور الكلمات بالعربية، وبحث بالإنجليزية يشمل الكلمات ذات الصلة والمرادفات</span></li>
           <li><span data-en>Browse the Quran surah by surah</span><span data-ar>تصفّح القرآن سورةً سورة</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Search</span><span data-ar>لقطة شاشة — البحث</span></div></div>
+      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/search.webp" width="240" height="522" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir, including related words like 'endure'"></div>
     </div>
   </div>
 </section>
@@ -271,14 +270,15 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
       <div class="sec-copy">
         <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M248 414Q256 419 265 413Q268 411 308.5 370.5Q349 330 350 327Q354 320 350.0 312.5Q346 305 338 304Q333 303 328.0 307.0Q323 311 300 334L272 361V243Q272 125 271 121Q267 111 256.0 111.0Q245 111 241 121Q240 125 240 243V361L212 334Q189 311 184.0 307.0Q179 303 174 304Q166 305 162.0 312.5Q158 320 162 327Q163 330 204.0 371.0Q245 412 248 414ZM128 271Q128 271 128 271Q134 272 157 272Q177 272 181.0 271.0Q185 270 189 265Q192 262 192.0 256.0Q192 250 189 247Q185 242 180.5 241.0Q176 240 155 240Q129 239 125 237Q118 233 114 225Q112 221 112 120Q112 120 112 18L114 14Q118 7 126 2Q126 2 129 0H256H383L386 2Q394 7 398 14Q398 14 400 18V120V222L397 227Q392 236 383 239Q380 240 356.5 240.0Q333 240 329.5 242.0Q326 244 323.0 247.0Q320 250 320.0 256.0Q320 262 323 265Q327 270 331.5 271.0Q336 272 359 272Q386 272 393 269Q419 261 429 235Q429 235 431 228L432 123Q432 35 431.5 21.5Q431 8 426 -1Q415 -23 390 -30Q384 -32 256.0 -32.0Q128 -32 122 -30Q90 -21 82 10Q80 16 80.0 120.0Q80 224 81 228Q85 245 98.5 257.0Q112 269 128 271Z" fill="currentColor"/></g></svg></div>
         <h2><span data-en>Turn your study into something you can share.</span><span data-ar>حوّل دراستك إلى شيء يمكنك مشاركته.</span></h2>
-        <p class="sec-sub"><span data-en>Build a Reference Card for a question or scenario you want to revisit — a title, the verses and hadith that answer it, ready to reopen instantly. Build a Playlist to queue up surahs or verse ranges for focused, repeatable listening. Share any of it with a single link that opens straight into Quran Atlas.</span><span data-ar>أنشئ «بطاقة مرجعية» لسؤال أو موقف تريد العودة إليه لاحقًا — عنوان، مع الآيات والأحاديث التي تجيب عنه، جاهزة لإعادة فتحها فورًا. أنشئ «قائمة تشغيل» لترتيب سور أو مقاطع آيات للاستماع المركّز والمتكرر. شارك أيًا منها برابط واحد يفتح مباشرة في أطلس القرآن.</span></p>
+        <p class="sec-sub"><span data-en>Build a Reference Card for a question or scenario you want to revisit — a title, the verses and hadith that answer it, ready to reopen instantly. Build a Playlist to queue up surahs or verse ranges, with a repeat count for each item, for focused, repeatable listening. Send a Topic or Playlist straight into someone else's library, ready for them to read and build on — or export to PDF, text, or a shareable link.</span><span data-ar>أنشئ «بطاقة مرجعية» لسؤال أو موقف تريد العودة إليه لاحقًا — عنوان، مع الآيات والأحاديث التي تجيب عنه، جاهزة لإعادة فتحها فورًا. أنشئ «قائمة تشغيل» لترتيب سور أو مقاطع آيات، مع عدد تكرار لكل عنصر، للاستماع المركّز والمتكرر. أرسل موضوعًا أو قائمة تشغيل مباشرة إلى مكتبة شخص آخر، جاهزة لهم للقراءة والبناء عليها — أو صدّرها كملف PDF أو نص أو رابط قابل للمشاركة.</span></p>
         <ul class="bullets">
           <li><span data-en>Reference Cards for scenarios and dawah conversations</span><span data-ar>بطاقات مرجعية للمواقف والحوارات الدعوية</span></li>
-          <li><span data-en>Playlists for focused, repeatable recitation listening</span><span data-ar>قوائم تشغيل للاستماع المركّز والمتكرر للتلاوة</span></li>
-          <li><span data-en>One-tap share links for Topics, Reference Cards, and Playlists</span><span data-ar>روابط مشاركة بضغطة واحدة للمواضيع والبطاقات المرجعية وقوائم التشغيل</span></li>
+          <li><span data-en>Playlists for focused, repeatable recitation listening, with a repeat count per item</span><span data-ar>قوائم تشغيل للاستماع المركّز والمتكرر للتلاوة، مع عدد تكرار لكل عنصر</span></li>
+          <li><span data-en>Send a Topic or Playlist directly into another person's library</span><span data-ar>أرسل موضوعًا أو قائمة تشغيل مباشرة إلى مكتبة شخص آخر</span></li>
+          <li><span data-en>Export to PDF, text, or a one-tap share link</span><span data-ar>صدّر كملف PDF أو نص أو رابط مشاركة بضغطة واحدة</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Share</span><span data-ar>لقطة شاشة — المشاركة</span></div></div>
+      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/share.webp" width="240" height="522" loading="lazy" alt="A 'No Compulsion in Faith' Reference Card grouping four verses and two Hadith that answer a question"></div>
     </div>
   </div>
 </section>
@@ -289,9 +289,9 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
       <div class="sec-copy">
         <div class="sec-icon"><svg viewBox="0 0 512 512" width="28" height="28"><g transform="translate(0,512) scale(1,-1)"><path d="M192 416Q241 416 249.5 415.0Q258 414 266 410Q272 407 348.0 331.0Q424 255 426 249Q431 241 431.5 228.0Q432 215 432 128Q432 23 430.0 16.5Q428 10 424.5 2.5Q421 -5 413.0 -13.0Q405 -21 397 -25Q386 -31 372.0 -31.5Q358 -32 256.0 -32.0Q154 -32 140.0 -31.5Q126 -31 115 -25Q107 -21 99.0 -13.0Q91 -5 87.5 2.5Q84 10 82.0 16.5Q80 23 80.0 192.0Q80 361 82.0 367.5Q84 374 87.5 381.5Q91 389 99.0 397.0Q107 405 115.0 409.0Q123 413 128.5 414.0Q134 415 192 416ZM240 327V384H190Q140 384 136 383Q116 378 113 357Q112 351 112.0 192.0Q112 33 113 27Q115 10 131 3L136 0H256H376L382 3Q397 11 399 27Q400 33 400 128V223L340 224Q279 224 275 226Q262 230 252.5 240.5Q243 251 241 264Q240 269 240 327ZM331 256Q331 256 331 256H377L325 309L272 361V314L273 267L275 263Q277 260 281.0 258.0Q285 256 331 256Z" fill="currentColor"/></g></svg></div>
         <h2><span data-en>Hadith, alongside your Quran study.</span><span data-ar>الأحاديث، إلى جانب دراستك للقرآن.</span></h2>
-        <p class="sec-sub"><span data-en>Browse Bukhari, Muslim, and both 40-Hadith collections offline, with more books available on demand. Add notes and voice memos, and pick up with Continue Hadith.</span><span data-ar>تصفّح صحيح البخاري ومسلم ومجموعتي الأربعين حديثًا دون اتصال، مع إتاحة كتب إضافية عند الطلب. أضف ملاحظات ومذكرات صوتية، وتابع من حيث توقفت عبر «متابعة الأحاديث».</span></p>
+        <p class="sec-sub"><span data-en>Browse 10 Hadith collections in Arabic and English — Sahih al-Bukhari and Sahih Muslim included, with 8 more to download, including Sunan Abu Dawud, Jami At-Tirmidhi, Sunan an-Nasai, and Sunan Ibn Majah. Add notes and voice memos, and pick up with Continue Hadith.</span><span data-ar>تصفّح 10 مجموعات حديثية بالعربية والإنجليزية — صحيح البخاري وصحيح مسلم متوفّران مباشرة، مع 8 مجموعات إضافية للتحميل، منها سنن أبي داود وجامع الترمذي وسنن النسائي وسنن ابن ماجه. أضف ملاحظات ومذكرات صوتية، وتابع من حيث توقفت عبر «متابعة الأحاديث».</span></p>
       </div>
-      <div class="sec-shot"><div class="shot-placeholder"><span data-en>Screenshot — Hadith</span><span data-ar>لقطة شاشة — الحديث</span></div></div>
+      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/hadith.webp" width="240" height="522" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more, in Arabic and English"></div>
     </div>
   </div>
 </section>
@@ -324,7 +324,7 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
 </div>
 
 <footer class="site-footer">
-  <div class="closing"><span data-en>Ready to start your own atlas of the Quran &amp; Hadith?</span><span data-ar>هل أنت مستعد لبدء أطلسك الخاص للقرآن والحديث؟</span></div>
+  <div class="closing"><span data-en>Ready to build your own library of Islamic knowledge?</span><span data-ar>هل أنت مستعد لبناء مكتبتك الخاصة من المعرفة الإسلامية؟</span></div>
   <div class="store-buttons">
     <!-- App Store: official Apple badge artwork (black+white variants), verified live from
          Apple's own badge generator (toolbox.marketingtools.apple.com). English only — every
