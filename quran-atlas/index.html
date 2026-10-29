@@ -95,22 +95,40 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
 .sec-row { display:flex; align-items:center; gap:48px; max-width:900px; margin:0 auto; }
 .sec-row.reverse { flex-direction:row-reverse; }
 .sec-row .sec-copy { flex:1 1 0; min-width:0; }
-.sec-shot { flex:0 0 240px; display:flex; justify-content:center; }
-/* Real App Store marketing screenshots (480px-wide WebP, ~1:2.17 aspect — the official
-   Apple 16 Pro Max export ratio) standing in for the old dashed-border placeholders.
-   Each already carries its own caption banner baked in from the App Store Connect export,
-   so it reads as a self-contained card rather than a bare device frame. */
+/* Raw device screenshots (no marketing banner — these are plain captures), two per section,
+   each shipped as a light/dark pair. Only one of each pair is display:block at a time — the
+   same toggle mechanism as the Apple badge light/dark swap above — so the screenshots always
+   match whichever theme the visitor is in rather than being a static asset. */
+.sec-shot { flex:0 0 300px; display:flex; align-items:flex-start; justify-content:center; gap:14px; flex-wrap:wrap; }
 .sec-shot img {
-  width:240px; height:auto; border-radius:28px; display:block;
-  box-shadow: 0 24px 60px rgba(20,60,140,0.28);
+  width:140px; height:auto; border-radius:20px; display:block;
+  box-shadow: 0 18px 46px rgba(20,60,140,0.26);
 }
-:root[data-theme="dark"] .sec-shot img { box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+:root[data-theme="dark"] .sec-shot img { box-shadow: 0 18px 46px rgba(0,0,0,0.45); }
 @media (prefers-color-scheme: dark) {
-  .sec-shot img { box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .sec-shot img { box-shadow: 0 18px 46px rgba(0,0,0,0.45); }
 }
+.sec-shot img.shot-dark { display:none; }
+:root[data-theme="dark"] .sec-shot img.shot-dark { display:block; }
+:root[data-theme="dark"] .sec-shot img.shot-light { display:none; }
+@media (prefers-color-scheme: dark) {
+  .sec-shot img.shot-dark { display:block; }
+  .sec-shot img.shot-light { display:none; }
+}
+/* Read section only: one wide landscape 2-page Mushaf shot stacked above a narrower
+   portrait verse-detail shot, instead of the uniform side-by-side pair every other
+   section uses — the landscape image reads poorly at the standard 140px portrait width. */
+.sec-shot.stacked { flex-direction:column; align-items:center; }
+.sec-shot.stacked img.shot-wide { width:280px; }
+.sec-shot.stacked .shot-row { display:flex; gap:12px; justify-content:center; }
+.sec-shot.stacked img.shot-narrow { width:150px; }
 @media (max-width: 760px) {
   .sec-row, .sec-row.reverse { flex-direction:column; gap:28px; }
-  .sec-shot img { width:200px; }
+  .sec-shot { flex:0 0 auto; gap:10px; }
+  .sec-shot img { width:118px; }
+  .sec-shot.stacked img.shot-wide { width:230px; }
+  .sec-shot.stacked .shot-row { gap:8px; }
+  .sec-shot.stacked img.shot-narrow { width:112px; }
 }
 
 .sec-icon { display:inline-flex; color: var(--accent); }
@@ -219,7 +237,12 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
           <li><span data-en>Curated Categories and Packs to start from, or build your own from scratch</span><span data-ar>فئات وباقات مُعدّة مسبقًا لتبدأ منها، أو ابنِ مكتبتك الخاصة من الصفر</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/study-workspace.webp" width="240" height="522" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith"></div>
+      <div class="sec-shot">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/study-blocks-light.webp" width="140" height="304" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/study-blocks-dark.webp" width="140" height="304" loading="lazy" alt="A Quran Atlas topic page with page-style blocks — a heading, a Quran verse, and a Hadith">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/study-addblock-light.webp" width="140" height="304" loading="lazy" alt="The Add Block menu — Ayah, Hadith, Heading, Text, Table, Link, Image, and Mention">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/study-addblock-dark.webp" width="140" height="304" loading="lazy" alt="The Add Block menu — Ayah, Hadith, Heading, Text, Table, Link, Image, and Mention">
+      </div>
     </div>
   </div>
 </section>
@@ -241,7 +264,38 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
           <li><span data-en>Tajweed color-coding</span><span data-ar>تلوين لأحكام التجويد</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/reader.webp" width="240" height="522" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout, in light and dark theme"></div>
+      <div class="sec-shot stacked">
+        <img class="shot-light shot-wide" src="/quran-atlas/assets/img/screenshots/read-mushaf2page-light.webp" width="280" height="129" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout">
+        <img class="shot-dark shot-wide" src="/quran-atlas/assets/img/screenshots/read-mushaf2page-dark.webp" width="280" height="129" loading="lazy" alt="Two Mushaf pages shown in two-page landscape layout">
+        <div class="shot-row">
+          <img class="shot-light shot-narrow" src="/quran-atlas/assets/img/screenshots/read-versedetail-light.webp" width="150" height="326" loading="lazy" alt="A verse detail panel showing translation, tafsir, reason for revelation, reflections, lessons, and voice memos">
+          <img class="shot-dark shot-narrow" src="/quran-atlas/assets/img/screenshots/read-versedetail-dark.webp" width="150" height="326" loading="lazy" alt="A verse detail panel showing translation, tafsir, reason for revelation, reflections, lessons, and voice memos">
+          <img class="shot-narrow" src="/quran-atlas/assets/img/screenshots/read-tajweed.webp" width="150" height="326" loading="lazy" alt="Tajweed color-coding applied to the Quran text, rule by rule">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="organize">
+  <div class="sec-inner">
+    <div class="sec-row">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M6 2a2 2 0 0 0-2 2v18l8-5 8 5V4a2 2 0 0 0-2-2H6z" fill="currentColor"/></svg></div>
+        <h2><span data-en>Bookmark it, highlight it, find it again.</span><span data-ar>ضع إشارة مرجعية، لوّنها بالتظليل، واعثر عليها مجددًا.</span></h2>
+        <p class="sec-sub"><span data-en>Bookmark any verse, topic, Hadith, or Mushaf page, organized into your own groups. Highlight verses and color-code them with labels like Patience, Gratitude, and Mercy — or build your own.</span><span data-ar>ضع إشارة مرجعية على أي آية أو موضوع أو حديث أو صفحة من المصحف، ونظّمها في مجموعاتك الخاصة. ظلّل الآيات ولوّنها بتصنيفات مثل الصبر والشكر والرحمة — أو أنشئ تصنيفاتك الخاصة.</span></p>
+        <ul class="bullets">
+          <li><span data-en>Bookmark verses, topics, Hadith, and Mushaf pages into your own groups</span><span data-ar>ضع إشارات مرجعية للآيات والمواضيع والأحاديث وصفحات المصحف في مجموعاتك الخاصة</span></li>
+          <li><span data-en>Highlight verses and color-code them with your own labels</span><span data-ar>ظلّل الآيات ولوّنها بتصنيفاتك الخاصة</span></li>
+          <li><span data-en>Jump back to anything you've saved in one tap</span><span data-ar>عد إلى أي شيء حفظته بضغطة واحدة</span></li>
+        </ul>
+      </div>
+      <div class="sec-shot">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/organize-bookmarks-light.webp" width="140" height="304" loading="lazy" alt="Bookmarks organized into groups">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/organize-bookmarks-dark.webp" width="140" height="304" loading="lazy" alt="Bookmarks organized into groups">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/organize-highlights-light.webp" width="140" height="304" loading="lazy" alt="Highlight color key with labels like Patience, Gratitude, and Mercy">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/organize-highlights-dark.webp" width="140" height="304" loading="lazy" alt="Highlight color key with labels like Patience, Gratitude, and Mercy">
+      </div>
     </div>
   </div>
 </section>
@@ -259,7 +313,12 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
           <li><span data-en>Browse the Quran surah by surah</span><span data-ar>تصفّح القرآن سورةً سورة</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/search.webp" width="240" height="522" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir, including related words like 'endure'"></div>
+      <div class="sec-shot">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/search-results-light.webp" width="140" height="304" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/search-results-dark.webp" width="140" height="304" loading="lazy" alt="Search results for 'patience' across the Quran, Hadith, topics, and tafsir">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/search-categories-light.webp" width="140" height="304" loading="lazy" alt="Search categories — Faith & Belief, Worship, Character, and Afterlife">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/search-categories-dark.webp" width="140" height="304" loading="lazy" alt="Search categories — Faith & Belief, Worship, Character, and Afterlife">
+      </div>
     </div>
   </div>
 </section>
@@ -278,7 +337,12 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
           <li><span data-en>Export to PDF, text, or a one-tap share link</span><span data-ar>صدّر كملف PDF أو نص أو رابط مشاركة بضغطة واحدة</span></li>
         </ul>
       </div>
-      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/share.webp" width="240" height="522" loading="lazy" alt="A 'No Compulsion in Faith' Reference Card grouping four verses and two Hadith that answer a question"></div>
+      <div class="sec-shot">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/share-refcard-light.webp" width="140" height="304" loading="lazy" alt="A Reference Card grouping verses and Hadith that answer a question">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/share-refcard-dark.webp" width="140" height="304" loading="lazy" alt="A Reference Card grouping verses and Hadith that answer a question">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/share-playlist-light.webp" width="140" height="304" loading="lazy" alt="A Playlist of surahs and ayat with a repeat count for each item">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/share-playlist-dark.webp" width="140" height="304" loading="lazy" alt="A Playlist of surahs and ayat with a repeat count for each item">
+      </div>
     </div>
   </div>
 </section>
@@ -291,7 +355,33 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
         <h2><span data-en>Hadith, alongside your Quran study.</span><span data-ar>الأحاديث، إلى جانب دراستك للقرآن.</span></h2>
         <p class="sec-sub"><span data-en>Browse 10 Hadith collections in Arabic and English — Sahih al-Bukhari and Sahih Muslim included, with 8 more to download, including Sunan Abu Dawud, Jami At-Tirmidhi, Sunan an-Nasai, and Sunan Ibn Majah. Add notes and voice memos, and pick up with Continue Hadith.</span><span data-ar>تصفّح 10 مجموعات حديثية بالعربية والإنجليزية — صحيح البخاري وصحيح مسلم متوفّران مباشرة، مع 8 مجموعات إضافية للتحميل، منها سنن أبي داود وجامع الترمذي وسنن النسائي وسنن ابن ماجه. أضف ملاحظات ومذكرات صوتية، وتابع من حيث توقفت عبر «متابعة الأحاديث».</span></p>
       </div>
-      <div class="sec-shot"><img src="/quran-atlas/assets/img/screenshots/hadith.webp" width="240" height="522" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more, in Arabic and English"></div>
+      <div class="sec-shot">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/hadith-books-light.webp" width="140" height="304" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/hadith-books-dark.webp" width="140" height="304" loading="lazy" alt="Hadith Books list showing Sahih al-Bukhari, Sahih Muslim, and more">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/hadith-detail-light.webp" width="140" height="304" loading="lazy" alt="A Hadith detail page with Arabic text, English translation, and related Hadith">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/hadith-detail-dark.webp" width="140" height="304" loading="lazy" alt="A Hadith detail page with Arabic text, English translation, and related Hadith">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="everyone">
+  <div class="sec-inner">
+    <div class="sec-row reverse">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2c1.5 0 3 2.5 3.4 6H8.6C9 6.5 10.5 4 12 4zM8.6 14h6.8c-.4 3.5-1.9 6-3.4 6s-3-2.5-3.4-6zM4.3 10h3.3c.1-1.5.4-2.9.9-4.1A8.03 8.03 0 0 0 4.3 10zm0 2a8.03 8.03 0 0 0 4.2 6.1c-.5-1.2-.8-2.6-.9-4.1H4.3zm15.4-2a8.03 8.03 0 0 0-4.2-4.1c.5 1.2.8 2.6.9 4.1h3.3zm0 2h-3.3c-.1 1.5-.4 2.9-.9 4.1A8.03 8.03 0 0 0 19.7 12z" fill="currentColor"/></svg></div>
+        <h2><span data-en>Open to everyone — no prior knowledge needed.</span><span data-ar>مفتوح للجميع — بلا حاجة لمعرفة مسبقة.</span></h2>
+        <p class="sec-sub"><span data-en>Explore introductory topics that explain Islamic beliefs and teachings, in English, whatever your background. Read the Quran in English alongside the Arabic, with tafsir to explain meaning and context — at your own pace.</span><span data-ar>استكشف مواضيع تمهيدية تشرح العقائد والتعاليم الإسلامية، بالإنجليزية، مهما كانت خلفيتك. اقرأ القرآن بالإنجليزية جنبًا إلى جنب مع العربية، مع التفسير لتوضيح المعنى والسياق — في وقتك الخاص.</span></p>
+        <ul class="bullets">
+          <li><span data-en>Introductory topics covering core Islamic beliefs and teachings (English)</span><span data-ar>مواضيع تمهيدية تغطي العقائد والتعاليم الإسلامية الأساسية (بالإنجليزية)</span></li>
+          <li><span data-en>Read the Quran in English alongside the Arabic, with tafsir for meaning and context</span><span data-ar>اقرأ القرآن بالإنجليزية جنبًا إلى جنب مع العربية، مع التفسير لتوضيح المعنى والسياق</span></li>
+          <li><span data-en>Explore at your own pace — no prior knowledge needed</span><span data-ar>استكشف في وقتك الخاص — بلا حاجة لمعرفة مسبقة</span></li>
+        </ul>
+      </div>
+      <div class="sec-shot">
+        <img class="shot-light" src="/quran-atlas/assets/img/screenshots/everyone-topics-light.webp" width="140" height="304" loading="lazy" alt="Featured Topics for newcomers exploring Islamic beliefs and teachings">
+        <img class="shot-dark" src="/quran-atlas/assets/img/screenshots/everyone-topics-dark.webp" width="140" height="304" loading="lazy" alt="Featured Topics for newcomers exploring Islamic beliefs and teachings">
+      </div>
     </div>
   </div>
 </section>
