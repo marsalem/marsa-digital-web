@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Not a security control — the actual control is the session/auth
+     layer in api/admin-ui/*.js (see lib/adminSession.js). This, plus
+     quran-atlas/robots.txt's own Disallow entry, just keep this page out
+     of search indexes and automated crawling; neither stops a direct
+     request from anyone who knows the URL, which is why the real gate
+     lives server-side. -->
+<meta name="robots" content="noindex,nofollow" />
+<title>Quran Atlas — Admin</title>
+<script>
+// Applied BEFORE the stylesheet below ever paints anything — a synchronous
+// inline script in <head> runs during HTML parsing, well before <body> is
+// rendered, so this never produces a flash of the wrong theme. Reads the
+// same key the toggle button writes (see the bottom <script>). Absent/
+// invalid value intentionally falls through to no attribute at all, which
+// is exactly what the CSS below treats as "dark" — dark stays the default,
+// unchanged from this page's only prior appearance.
+(function () {
+  try {
+    var saved = localStorage.getItem('qa_admin_theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  } catch (e) { /* localStorage unavailable (private mode, etc.) — just stays dark */ }
+})();
+</script>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0b0f1a;
+    --surface: #141a2a;
+    --surface-raised: #1e2740;
+    --border: #262f45;
+    --border-soft: #2a3450;
+    --divider: #202842;
+    --text: #e8ecf4;
+    --text-muted: #9aa6c4;
+    --text-dim: #c3c9db;
+    --text-block: #d7dbe8;
+    --accent: #3e7bfa;
+    --accent-contrast: #fff;
+    --danger: #c4453a;
+    --warn: #b4791f;
+    --ok: #52c77f;
+    --error: #ef6b61;
+    --notice: #c9a24a;
+    --preview-bg: #0e1422;
+    --link: #6fa3ff;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface-raised: #eef1f8;
+    --border: #dde2ee;
+    --border-soft: #cdd4e6;
+    --divider: #e3e7f1;
+    --text: #1a2133;
+    --text-muted: #5b6478;
+    --text-dim: #3f4760;
+    --text-block: #2b3350;
+    --accent: #3366e6;
+    --accent-contrast: #fff;
+    --danger: #c4453a;
+    --warn: #b4791f;
+    --ok: #1f8a4c;
+    --error: #b23327;
+    --notice: #8a6d1f;
+    --preview-bg: #f7f9fd;
+    --link: #2f5fd1;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 32px 20px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  .page-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  h1 { font-size: 20px; font-weight: 700; margin: 0; }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px;
+  }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  input[type="password"] {
+    flex: 1; background: var(--bg); border: 1px solid var(--border-soft); border-radius: 10px;
+    color: var(--text); padding: 10px 12px; font-size: 14px;
+  }
+  button {
+    font-family: inherit; font-size: 13.5px; font-weight: 600; border-radius: 10px;
+    border: none; padding: 10px 16px; cursor: pointer;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-contrast); }
+  .btn-secondary { background: var(--surface-raised); color: var(--text); border: 1px solid var(--border-soft); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-warn { background: var(--warn); color: #fff; }
+  button:disabled { opacity: .5; cursor: default; }
+
+  /* Visible on every interactive element, in both themes — a 2px gap
+     between the element and the ring means it reads clearly even on a
+     same-hued button (Take down's own red, Block creator's own amber),
+     not just on neutral surfaces. */
+  button:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 3px solid var(--accent); outline-offset: 2px;
+  }
+
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .theme-toggle .icon { font-size: 15px; line-height: 1; }
+
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; flex-wrap: wrap; }
+  .status { font-size: 13px; color: var(--text-muted); min-height: 1.2em; margin: 12px 0 0; }
+  .status.error { color: var(--error); }
+  .status.ok { color: var(--ok); }
+  .empty { color: var(--text-muted); font-size: 13.5px; padding: 20px 0; text-align: center; }
+
+  .reports-list { display: flex; flex-direction: column; gap: 14px; }
+  .report-card {
+    border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: var(--surface);
+  }
+  .report-meta {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px;
+  }
+  .reason-pill {
+    display: inline-block; background: var(--surface-raised); border: 1px solid var(--border-soft); border-radius: 999px;
+    padding: 3px 11px; font-size: 11.5px; font-weight: 600; white-space: nowrap;
+  }
+  .report-time { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; }
+  .share-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: var(--text-muted);
+    word-break: break-all;
+  }
+  .details-cell { margin: 0 0 14px; white-space: pre-wrap; word-break: break-word; color: var(--text-dim); font-size: 13px; }
+
+  /* Two visually separate groups: the quiet "view" action on its own,
+     the three state-changing actions together with enough gap between
+     them that adjacent buttons never feel like one mis-tap away from
+     each other — see this file's own header comment on why these three
+     specifically must never collapse into an overflow menu or shrink to
+     icon-only, at any width. */
+  .actions { display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .actions-group { display: flex; gap: 10px; flex-wrap: wrap; }
+  .toggle-preview-btn { background: transparent; color: var(--link); border: 1px solid var(--border-soft); }
+
+  @media (max-width: 560px) {
+    /* Below this width, stack the three consequential actions into full-
+       width rows instead of letting them wrap individually — a half-width
+       "Take down" sitting next to a half-width "Block creator" is exactly
+       the crowded, easy-to-mis-tap layout this is meant to avoid. */
+    .actions { flex-direction: column; align-items: stretch; }
+    .actions-group { flex-direction: column; }
+    .actions-group button, .actions > .toggle-preview-btn { width: 100%; }
+  }
+
+  .preview-panel {
+    margin-top: 14px; padding: 14px; border-radius: 10px;
+    background: var(--preview-bg); border: 1px solid var(--divider);
+  }
+  .preview-panel-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--text-muted); margin: 0 0 10px;
+  }
+  .preview-empty { color: var(--text-muted); font-size: 13px; margin: 0; }
+  .preview-error { color: var(--error); font-size: 13px; margin: 0; }
+  .preview-notice { color: var(--notice); font-size: 12px; margin-bottom: 10px; }
+  .preview-topic-name { font-size: 14px; font-weight: 700; margin: 0 0 4px; }
+  .preview-node { margin-bottom: 14px; padding-inline-start: 14px; border-inline-start: 2px solid var(--border); }
+  .preview-node .preview-node { margin-top: 10px; }
+  .preview-ref-list { margin: 4px 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--text-dim); }
+  .preview-ref-list li { padding: 2px 0; }
+  .preview-block { margin: 8px 0; font-size: 13px; color: var(--text-block); }
+  .preview-block h3 { font-size: 14.5px; margin: 0 0 4px; }
+  .preview-block h4 { font-size: 13.5px; margin: 0 0 4px; }
+  .preview-block table { width: auto; max-width: 100%; margin-top: 4px; border-collapse: collapse; }
+  .preview-block table td, .preview-block table th { border: 1px solid var(--border-soft); padding: 4px 8px; }
+  .preview-ayah, .preview-hadith { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
+  .preview-ayah .ref, .preview-hadith .ref { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .preview-image-placeholder { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px dashed var(--border-soft); border-radius: 8px; padding: 8px 10px; font-size: 12px; color: var(--text-muted); }
+  .preview-unsupported { color: var(--text-muted); font-style: italic; font-size: 12px; }
+  .preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .preview-link { color: var(--link); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="page-header">
+    <h1>Quran Atlas — Admin</h1>
+    <!-- Available before login too (toggle lives outside both panels) —
+         a UI preference like this has no reason to wait on auth state. -->
+    <button id="themeToggleBtn" type="button" class="btn-secondary theme-toggle">
+      <span class="icon" aria-hidden="true"></span>
+      <span class="theme-toggle-label"></span>
+    </button>
+  </div>
+
+  <div id="loginPanel" class="panel" hidden>
+    <form id="loginForm">
+      <div class="row">
+        <input type="password" id="passwordInput" placeholder="Password" autocomplete="current-password" autofocus />
+        <button type="submit" class="btn-primary">Sign in</button>
+      </div>
+      <p id="loginStatus" class="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <div id="appPanel" hidden>
+    <div class="topbar">
+      <span style="font-size:13px;color:var(--text-muted);">Open reports</span>
+      <div class="row">
+        <button id="refreshBtn" class="btn-secondary">Refresh</button>
+        <button id="logoutBtn" class="btn-secondary">Sign out</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div id="reportsList" class="reports-list" role="list" aria-label="Open reports"></div>
+      <div id="emptyState" class="empty" hidden>No open reports.</div>
+    </div>
+    <p id="actionStatus" class="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<script src="admin-preview.js"></script>
+<script>
+(function () {
+  // Every state-changing request carries this — see lib/adminSession.js's
+  // own CSRF_HEADER_NAME comment for why its mere presence is a
+  // meaningful CSRF defense (a plain cross-site form submission can't
+  // set an arbitrary header without a CORS preflight this API never
+  // allows).
+  var CSRF_HEADER = 'x-admin-ui-request';
+  var THEME_KEY = 'qa_admin_theme';
+
+  var loginPanel = document.getElementById('loginPanel');
+  var appPanel = document.getElementById('appPanel');
+  var loginForm = document.getElementById('loginForm');
+  var passwordInput = document.getElementById('passwordInput');
+  var loginStatus = document.getElementById('loginStatus');
+  var reportsList = document.getElementById('reportsList');
+  var emptyState = document.getElementById('emptyState');
+  var actionStatus = document.getElementById('actionStatus');
+  var refreshBtn = document.getElementById('refreshBtn');
+  var logoutBtn = document.getElementById('logoutBtn');
+  var themeToggleBtn = document.getElementById('themeToggleBtn');
+  var themeToggleIcon = themeToggleBtn.querySelector('.icon');
+  var themeToggleLabel = themeToggleBtn.querySelector('.theme-toggle-label');
+
+  // ── Theme toggle ──
+  // Visible label always names the CURRENT theme (so sighted users can
+  // see at a glance which mode is active); aria-label names the ACTION a
+  // click performs (the two deliberately say different things — "Dark"
+  // next to an icon is a status, "Switch to light theme" is an
+  // instruction, and a screen reader needs the latter, not the former).
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+  function applyThemeUI(theme) {
+    if (theme === 'light') {
+      themeToggleIcon.textContent = '☀️';
+      themeToggleLabel.textContent = 'Light';
+      themeToggleBtn.setAttribute('aria-label', 'Switch to dark theme');
+    } else {
+      themeToggleIcon.textContent = '🌙';
+      themeToggleLabel.textContent = 'Dark';
+      themeToggleBtn.setAttribute('aria-label', 'Switch to light theme');
+    }
+  }
+  applyThemeUI(currentTheme());
+  themeToggleBtn.addEventListener('click', function () {
+    var next = currentTheme() === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    applyThemeUI(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* preference just won't persist this session */ }
+  });
+
+  function showLogin() {
+    loginPanel.hidden = false;
+    appPanel.hidden = true;
+  }
+  function showApp() {
+    loginPanel.hidden = true;
+    appPanel.hidden = false;
+  }
+  function setActionStatus(msg, kind) {
+    actionStatus.textContent = msg || '';
+    actionStatus.className = 'status' + (kind ? ' ' + kind : '');
+  }
+  function reasonLabel(r) {
+    return ({
+      hate_speech: 'Hate speech', harassment: 'Harassment', sexual_content: 'Sexual content',
+      spam: 'Spam', other: 'Other',
+    })[r] || r;
+  }
+  // Every value below that came from a report record (reason, details,
+  // shareId, createdAt) is attached via textContent, never innerHTML —
+  // `details` specifically is reporter-supplied free text with no
+  // server-side content restriction beyond a length cap, so it must be
+  // treated as untrusted. textContent is immune to HTML/script injection
+  // by construction, regardless of what the string contains — no
+  // escaping function is needed, or can be forgotten, here.
+  function renderReports(reports) {
+    reportsList.innerHTML = '';
+    emptyState.hidden = reports.length > 0;
+    reports.forEach(function (r) {
+      var card = document.createElement('div');
+      card.className = 'report-card';
+      card.setAttribute('role', 'listitem');
+
+      var meta = document.createElement('div');
+      meta.className = 'report-meta';
+
+      var pill = document.createElement('span');
+      pill.className = 'reason-pill';
+      pill.textContent = reasonLabel(r.reason);
+      meta.appendChild(pill);
+
+      var time = document.createElement('span');
+      time.className = 'report-time';
+      time.textContent = r.createdAt ? new Date(r.createdAt).toLocaleString() : '—';
+      meta.appendChild(time);
+
+      var idSpan = document.createElement('span');
+      idSpan.className = 'share-id';
+      idSpan.textContent = r.shareId;
+      meta.appendChild(idSpan);
+
+      card.appendChild(meta);
+
+      var details = document.createElement('p');
+      details.className = 'details-cell';
+      details.textContent = r.details || '—';
+      card.appendChild(details);
+
+      var actions = document.createElement('div');
+      actions.className = 'actions';
+
+      var previewBtn = document.createElement('button');
+      previewBtn.className = 'toggle-preview-btn';
+      previewBtn.textContent = 'View reported content';
+      previewBtn.setAttribute('aria-expanded', 'false');
+      actions.appendChild(previewBtn);
+
+      // Dismiss/Take down/Block creator grouped together but kept as
+      // separate, fully-labeled, individually-colored buttons at every
+      // width — see this file's own .actions-group CSS comment for why
+      // these three never collapse into a menu or shrink to icons.
+      var actionGroup = document.createElement('div');
+      actionGroup.className = 'actions-group';
+
+      var dismissBtn = document.createElement('button');
+      dismissBtn.className = 'btn-secondary';
+      dismissBtn.textContent = 'Dismiss';
+      dismissBtn.addEventListener('click', function () { dismissReport(r.reportId); });
+      actionGroup.appendChild(dismissBtn);
+
+      var takedownBtn = document.createElement('button');
+      takedownBtn.className = 'btn-danger';
+      takedownBtn.textContent = 'Take down';
+      takedownBtn.addEventListener('click', function () { takedown(r.shareId, r.reportId); });
+      actionGroup.appendChild(takedownBtn);
+
+      var blockBtn = document.createElement('button');
+      blockBtn.className = 'btn-warn';
+      blockBtn.textContent = 'Block creator';
+      blockBtn.addEventListener('click', function () { blockCreator(r.shareId, r.reportId); });
+      actionGroup.appendChild(blockBtn);
+
+      actions.appendChild(actionGroup);
+      card.appendChild(actions);
+
+      // Preview panel — now INSIDE this report's own card (directly
+      // below its actions), not a separate row elsewhere in a list, so
+      // its association with this exact report is structural, not just
+      // positional. Same lazy-load-on-first-click behavior as before:
+      // built and fetched only once, on first expand, then just shown/
+      // hidden on later clicks. GET-only: see loadPreview's own comment
+      // for why this can never touch report/share state.
+      var previewPanel = document.createElement('div');
+      previewPanel.className = 'preview-panel';
+      previewPanel.hidden = true;
+      var previewLabel = document.createElement('p');
+      previewLabel.className = 'preview-panel-label';
+      previewLabel.textContent = 'Reported content';
+      previewPanel.appendChild(previewLabel);
+      var previewContainer = document.createElement('div');
+      previewPanel.appendChild(previewContainer);
+      card.appendChild(previewPanel);
+
+      var previewLoaded = false;
+      previewBtn.addEventListener('click', function () {
+        previewPanel.hidden = !previewPanel.hidden;
+        previewBtn.setAttribute('aria-expanded', previewPanel.hidden ? 'false' : 'true');
+        if (!previewPanel.hidden && !previewLoaded) {
+          previewLoaded = true;
+          loadPreview(r.shareId, previewContainer);
+        }
+      });
+
+      reportsList.appendChild(card);
+    });
+  }
+
+  // ── Report-content preview ──
+  //
+  // GET-only — this is the SAME public, unauthenticated endpoint the app
+  // itself already uses for every ordinary import (api/share/[id].js),
+  // reused here deliberately rather than a new admin-gated endpoint (see
+  // the implementation plan's own §2/§3 for the full reasoning): the
+  // stored payload contains nothing beyond what the original sharer
+  // included, the route has zero write path in it at all, and the admin
+  // already has the shareId from the report itself. Confirmed directly
+  // by reading api/share/[id].js + lib/shareService.js: deleteShare()
+  // performs a real Redis DEL on the exact same key getShare() reads —
+  // once a share is taken down (or naturally expires), this returns 404
+  // for everyone, with no secondary/stale read path anywhere in the
+  // codebase (verified by grep — lib/shareService.js is the only module
+  // that ever touches the `share:` key prefix).
+  //
+  // Every value rendered below is attached via textContent/explicit DOM
+  // construction, matching renderReports' own convention — report/share
+  // content is untrusted regardless of which report row it came from.
+  function loadPreview(shareId, container) {
+    container.innerHTML = '';
+    var loading = document.createElement('p');
+    loading.className = 'preview-empty';
+    loading.textContent = 'Loading…';
+    container.appendChild(loading);
+
+    fetch('/api/share/' + encodeURIComponent(shareId), { credentials: 'same-origin' })
+      .then(function (res) {
+        if (res.status === 404) {
+          container.innerHTML = '';
+          var gone = document.createElement('p');
+          gone.className = 'preview-error';
+          gone.textContent = 'This content is no longer available (expired or already removed).';
+          container.appendChild(gone);
+          return null;
+        }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (payload) {
+        if (payload === null) return; // 404 already handled above
+        container.innerHTML = '';
+        renderPreview(AdminPreview.parseSharePayload(payload), container);
+      })
+      .catch(function (e) {
+        container.innerHTML = '';
+        var err = document.createElement('p');
+        err.className = 'preview-error';
+        err.textContent = 'Could not load preview: ' + e.message;
+        container.appendChild(err);
+      });
+  }
+
+  function appendTruncatedNotice(container) {
+    var notice = document.createElement('p');
+    notice.className = 'preview-notice';
+    notice.textContent = 'Content truncated for preview — this item is unusually large or deeply nested.';
+    container.appendChild(notice);
+  }
+
+  function renderPreview(parsed, container) {
+    if (parsed.kind === 'topic') {
+      if (parsed.truncated) appendTruncatedNotice(container);
+      if (!parsed.result.tree) {
+        var bad = document.createElement('p');
+        bad.className = 'preview-error';
+        bad.textContent = 'This content couldn\'t be previewed (unrecognized format).';
+        container.appendChild(bad);
+        return;
+      }
+      container.appendChild(renderNodePreview(parsed.result.tree));
+      return;
+    }
+    if (parsed.kind === 'card') {
+      if (parsed.truncated) appendTruncatedNotice(container);
+      parsed.cards.forEach(function (card) { container.appendChild(renderCardPreview(card)); });
+      return;
+    }
+    if (parsed.kind === 'playlist') {
+      if (parsed.truncated) appendTruncatedNotice(container);
+      container.appendChild(renderPlaylistPreview(parsed.name, parsed.items));
+      return;
+    }
+    var unknown = document.createElement('p');
+    unknown.className = 'preview-error';
+    unknown.textContent = 'This content couldn\'t be previewed (unrecognized format).';
+    container.appendChild(unknown);
+  }
+
+  function renderRefList(refs, formatFn) {
+    var ul = document.createElement('ul');
+    ul.className = 'preview-ref-list';
+    refs.forEach(function (ref) {
+      var li = document.createElement('li');
+      li.textContent = formatFn(ref);
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+
+  function renderNodePreview(node) {
+    var wrap = document.createElement('div');
+    wrap.className = 'preview-node';
+
+    var name = document.createElement('p');
+    name.className = 'preview-topic-name';
+    name.textContent = node.name || '(untitled)';
+    wrap.appendChild(name);
+
+    if (node.verses.length) wrap.appendChild(renderRefList(node.verses, AdminPreview.formatVerseRefLabel));
+    if (node.hadiths.length) wrap.appendChild(renderRefList(node.hadiths, AdminPreview.formatHadithRefLabel));
+
+    node.blocks.forEach(function (block) { wrap.appendChild(renderBlockPreview(block)); });
+
+    node.children.forEach(function (child) { wrap.appendChild(renderNodePreview(child)); });
+
+    return wrap;
+  }
+
+  // Every block field rendered here is untrusted report content — always
+  // textContent, never innerHTML. Image blocks NEVER produce an <img>
+  // element at all, regardless of the block's own `uri` value: that
+  // field is already guaranteed stripped to '' server-side for anything
+  // sanitized by lib/noteSanitizer.js, but this renderer doesn't rely on
+  // that guarantee holding for legacy/malformed data — it simply never
+  // has a code path that reads `uri` into a src attribute in the first
+  // place, so there is nothing to bypass.
+  function renderBlockPreview(block) {
+    var el = document.createElement('div');
+    el.className = 'preview-block';
+    if (!block || typeof block !== 'object' || !AdminPreview.isKnownBlockType(block.type)) {
+      el.className += ' preview-unsupported';
+      el.textContent = '(unsupported block' + (block && block.type ? ': ' + block.type : '') + ')';
+      return el;
+    }
+    switch (block.type) {
+      case 'heading': {
+        var h = document.createElement(block.level === 2 ? 'h4' : 'h3');
+        h.textContent = block.text || '';
+        el.appendChild(h);
+        break;
+      }
+      case 'text': {
+        var p = document.createElement('p');
+        p.textContent = block.text || '';
+        el.appendChild(p);
+        break;
+      }
+      case 'ayah': {
+        var ayahBox = document.createElement('div');
+        ayahBox.className = 'preview-ayah';
+        var ar = document.createElement('p'); ar.textContent = block.arabic || '';
+        var en = document.createElement('p'); en.textContent = block.english || '';
+        var ref = document.createElement('p'); ref.className = 'ref';
+        ref.textContent = (block.surahName || '') + ' ' + block.surah + ':' + block.ayah + (block.ayahEnd ? '-' + block.ayahEnd : '');
+        ayahBox.appendChild(ar); ayahBox.appendChild(en); ayahBox.appendChild(ref);
+        el.appendChild(ayahBox);
+        break;
+      }
+      case 'hadith': {
+        var hadithBox = document.createElement('div');
+        hadithBox.className = 'preview-hadith';
+        var har = document.createElement('p'); har.textContent = block.arabic || '';
+        var hen = document.createElement('p'); hen.textContent = block.english || '';
+        var href = document.createElement('p'); href.className = 'ref';
+        href.textContent = (block.bookName || block.bookId || '') + ' #' + block.hadithId + (block.grade ? ' — ' + block.grade : '');
+        hadithBox.appendChild(har); hadithBox.appendChild(hen); hadithBox.appendChild(href);
+        el.appendChild(hadithBox);
+        break;
+      }
+      case 'table': {
+        if (block.caption) { var cap = document.createElement('p'); cap.textContent = block.caption; el.appendChild(cap); }
+        var table = document.createElement('table');
+        (block.rows || []).forEach(function (row) {
+          var tr2 = document.createElement('tr');
+          row.forEach(function (cell) {
+            var td2 = document.createElement('td');
+            td2.textContent = cell;
+            tr2.appendChild(td2);
+          });
+          table.appendChild(tr2);
+        });
+        el.appendChild(table);
+        break;
+      }
+      case 'url': {
+        if (AdminPreview.isSafeHttpUrl(block.url)) {
+          var a = document.createElement('a');
+          a.className = 'preview-link';
+          a.href = block.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = block.title || block.url;
+          el.appendChild(a);
+        } else {
+          var unsafeUrl = document.createElement('p');
+          unsafeUrl.textContent = (block.title ? block.title + ' — ' : '') + '(link not shown: unsupported scheme)';
+          el.appendChild(unsafeUrl);
+        }
+        break;
+      }
+      case 'image': {
+        var placeholder = document.createElement('div');
+        placeholder.className = 'preview-image-placeholder';
+        placeholder.textContent = '🖼 Image' + (block.caption ? ': ' + block.caption : ' (not included in preview)');
+        el.appendChild(placeholder);
+        break;
+      }
+      case 'mention': {
+        var mention = document.createElement('p');
+        mention.textContent = '→ ' + (block.targetTitleSnapshot || '(linked topic)');
+        el.appendChild(mention);
+        break;
+      }
+      case 'bulletList':
+      case 'numberedList': {
+        var list = document.createElement(block.type === 'numberedList' ? 'ol' : 'ul');
+        (block.items || []).forEach(function (item) {
+          var li = document.createElement('li');
+          li.textContent = item;
+          list.appendChild(li);
+        });
+        el.appendChild(list);
+        break;
+      }
+      case 'toggle': {
+        var title = document.createElement('p');
+        title.textContent = block.title || '';
+        title.style.fontWeight = '700';
+        var body = document.createElement('p');
+        body.textContent = block.body || '';
+        el.appendChild(title);
+        el.appendChild(body);
+        break;
+      }
+    }
+    return el;
+  }
+
+  function renderCardPreview(card) {
+    var wrap = document.createElement('div');
+    wrap.className = 'preview-card';
+    var title = document.createElement('p');
+    title.className = 'preview-topic-name';
+    title.textContent = (card && card.title) || '(untitled card)';
+    wrap.appendChild(title);
+    if (card && card.scenario) {
+      var scenario = document.createElement('p');
+      scenario.textContent = card.scenario;
+      wrap.appendChild(scenario);
+    }
+    if (card && Array.isArray(card.verseRefs) && card.verseRefs.length) {
+      wrap.appendChild(renderRefList(card.verseRefs, AdminPreview.formatVerseRefLabel));
+    }
+    if (card && Array.isArray(card.hadithRefs) && card.hadithRefs.length) {
+      wrap.appendChild(renderRefList(card.hadithRefs, AdminPreview.formatHadithRefLabel));
+    }
+    return wrap;
+  }
+
+  function renderPlaylistPreview(name, items) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('p');
+    title.className = 'preview-topic-name';
+    title.textContent = name || '(untitled playlist)';
+    wrap.appendChild(title);
+    wrap.appendChild(renderRefList(items, AdminPreview.formatPlaylistItemLabel));
+    return wrap;
+  }
+
+  function apiFetch(path, options) {
+    options = options || {};
+    options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+    if (options.method && options.method !== 'GET') {
+      options.headers[CSRF_HEADER] = '1';
+    }
+    options.credentials = 'same-origin';
+    return fetch(path, options);
+  }
+
+  function loadReports() {
+    return apiFetch('/api/admin-ui/reports').then(function (res) {
+      if (res.status === 401) { showLogin(); return null; }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (data) {
+      if (!data) return;
+      showApp();
+      renderReports(data.reports);
+    }).catch(function (e) {
+      setActionStatus('Could not load reports: ' + e.message, 'error');
+    });
+  }
+
+  function dismissReport(reportId) {
+    setActionStatus('Dismissing…');
+    apiFetch('/api/admin-ui/dismiss-report', { method: 'POST', body: JSON.stringify({ reportId: reportId }) })
+      .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function () { setActionStatus('Report dismissed.', 'ok'); return loadReports(); })
+      .catch(function (e) { setActionStatus('Could not dismiss report: ' + e.message, 'error'); });
+  }
+
+  function takedown(shareId, reportId) {
+    if (!window.confirm('Take down this shared content? This cannot be undone.')) return;
+    setActionStatus('Taking down…');
+    apiFetch('/api/admin-ui/takedown', { method: 'POST', body: JSON.stringify({ shareId: shareId, reportId: reportId }) })
+      .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function () { setActionStatus('Content taken down.', 'ok'); return loadReports(); })
+      .catch(function (e) { setActionStatus('Could not take down content: ' + e.message, 'error'); });
+  }
+
+  function blockCreator(shareId, reportId) {
+    if (!window.confirm('Block this creator and disable all their other currently-live shares?')) return;
+    setActionStatus('Blocking creator…');
+    apiFetch('/api/admin-ui/block-creator', { method: 'POST', body: JSON.stringify({ shareId: shareId, reportId: reportId }) })
+      .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function (data) {
+        if (!data.blocked) {
+          // Not an error — the share simply has no recorded creator
+          // identity (predates creator-tracking, or an app version that
+          // never sent a token). Surfaced plainly, not as a failure.
+          setActionStatus(data.reason || 'No creator identity is recorded for this share — nothing to block.', 'error');
+          return;
+        }
+        setActionStatus('Creator blocked. ' + (data.disabledShareCount || 0) + ' other share(s) disabled.', 'ok');
+        return loadReports();
+      })
+      .catch(function (e) { setActionStatus('Could not block creator: ' + e.message, 'error'); });
+  }
+
+  loginForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    loginStatus.textContent = '';
+    apiFetch('/api/admin-ui/login', { method: 'POST', body: JSON.stringify({ password: passwordInput.value }) })
+      .then(function (res) {
+        // Each status handled on its own terms — a prior version lumped
+        // every non-ok response (including 503, api/admin-ui/login.js's
+        // own fail-closed response when the rate limiter itself can't be
+        // checked) into "Incorrect password," which actively hid a
+        // Redis-outage signal behind a wrong, misleading message.
+        if (res.status === 429) { loginStatus.textContent = 'Too many attempts. Please wait and try again.'; return; }
+        if (res.status === 503) { loginStatus.textContent = 'Login is temporarily unavailable. Please try again shortly.'; return; }
+        if (res.status === 401) { loginStatus.textContent = 'Incorrect password.'; return; }
+        if (!res.ok) { loginStatus.textContent = 'Could not sign in. Please try again.'; return; }
+        passwordInput.value = '';
+        return loadReports();
+      })
+      .catch(function () { loginStatus.textContent = 'Could not sign in. Please try again.'; });
+  });
+
+  refreshBtn.addEventListener('click', function () { setActionStatus(''); loadReports(); });
+
+  logoutBtn.addEventListener('click', function () {
+    apiFetch('/api/admin-ui/logout', { method: 'POST' }).finally(function () { showLogin(); });
+  });
+
+  // On load: try the reports endpoint directly — a valid existing
+  // session (cookie still live) goes straight to the app view; a 401
+  // falls back to the login form. Avoids a separate "am I logged in"
+  // endpoint for a single-operator tool.
+  loadReports().then(function () {
+    if (appPanel.hidden) showLogin();
+  });
+})();
+</script>
+</body>
+</html>
