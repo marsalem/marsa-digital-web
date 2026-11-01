@@ -167,6 +167,7 @@
     margin-top: 14px; padding: 14px; border-radius: 10px;
     background: var(--preview-bg); border: 1px solid var(--divider);
   }
+  .blocked-creators-panel { margin-top: 20px; }
   .preview-panel-label {
     font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
     color: var(--text-muted); margin: 0 0 10px;
@@ -218,6 +219,7 @@
     <div class="topbar">
       <span style="font-size:13px;color:var(--text-muted);">Open reports</span>
       <div class="row">
+        <button id="blockedCreatorsBtn" class="btn-secondary" aria-expanded="false">Blocked creators</button>
         <button id="refreshBtn" class="btn-secondary">Refresh</button>
         <button id="logoutBtn" class="btn-secondary">Sign out</button>
       </div>
@@ -226,6 +228,15 @@
       <div id="reportsList" class="reports-list" role="list" aria-label="Open reports"></div>
       <div id="emptyState" class="empty" hidden>No open reports.</div>
     </div>
+
+    <!-- Lazy-loaded on first expand, same convention as a report's own
+         "View reported content" preview panel below. -->
+    <div id="blockedCreatorsPanel" class="panel blocked-creators-panel" hidden>
+      <p class="preview-panel-label">Blocked creators</p>
+      <div id="blockedCreatorsList" class="reports-list" role="list" aria-label="Blocked creators"></div>
+      <div id="blockedCreatorsEmpty" class="empty" hidden>No blocked creators.</div>
+    </div>
+
     <p id="actionStatus" class="status" aria-live="polite"></p>
   </div>
 </div>
@@ -251,6 +262,10 @@
   var actionStatus = document.getElementById('actionStatus');
   var refreshBtn = document.getElementById('refreshBtn');
   var logoutBtn = document.getElementById('logoutBtn');
+  var blockedCreatorsBtn = document.getElementById('blockedCreatorsBtn');
+  var blockedCreatorsPanel = document.getElementById('blockedCreatorsPanel');
+  var blockedCreatorsList = document.getElementById('blockedCreatorsList');
+  var blockedCreatorsEmpty = document.getElementById('blockedCreatorsEmpty');
   var themeToggleBtn = document.getElementById('themeToggleBtn');
   var themeToggleIcon = themeToggleBtn.querySelector('.icon');
   var themeToggleLabel = themeToggleBtn.querySelector('.theme-toggle-label');
@@ -739,6 +754,99 @@
       })
       .catch(function (e) { setActionStatus('Could not block creator: ' + e.message, 'error'); });
   }
+
+  // ── Blocked Creators ──
+  //
+  // Every value here comes from GET /api/admin-ui/blocked-creators,
+  // which never returns a real creator token (see lib/creatorBlock.js's
+  // own header) — only the opaque blockId minted at block time. The
+  // displayed "Creator #..." identifier is a prefix of that same
+  // opaque, non-sensitive id, never anything derived from or
+  // resembling the real secret.
+  function renderBlockedCreators(creators) {
+    blockedCreatorsList.innerHTML = '';
+    blockedCreatorsEmpty.hidden = creators.length > 0;
+    creators.forEach(function (c) {
+      var card = document.createElement('div');
+      card.className = 'report-card';
+      card.setAttribute('role', 'listitem');
+
+      var meta = document.createElement('div');
+      meta.className = 'report-meta';
+
+      var idSpan = document.createElement('span');
+      idSpan.className = 'share-id';
+      idSpan.textContent = 'Creator #' + c.blockId.slice(0, 8);
+      meta.appendChild(idSpan);
+
+      var dateSpan = document.createElement('span');
+      dateSpan.className = 'report-time';
+      dateSpan.textContent = c.blockedAt ? ('Blocked ' + new Date(c.blockedAt).toLocaleString()) : 'Blocked —';
+      meta.appendChild(dateSpan);
+
+      var countPill = document.createElement('span');
+      countPill.className = 'reason-pill';
+      countPill.textContent = c.disabledShareCount + ' share' + (c.disabledShareCount === 1 ? '' : 's') + ' disabled';
+      meta.appendChild(countPill);
+
+      card.appendChild(meta);
+
+      var actions = document.createElement('div');
+      actions.className = 'actions';
+      var unblockBtn = document.createElement('button');
+      unblockBtn.className = 'btn-warn';
+      unblockBtn.textContent = 'Unblock';
+      unblockBtn.addEventListener('click', function () { unblockCreator(c.blockId, unblockBtn); });
+      actions.appendChild(unblockBtn);
+      card.appendChild(actions);
+
+      blockedCreatorsList.appendChild(card);
+    });
+  }
+
+  function loadBlockedCreators() {
+    return apiFetch('/api/admin-ui/blocked-creators').then(function (res) {
+      if (res.status === 401) { showLogin(); return null; }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (data) {
+      if (!data) return;
+      renderBlockedCreators(data.creators);
+    }).catch(function (e) {
+      setActionStatus('Could not load blocked creators: ' + e.message, 'error');
+    });
+  }
+
+  function unblockCreator(blockId, buttonEl) {
+    if (!window.confirm('Unblock this creator? They will be able to share content again, and any of their shares disabled by this block will be restored.')) return;
+    buttonEl.disabled = true;
+    setActionStatus('Unblocking…');
+    apiFetch('/api/admin-ui/unblock-creator', { method: 'POST', body: JSON.stringify({ blockId: blockId }) })
+      .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function (data) {
+        if (!data.unblocked) {
+          // Not an error — the block was already lifted or had already
+          // expired by the time this was clicked. Surfaced plainly,
+          // same convention as Block Creator's own blocked:false case.
+          setActionStatus(data.reason || 'This creator is no longer blocked.', 'error');
+          buttonEl.disabled = false;
+          return;
+        }
+        setActionStatus('Creator unblocked. ' + (data.restoredShareCount || 0) + ' share(s) restored.', 'ok');
+        return loadBlockedCreators();
+      })
+      .catch(function (e) {
+        setActionStatus('Could not unblock creator: ' + e.message, 'error');
+        buttonEl.disabled = false;
+      });
+  }
+
+  blockedCreatorsBtn.addEventListener('click', function () {
+    var willShow = blockedCreatorsPanel.hidden;
+    blockedCreatorsPanel.hidden = !willShow;
+    blockedCreatorsBtn.setAttribute('aria-expanded', willShow ? 'true' : 'false');
+    if (willShow) loadBlockedCreators();
+  });
 
   loginForm.addEventListener('submit', function (e) {
     e.preventDefault();

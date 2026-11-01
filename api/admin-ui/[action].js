@@ -1,19 +1,22 @@
 // api/admin-ui/[action].js
-// Marsa Digital web — the SOLE Vercel Function serving all six admin
-// moderation UI endpoints. Previously six separate function files under
+// Marsa Digital web — the SOLE Vercel Function serving every admin
+// moderation UI endpoint. Originally six separate function files under
 // api/admin-ui/ (one per endpoint); consolidated into this single
 // dynamic-segment route specifically to stay under the Hobby plan's
-// 12-Serverless-Function-per-deployment cap — adding the dashboard's six
-// routes as separate functions pushed the project to 15; this brings it
-// back to 10 (see the implementation plan for the exact count).
+// 12-Serverless-Function-per-deployment cap. Adding Unblock Creator's
+// two new endpoints (blocked-creators, unblock-creator) to this SAME
+// dispatcher, rather than as new api/ files, is exactly why that
+// consolidation was worth doing — the function count stays at 10
+// regardless of how many admin-ui actions this grows to.
 //
 // Same zero-config dynamic-segment mechanism already proven live in this
 // project by api/share/[id].js — no vercel.json changes needed. Vercel
 // matches the single path segment after /api/admin-ui/ and exposes it
-// as req.query.action. All six public URLs are UNCHANGED:
+// as req.query.action. All public URLs are UNCHANGED:
 //   /api/admin-ui/login, /logout, /reports, /dismiss-report, /takedown,
-//   /block-creator — quran-atlas/admin.html's own fetch calls are
-//   untouched by this refactor, and need no changes.
+//   /block-creator, /blocked-creators, /unblock-creator —
+//   quran-atlas/admin.html's own fetch calls need no changes for the six
+//   pre-existing ones; the two new ones are additive.
 //
 // WHY THIS IS SAFE — every one of the six handlers below is REQUIRED
 // from lib/adminUiHandlers/, NOT reimplemented. Moving them out of api/
@@ -44,6 +47,8 @@ const reportsHandler = require('../../lib/adminUiHandlers/reports.js');
 const dismissReportHandler = require('../../lib/adminUiHandlers/dismiss-report.js');
 const takedownHandler = require('../../lib/adminUiHandlers/takedown.js');
 const blockCreatorHandler = require('../../lib/adminUiHandlers/block-creator.js');
+const blockedCreatorsHandler = require('../../lib/adminUiHandlers/blocked-creators.js');
+const unblockCreatorHandler = require('../../lib/adminUiHandlers/unblock-creator.js');
 
 const ACTIONS = Object.assign(Object.create(null), {
   login: loginHandler,
@@ -52,6 +57,8 @@ const ACTIONS = Object.assign(Object.create(null), {
   'dismiss-report': dismissReportHandler,
   takedown: takedownHandler,
   'block-creator': blockCreatorHandler,
+  'blocked-creators': blockedCreatorsHandler,
+  'unblock-creator': unblockCreatorHandler,
 });
 
 module.exports = async function handler(req, res) {
