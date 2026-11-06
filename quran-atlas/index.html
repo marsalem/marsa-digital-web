@@ -53,22 +53,29 @@ html[data-lang="ar"] .brand img { transform: none; }
    buttons as its own direct children) — now that column moves to
    .hero-copy, one of two children of the new .hero-row below, sitting
    beside .hero-shots.
-   flex:1 1 0 + align-items:flex-start (STRETCHES to fill whatever space
-   is left after .hero-shots' own fixed width, left-aligned within it) —
-   NOT the centered/auto-width column this used to be. That auto-width
-   version measured as centered (.hero-row's own box was symmetric) but
-   didn't READ as centered: text sat centered inside ITS OWN narrower
-   box, leaving visible blank margin before the glyphs even started,
-   while .hero-shots' two images fill their box edge-to-edge with none —
-   so the actual INK was asymmetric even though the abstract boxes
-   weren't, which is what got reported as "text centered in its column,
-   image flush right." flex:1 1 0 + left-align is exactly .sec-copy's own
-   pattern below (that pattern has never had this complaint) — matching
-   it here, rather than re-deriving a bespoke centering fix, is also
-   what makes alternating hero with the .sec-row sections underneath it
-   (per explicit direction) a straightforward reverse-class toggle later
-   instead of two different layout systems to keep in sync. */
-.hero-copy { flex:1 1 0; min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:18px; }
+   flex:1 1 0 (STRETCHES to fill whatever space is left after .hero-
+   shots' own fixed width) + align-items:center (content centered WITHIN
+   that now-full-width column) — per explicit "centered both in
+   individual columns and across the entire screen" direction. An
+   EARLIER version kept the original auto-width/content-hugging column
+   (flex:0 1 auto) instead of stretching it: that measured as centered
+   (.hero-row's own box was symmetric) but didn't READ as centered —
+   text sat centered inside a box noticeably WIDER than its own actual
+   rendered width (max-width:600 on h1 below, but the 2-line wrapped
+   text itself is narrower), leaving visible blank margin before the
+   glyphs even started, while .hero-shots' two images fill their box
+   edge-to-edge with none — so the actual INK was asymmetric even though
+   the abstract boxes weren't. A LATER version fixed that by left-
+   aligning instead of centering (matching .sec-copy's own pattern
+   below) — correctly balanced, but lost the hero's own centered-text
+   look and made it "look like each other block" below it, reported
+   directly. flex:1 1 0 here keeps that version's correctness (the
+   column's box now exactly equals its real allotted space, zero slack,
+   so centering content within it is centering it across the true
+   available width — not an arbitrary oversized max-width) while
+   restoring align-items:center/text-align:center so the TEXT itself
+   still reads the way it always has. */
+.hero-copy { flex:1 1 0; min-width:0; display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; }
 /* Light mode only — same recolor as base.css's .brand img, see that
    rule's own comment (saturate/brightness only, no hue-rotate — an
    earlier version's hue-rotate shifted this into reading as teal).
@@ -78,19 +85,10 @@ html[data-lang="ar"] .brand img { transform: none; }
 :root[data-theme="dark"] .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); }
 @media (prefers-color-scheme: dark) { .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); } }
 :root[data-theme="light"] .hero .mark { filter: saturate(0.70) brightness(0.90) drop-shadow(0 14px 28px rgba(20,60,140,0.35)); }
-/* text-align:left + html[data-lang="ar"] override — same explicit
-   per-element pattern .sec-sub/.bullets already use below, rather than
-   relying on the inherited default (which would already resolve the
-   same way, just less explicitly matching the rest of this file). */
-.hero h1 { font-size:34px; line-height:1.18; letter-spacing:-0.01em; font-weight:500; max-width:600px; color: var(--hero-title); text-align:left; }
-html[data-lang="ar"] .hero h1 { font-weight:500; text-align:right; }
-.hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); text-align:left; }
-html[data-lang="ar"] .hero .sub { font-size:18.5px; text-align:right; }
-/* store-buttons' own justify-content:center (below) centers the two
-   badges WITHIN that row's own content width — harmless no-op now that
-   the row isn't stretched/centered itself, hugging its own content width
-   like every other child of this now flex-start-aligned column. */
-
+.hero h1 { font-size:34px; line-height:1.18; letter-spacing:-0.01em; font-weight:500; max-width:600px; color: var(--hero-title); }
+html[data-lang="ar"] .hero h1 { font-weight:500; }
+.hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); }
+html[data-lang="ar"] .hero .sub { font-size:18.5px; }
 /* Hero row — wraps .hero-copy and .hero-shots beside it. Row on wide
    viewports, column (text above images) on narrow ones — see this
    file's shared max-width:760px block further down, same breakpoint/
