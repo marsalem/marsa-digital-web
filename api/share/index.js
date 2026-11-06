@@ -34,13 +34,30 @@ module.exports = async function handler(req, res) {
 
   // Creator-token block check — see lib/creatorBlock.js's own header for
   // the full design (backward compatibility, what this does/doesn't
-  // achieve). The rejection message is deliberately IDENTICAL to the
-  // content-filter rejection below, so a blocked creator can't use the
-  // response text to confirm "I'm blocked" vs. "my content was filtered."
+  // achieve).
+  //
+  // MESSAGE — deliberately DISTINCT from the content-filter rejection
+  // below, a reversal of this endpoint's prior anti-enumeration posture
+  // (the two used to return byte-identical text specifically so a
+  // blocked creator couldn't tell which happened). That tradeoff was
+  // explicitly revisited and approved: a blocked creator being told
+  // "try again later" is actively misleading — retrying can never
+  // succeed — and this service would rather be honest about a
+  // permanent-until-reversed account restriction than preserve that
+  // ambiguity. `blocked: true` is a plain boolean flag (same convention
+  // this codebase already uses for block-creator/unblock-creator's own
+  // responses), not a new leak — it carries no token, no Redis key name,
+  // no report content, nothing beyond "this is specifically the
+  // creator-block condition." Content-filter rejections and any other
+  // failure (rate limit, validation, 5xx) are UNCHANGED below — this
+  // branch is the only one that gets the new text.
   const creatorTokenHeader = req.headers['x-creator-token'];
   const creatorToken = Array.isArray(creatorTokenHeader) ? creatorTokenHeader[0] : creatorTokenHeader;
   if (await isCreatorBlocked(creatorToken)) {
-    res.status(400).json({ error: 'This content can\'t be shared.' });
+    res.status(400).json({
+      error: 'Sharing has been disabled for this account. If you believe this was done in error, please contact us.',
+      blocked: true,
+    });
     return;
   }
 

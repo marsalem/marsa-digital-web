@@ -14,9 +14,12 @@
 // matches the single path segment after /api/admin-ui/ and exposes it
 // as req.query.action. All public URLs are UNCHANGED:
 //   /api/admin-ui/login, /logout, /reports, /dismiss-report, /takedown,
-//   /block-creator, /blocked-creators, /unblock-creator —
-//   quran-atlas/admin.html's own fetch calls need no changes for the six
-//   pre-existing ones; the two new ones are additive.
+//   /block-creator, /blocked-creators, /unblock-creator,
+//   /creator-trigger-content — each new action added here (most
+//   recently creator-trigger-content, for re-viewing a blocked
+//   creator's reported content) is exactly why this consolidation was
+//   worth doing: the function count stays at 10 regardless of how many
+//   admin-ui actions this dispatcher grows to.
 //
 // WHY THIS IS SAFE — every one of the six handlers below is REQUIRED
 // from lib/adminUiHandlers/, NOT reimplemented. Moving them out of api/
@@ -49,6 +52,7 @@ const takedownHandler = require('../../lib/adminUiHandlers/takedown.js');
 const blockCreatorHandler = require('../../lib/adminUiHandlers/block-creator.js');
 const blockedCreatorsHandler = require('../../lib/adminUiHandlers/blocked-creators.js');
 const unblockCreatorHandler = require('../../lib/adminUiHandlers/unblock-creator.js');
+const creatorTriggerContentHandler = require('../../lib/adminUiHandlers/creator-trigger-content.js');
 
 const ACTIONS = Object.assign(Object.create(null), {
   login: loginHandler,
@@ -59,6 +63,7 @@ const ACTIONS = Object.assign(Object.create(null), {
   'block-creator': blockCreatorHandler,
   'blocked-creators': blockedCreatorsHandler,
   'unblock-creator': unblockCreatorHandler,
+  'creator-trigger-content': creatorTriggerContentHandler,
 });
 
 module.exports = async function handler(req, res) {

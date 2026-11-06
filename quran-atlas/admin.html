@@ -108,8 +108,10 @@
 
   /* Visible on every interactive element, in both themes — a 2px gap
      between the element and the ring means it reads clearly even on a
-     same-hued button (Take down's own red, Block creator's own amber),
-     not just on neutral surfaces. */
+     same-hued button (Take down's own amber, Block creator's own red —
+     a deliberate swap from the original red/amber pairing, see
+     takedownBtn/blockBtn's own comments below for why), not just on
+     neutral surfaces. */
   button:focus-visible, a:focus-visible, input:focus-visible {
     outline: 3px solid var(--accent); outline-offset: 2px;
   }
@@ -167,7 +169,22 @@
     margin-top: 14px; padding: 14px; border-radius: 10px;
     background: var(--preview-bg); border: 1px solid var(--divider);
   }
-  .blocked-creators-panel { margin-top: 20px; }
+  /* The Blocked Creators entry card — deliberately its own full-width
+     .panel, placed ABOVE the Open reports list (not a small button
+     buried in the topbar row next to Refresh/Sign out), so "there is a
+     list of blocked creators, and here's how many" is visible on the
+     dashboard without having to click anything first. */
+  .blocked-creators-entry { margin-bottom: 20px; }
+  .blocked-creators-entry-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .blocked-creators-entry-title { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+  .blocked-creators-entry-sub { font-size: 13px; color: var(--text-muted); margin: 0; }
+  .blocked-creators-panel { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--divider); }
+  .blocked-creator-reasons { display: flex; gap: 6px; flex-wrap: wrap; }
+  .blocked-creator-triggers { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .blocked-creator-triggers .report-card { padding: 12px; }
+  .reason-pill.reason-pill-muted { color: var(--text-muted); font-weight: 500; font-style: italic; background: transparent; }
   .preview-panel-label {
     font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
     color: var(--text-muted); margin: 0 0 10px;
@@ -219,22 +236,33 @@
     <div class="topbar">
       <span style="font-size:13px;color:var(--text-muted);">Open reports</span>
       <div class="row">
-        <button id="blockedCreatorsBtn" class="btn-secondary" aria-expanded="false">Blocked creators</button>
         <button id="refreshBtn" class="btn-secondary">Refresh</button>
         <button id="logoutBtn" class="btn-secondary">Sign out</button>
       </div>
     </div>
+
+    <!-- Its own full-width card, ABOVE Open reports — see this file's own
+         .blocked-creators-entry CSS comment for why this replaced a small
+         toggle button buried in the topbar. Kept loaded (not lazy) so the
+         summary line below is accurate the moment the dashboard opens,
+         before anyone has clicked anything. -->
+    <div class="panel blocked-creators-entry">
+      <div class="blocked-creators-entry-row">
+        <div>
+          <p class="blocked-creators-entry-title">Blocked Creators</p>
+          <p class="blocked-creators-entry-sub" id="blockedCreatorsSummary">Loading…</p>
+        </div>
+        <button id="blockedCreatorsBtn" class="btn-primary" aria-expanded="false">View blocked creators</button>
+      </div>
+      <div id="blockedCreatorsPanel" class="blocked-creators-panel" hidden>
+        <div id="blockedCreatorsList" class="reports-list" role="list" aria-label="Blocked creators"></div>
+        <div id="blockedCreatorsEmpty" class="empty" hidden>No blocked creators.</div>
+      </div>
+    </div>
+
     <div class="panel">
       <div id="reportsList" class="reports-list" role="list" aria-label="Open reports"></div>
       <div id="emptyState" class="empty" hidden>No open reports.</div>
-    </div>
-
-    <!-- Lazy-loaded on first expand, same convention as a report's own
-         "View reported content" preview panel below. -->
-    <div id="blockedCreatorsPanel" class="panel blocked-creators-panel" hidden>
-      <p class="preview-panel-label">Blocked creators</p>
-      <div id="blockedCreatorsList" class="reports-list" role="list" aria-label="Blocked creators"></div>
-      <div id="blockedCreatorsEmpty" class="empty" hidden>No blocked creators.</div>
     </div>
 
     <p id="actionStatus" class="status" aria-live="polite"></p>
@@ -266,6 +294,7 @@
   var blockedCreatorsPanel = document.getElementById('blockedCreatorsPanel');
   var blockedCreatorsList = document.getElementById('blockedCreatorsList');
   var blockedCreatorsEmpty = document.getElementById('blockedCreatorsEmpty');
+  var blockedCreatorsSummary = document.getElementById('blockedCreatorsSummary');
   var themeToggleBtn = document.getElementById('themeToggleBtn');
   var themeToggleIcon = themeToggleBtn.querySelector('.icon');
   var themeToggleLabel = themeToggleBtn.querySelector('.theme-toggle-label');
@@ -379,13 +408,20 @@
       actionGroup.appendChild(dismissBtn);
 
       var takedownBtn = document.createElement('button');
-      takedownBtn.className = 'btn-danger';
+      // Gold/amber (--warn) — a deliberate swap from this button's
+      // original --danger (red) treatment, product decision to give
+      // Take down and Block creator below the OPPOSITE of their
+      // original color pairing.
+      takedownBtn.className = 'btn-warn';
       takedownBtn.textContent = 'Take down';
       takedownBtn.addEventListener('click', function () { takedown(r.shareId, r.reportId); });
       actionGroup.appendChild(takedownBtn);
 
       var blockBtn = document.createElement('button');
-      blockBtn.className = 'btn-warn';
+      // Dark orange (--danger) — a deliberate swap from this button's
+      // original --warn (gold) treatment; see takedownBtn's own comment
+      // above for the matching swap in the other direction.
+      blockBtn.className = 'btn-danger';
       blockBtn.textContent = 'Block creator';
       blockBtn.addEventListener('click', function () { blockCreator(r.shareId, r.reportId); });
       actionGroup.appendChild(blockBtn);
@@ -444,14 +480,26 @@
   // Every value rendered below is attached via textContent/explicit DOM
   // construction, matching renderReports' own convention — report/share
   // content is untrusted regardless of which report row it came from.
-  function loadPreview(shareId, container) {
+  //
+  // Shared by two distinct callers with two distinct data sources —
+  // loadPreview (Open Reports, the public, unauthenticated
+  // api/share/:id endpoint) and loadTriggerPreview (Blocked Creators'
+  // own "Reported content" entries, the admin-only
+  // api/admin-ui/creator-trigger-content endpoint, needed specifically
+  // because that content is normally disabled by the block itself — see
+  // that endpoint's own header for why a separate, narrowly-scoped
+  // bypass exists). Both endpoints return the SAME raw-payload shape on
+  // success and the same {error} shape on failure, so one rendering
+  // path correctly serves both — this is deliberately the ONLY preview
+  // renderer in this file, not duplicated per caller.
+  function loadPreviewFromUrl(url, container) {
     container.innerHTML = '';
     var loading = document.createElement('p');
     loading.className = 'preview-empty';
     loading.textContent = 'Loading…';
     container.appendChild(loading);
 
-    fetch('/api/share/' + encodeURIComponent(shareId), { credentials: 'same-origin' })
+    fetch(url, { credentials: 'same-origin' })
       .then(function (res) {
         if (res.status === 404) {
           container.innerHTML = '';
@@ -476,6 +524,20 @@
         err.textContent = 'Could not load preview: ' + e.message;
         container.appendChild(err);
       });
+  }
+
+  function loadPreview(shareId, container) {
+    loadPreviewFromUrl('/api/share/' + encodeURIComponent(shareId), container);
+  }
+
+  // blockId + shareId, not shareId alone — the server independently
+  // verifies shareId is a recorded trigger for THAT block before
+  // returning anything; see creator-trigger-content.js's own header.
+  function loadTriggerPreview(blockId, shareId, container) {
+    loadPreviewFromUrl(
+      '/api/admin-ui/creator-trigger-content?blockId=' + encodeURIComponent(blockId) + '&shareId=' + encodeURIComponent(shareId),
+      container
+    );
   }
 
   function appendTruncatedNotice(container) {
@@ -714,6 +776,10 @@
       if (!data) return;
       showApp();
       renderReports(data.reports);
+      // Loaded here too (not just lazily on first expand) so the entry
+      // card's summary line is accurate as soon as the dashboard opens —
+      // see .blocked-creators-entry's own comment above.
+      return loadBlockedCreators();
     }).catch(function (e) {
       setActionStatus('Could not load reports: ' + e.message, 'error');
     });
@@ -750,7 +816,11 @@
           return;
         }
         setActionStatus('Creator blocked. ' + (data.disabledShareCount || 0) + ' other share(s) disabled.', 'ok');
-        return loadReports();
+        // Also refresh the Blocked Creators summary/list — without this,
+        // the count shown on the entry card above would silently go
+        // stale until the admin happened to open or refresh it
+        // separately, undermining the whole point of surfacing it there.
+        return Promise.all([loadReports(), loadBlockedCreators()]);
       })
       .catch(function (e) { setActionStatus('Could not block creator: ' + e.message, 'error'); });
   }
@@ -762,7 +832,14 @@
   // own header) — only the opaque blockId minted at block time. The
   // displayed "Creator #..." identifier is a prefix of that same
   // opaque, non-sensitive id, never anything derived from or
-  // resembling the real secret.
+  // resembling the real secret. `reasons` is at most a handful of
+  // REPORT_REASONS enum values, rendered with the SAME reasonLabel()
+  // mapping the Open reports list above already uses, not a second
+  // lookup table. `triggers` is the richer per-report moderation
+  // snapshot behind those reason pills (see creatorBlock.js's own
+  // creator-block-triggers:<token> note) — rendered below as its own
+  // "Reported content" section, reusing loadTriggerPreview/renderPreview
+  // exactly as Open Reports' own preview does, never a second renderer.
   function renderBlockedCreators(creators) {
     blockedCreatorsList.innerHTML = '';
     blockedCreatorsEmpty.hidden = creators.length > 0;
@@ -791,6 +868,96 @@
 
       card.appendChild(meta);
 
+      // Why this creator was blocked — a separate row from the meta line
+      // above, since there can be more than one (a creator re-blocked
+      // from a second, different report). Honest "No reason recorded"
+      // for legacy blocks / blocks made via the Bearer-token API, which
+      // has no associated report at all — never invented.
+      var reasonsRow = document.createElement('div');
+      reasonsRow.className = 'blocked-creator-reasons';
+      var reasons = Array.isArray(c.reasons) ? c.reasons : [];
+      if (reasons.length === 0) {
+        var noReason = document.createElement('span');
+        noReason.className = 'reason-pill reason-pill-muted';
+        noReason.textContent = 'No reason recorded';
+        reasonsRow.appendChild(noReason);
+      } else {
+        reasons.forEach(function (r) {
+          var reasonPill = document.createElement('span');
+          reasonPill.className = 'reason-pill';
+          reasonPill.textContent = reasonLabel(r);
+          reasonsRow.appendChild(reasonPill);
+        });
+      }
+      card.appendChild(reasonsRow);
+
+      // "Reported content" — one entry per contributing report, each
+      // with its own lazy-loaded preview toggle, same convention as a
+      // report's own "View reported content" button below. Only ever
+      // populated from c.triggers — shares that were merely swept/
+      // disabled without being individually reported never appear here
+      // (see creator-trigger-content.js's own header for why that's
+      // enforced server-side too, not just by what this file chooses to
+      // render).
+      var triggers = Array.isArray(c.triggers) ? c.triggers : [];
+      if (triggers.length > 0) {
+        var triggersWrap = document.createElement('div');
+        triggersWrap.className = 'blocked-creator-triggers';
+        var triggersLabel = document.createElement('p');
+        triggersLabel.className = 'preview-notice';
+        triggersLabel.textContent = 'Content from the report(s) that contributed to this block:';
+        triggersWrap.appendChild(triggersLabel);
+
+        triggers.forEach(function (t) {
+          var triggerCard = document.createElement('div');
+          triggerCard.className = 'report-card';
+
+          var triggerMeta = document.createElement('div');
+          triggerMeta.className = 'report-meta';
+          var triggerReasonPill = document.createElement('span');
+          triggerReasonPill.className = 'reason-pill';
+          triggerReasonPill.textContent = reasonLabel(t.reason);
+          triggerMeta.appendChild(triggerReasonPill);
+          var triggerTime = document.createElement('span');
+          triggerTime.className = 'report-time';
+          triggerTime.textContent = t.createdAt ? new Date(t.createdAt).toLocaleString() : '—';
+          triggerMeta.appendChild(triggerTime);
+          triggerCard.appendChild(triggerMeta);
+
+          var triggerDetails = document.createElement('p');
+          triggerDetails.className = 'details-cell';
+          triggerDetails.textContent = t.details || '—';
+          triggerCard.appendChild(triggerDetails);
+
+          var triggerPreviewBtn = document.createElement('button');
+          triggerPreviewBtn.className = 'toggle-preview-btn';
+          triggerPreviewBtn.textContent = 'View content';
+          triggerPreviewBtn.setAttribute('aria-expanded', 'false');
+          triggerCard.appendChild(triggerPreviewBtn);
+
+          var triggerPreviewPanel = document.createElement('div');
+          triggerPreviewPanel.className = 'preview-panel';
+          triggerPreviewPanel.hidden = true;
+          var triggerPreviewContainer = document.createElement('div');
+          triggerPreviewPanel.appendChild(triggerPreviewContainer);
+          triggerCard.appendChild(triggerPreviewPanel);
+
+          var triggerPreviewLoaded = false;
+          triggerPreviewBtn.addEventListener('click', function () {
+            triggerPreviewPanel.hidden = !triggerPreviewPanel.hidden;
+            triggerPreviewBtn.setAttribute('aria-expanded', triggerPreviewPanel.hidden ? 'false' : 'true');
+            if (!triggerPreviewPanel.hidden && !triggerPreviewLoaded) {
+              triggerPreviewLoaded = true;
+              loadTriggerPreview(c.blockId, t.shareId, triggerPreviewContainer);
+            }
+          });
+
+          triggersWrap.appendChild(triggerCard);
+        });
+
+        card.appendChild(triggersWrap);
+      }
+
       var actions = document.createElement('div');
       actions.className = 'actions';
       var unblockBtn = document.createElement('button');
@@ -804,6 +971,12 @@
     });
   }
 
+  function updateBlockedCreatorsSummary(creators) {
+    blockedCreatorsSummary.textContent = creators.length === 0
+      ? 'No creators currently blocked.'
+      : creators.length + ' creator' + (creators.length === 1 ? '' : 's') + ' currently blocked.';
+  }
+
   function loadBlockedCreators() {
     return apiFetch('/api/admin-ui/blocked-creators').then(function (res) {
       if (res.status === 401) { showLogin(); return null; }
@@ -812,7 +985,9 @@
     }).then(function (data) {
       if (!data) return;
       renderBlockedCreators(data.creators);
+      updateBlockedCreatorsSummary(data.creators);
     }).catch(function (e) {
+      blockedCreatorsSummary.textContent = 'Could not load.';
       setActionStatus('Could not load blocked creators: ' + e.message, 'error');
     });
   }
@@ -841,11 +1016,14 @@
       });
   }
 
+  // Data is already loaded up front (see loadReports().then(...) below)
+  // and kept fresh after every block/unblock action — this just toggles
+  // visibility, no fetch needed here.
   blockedCreatorsBtn.addEventListener('click', function () {
     var willShow = blockedCreatorsPanel.hidden;
     blockedCreatorsPanel.hidden = !willShow;
     blockedCreatorsBtn.setAttribute('aria-expanded', willShow ? 'true' : 'false');
-    if (willShow) loadBlockedCreators();
+    blockedCreatorsBtn.textContent = willShow ? 'Hide blocked creators' : 'View blocked creators';
   });
 
   loginForm.addEventListener('submit', function (e) {
