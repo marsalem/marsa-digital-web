@@ -52,11 +52,23 @@ html[data-lang="ar"] .brand img { transform: none; }
 /* .hero used to BE the centered flex column directly (mark/h1/sub/store-
    buttons as its own direct children) — now that column moves to
    .hero-copy, one of two children of the new .hero-row below, sitting
-   beside .hero-shots. Properties here are unchanged from .hero's old
-   ones, just relocated, so the copy itself still looks exactly as it did
-   before this existed, both stacked (narrow viewports, see this file's
-   shared max-width:760px block further down) and side-by-side. */
-.hero-copy { flex:0 1 auto; display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; }
+   beside .hero-shots.
+   flex:1 1 0 + align-items:flex-start (STRETCHES to fill whatever space
+   is left after .hero-shots' own fixed width, left-aligned within it) —
+   NOT the centered/auto-width column this used to be. That auto-width
+   version measured as centered (.hero-row's own box was symmetric) but
+   didn't READ as centered: text sat centered inside ITS OWN narrower
+   box, leaving visible blank margin before the glyphs even started,
+   while .hero-shots' two images fill their box edge-to-edge with none —
+   so the actual INK was asymmetric even though the abstract boxes
+   weren't, which is what got reported as "text centered in its column,
+   image flush right." flex:1 1 0 + left-align is exactly .sec-copy's own
+   pattern below (that pattern has never had this complaint) — matching
+   it here, rather than re-deriving a bespoke centering fix, is also
+   what makes alternating hero with the .sec-row sections underneath it
+   (per explicit direction) a straightforward reverse-class toggle later
+   instead of two different layout systems to keep in sync. */
+.hero-copy { flex:1 1 0; min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:18px; }
 /* Light mode only — same recolor as base.css's .brand img, see that
    rule's own comment (saturate/brightness only, no hue-rotate — an
    earlier version's hue-rotate shifted this into reading as teal).
@@ -66,16 +78,30 @@ html[data-lang="ar"] .brand img { transform: none; }
 :root[data-theme="dark"] .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); }
 @media (prefers-color-scheme: dark) { .hero .mark { filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)); } }
 :root[data-theme="light"] .hero .mark { filter: saturate(0.70) brightness(0.90) drop-shadow(0 14px 28px rgba(20,60,140,0.35)); }
-.hero h1 { font-size:34px; line-height:1.18; letter-spacing:-0.01em; font-weight:500; max-width:600px; color: var(--hero-title); }
-html[data-lang="ar"] .hero h1 { font-weight:500; }
-.hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); }
-html[data-lang="ar"] .hero .sub { font-size:18.5px; }
+/* text-align:left + html[data-lang="ar"] override — same explicit
+   per-element pattern .sec-sub/.bullets already use below, rather than
+   relying on the inherited default (which would already resolve the
+   same way, just less explicitly matching the rest of this file). */
+.hero h1 { font-size:34px; line-height:1.18; letter-spacing:-0.01em; font-weight:500; max-width:600px; color: var(--hero-title); text-align:left; }
+html[data-lang="ar"] .hero h1 { font-weight:500; text-align:right; }
+.hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); text-align:left; }
+html[data-lang="ar"] .hero .sub { font-size:18.5px; text-align:right; }
+/* store-buttons' own justify-content:center (below) centers the two
+   badges WITHIN that row's own content width — harmless no-op now that
+   the row isn't stretched/centered itself, hugging its own content width
+   like every other child of this now flex-start-aligned column. */
 
-/* Hero row — wraps .hero-copy (unchanged content/styling, see above) and
-   .hero-shots beside it. Row on wide viewports, column (text above
-   images) on narrow ones — see this file's shared max-width:760px block
-   further down, same breakpoint/stacking convention as .sec-row. */
-.hero-row { display:flex; align-items:center; justify-content:center; gap:56px; max-width:1080px; margin:0 auto; }
+/* Hero row — wraps .hero-copy and .hero-shots beside it. Row on wide
+   viewports, column (text above images) on narrow ones — see this
+   file's shared max-width:760px block further down, same breakpoint/
+   stacking convention as .sec-row. max-width/gap match .sec-row's own
+   exactly (980/48, not this row's previous bespoke 1080/56) so the
+   hero's left/right edges line up with every section below it — no
+   justify-content needed (unlike the old centered-group approach):
+   .hero-copy's own flex:1 1 0 above always fills the row corner-to-
+   corner together with .hero-shots' fixed width, the same reason
+   .sec-row itself never needed one. */
+.hero-row { display:flex; align-items:center; gap:48px; max-width:980px; margin:0 auto; }
 
 /* Hero screenshot pair — two REAL device-mockup screenshots (bezel,
    notch, side buttons already baked into the asset itself, background
@@ -216,11 +242,13 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
   .sec-shot.stacked img.shot-wide { width:320px; }
   .sec-shot.stacked .shot-row { gap:10px; }
   .sec-shot.stacked img.shot-narrow { width:165px; }
-  /* Same text-above-images stacking as .sec-row above — .hero-copy's own
-     centering is untouched (it was already centered at every width
-     before .hero-shots existed), this just stacks .hero-shots below it
-     instead of beside it. Shots shrink a bit (230→190, peek offset
-     56→46 at the same ratio) to match .sec-shot's own ~17% mobile
+  /* Same text-above-images stacking as .sec-row above, and the same
+     align-items:center (inherited from .hero-row's base rule, not
+     overridden here) governing HORIZONTAL centering of the stacked
+     .hero-copy/.hero-shots boxes once flex-direction flips to column —
+     identical mechanism .sec-row already uses at this same breakpoint,
+     not a hero-specific behavior. Shots shrink a bit (230→190, box
+     360→297 at the same ratio) to match .sec-shot's own ~17% mobile
      shrink above. */
   .hero-row { flex-direction:column; gap:32px; }
   .hero-shots { width:297px; height:399px; }
