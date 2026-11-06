@@ -136,24 +136,27 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; text-align:right; }
 :root[data-theme="dark"] .hero-shot { filter: drop-shadow(0 22px 48px rgba(0,0,0,0.55)); }
 @media (prefers-color-scheme: dark) { .hero-shot { filter: drop-shadow(0 22px 48px rgba(0,0,0,0.55)); } }
 :root[data-theme="light"] .hero-shot { filter: drop-shadow(0 22px 48px rgba(20,60,140,0.35)); }
-/* "Front" role: pinned to .hero-shots' own START edge (inset-inline-start:0
-   — physically left in LTR, right in RTL), full opacity, higher z-index.
-   "Peek" role: pinned to the box's END edge instead (inset-inline-end:0)
-   — since the box is 56px wider than either image, front-at-start and
-   peek-at-end overlap across the middle 174px and the peek's own
-   remaining 56px hangs out past front's trailing edge, same visual
-   result as before but now WITHIN the box's own measured width instead
-   of overflowing it. Both inset-inline-start AND -end are set explicitly
-   on every rule (even to `auto`) so a role swap never leaves a stale
-   value from the opposite role. Light mode: shot-light is front,
-   shot-dark peeks. */
-.hero-shot.shot-light { inset-inline-start:0; inset-inline-end:auto; z-index:2; opacity:1; }
-.hero-shot.shot-dark { inset-inline-start:auto; inset-inline-end:0; z-index:1; opacity:0.92; }
-:root[data-theme="dark"] .hero-shot.shot-dark { inset-inline-start:0; inset-inline-end:auto; z-index:2; opacity:1; }
-:root[data-theme="dark"] .hero-shot.shot-light { inset-inline-start:auto; inset-inline-end:0; z-index:1; opacity:0.92; }
+/* "Front" role: pinned to .hero-shots' own END edge (inset-inline-end:0
+   — physically right in LTR, left in RTL), full opacity, higher z-index.
+   "Peek" role: pinned to the box's START edge instead (inset-inline-start:0)
+   — since the box is 130px wider than either image, peek-at-start and
+   front-at-end overlap across the middle 100px and peek's own remaining
+   130px hangs out past front's LEADING edge, revealing peek's own start-
+   side (left in LTR) portion of its screen rather than its end-side —
+   per explicit "peek out from the opposite direction so the left hand
+   side of both screens is visible" follow-up (front's own left side was
+   always fully visible regardless, being unoccluded; this flips which
+   side of the OCCLUDED peek image is the visible one). Both inset-
+   inline-start AND -end are set explicitly on every rule (even to
+   `auto`) so a role swap never leaves a stale value from the opposite
+   role. Light mode: shot-light is front, shot-dark peeks. */
+.hero-shot.shot-light { inset-inline-start:auto; inset-inline-end:0; z-index:2; opacity:1; }
+.hero-shot.shot-dark { inset-inline-start:0; inset-inline-end:auto; z-index:1; opacity:0.92; }
+:root[data-theme="dark"] .hero-shot.shot-dark { inset-inline-start:auto; inset-inline-end:0; z-index:2; opacity:1; }
+:root[data-theme="dark"] .hero-shot.shot-light { inset-inline-start:0; inset-inline-end:auto; z-index:1; opacity:0.92; }
 @media (prefers-color-scheme: dark) {
-  .hero-shot.shot-dark { inset-inline-start:0; inset-inline-end:auto; z-index:2; opacity:1; }
-  .hero-shot.shot-light { inset-inline-start:auto; inset-inline-end:0; z-index:1; opacity:0.92; }
+  .hero-shot.shot-dark { inset-inline-start:auto; inset-inline-end:0; z-index:2; opacity:1; }
+  .hero-shot.shot-light { inset-inline-start:0; inset-inline-end:auto; z-index:1; opacity:0.92; }
 }
 /* Explicit light restatement — needed because the bare prefers-color-scheme
    media query above has lower specificity than THIS selector but isn't
@@ -161,8 +164,8 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; text-align:right; }
    the visitor's OS is dark but they've manually toggled this page to
    light (the themeToggle in the footer script) — same reasoning as
    .hero .mark's own :root[data-theme="light"] restatement above. */
-:root[data-theme="light"] .hero-shot.shot-light { inset-inline-start:0; inset-inline-end:auto; z-index:2; opacity:1; }
-:root[data-theme="light"] .hero-shot.shot-dark { inset-inline-start:auto; inset-inline-end:0; z-index:1; opacity:0.92; }
+:root[data-theme="light"] .hero-shot.shot-light { inset-inline-start:auto; inset-inline-end:0; z-index:2; opacity:1; }
+:root[data-theme="light"] .hero-shot.shot-dark { inset-inline-start:0; inset-inline-end:auto; z-index:1; opacity:0.92; }
 
 /* Official Apple/Google download badges — real artwork, not custom buttons. Apple badge
    verified live from Apple's own generator (toolbox.marketingtools.apple.com); Google Play
