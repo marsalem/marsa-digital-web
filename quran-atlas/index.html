@@ -273,9 +273,28 @@ html[data-lang="ar"] .bullets li { padding-left:0; padding-right:18px; }
 .bullets li::before { content:''; position:absolute; left:0; top:7px; width:6px; height:6px; border-radius:50%; background: var(--text-secondary); }
 html[data-lang="ar"] .bullets li::before { left:auto; right:0; }
 
-.support-strip { max-width:1000px; margin:0 auto; padding:20px 28px 72px; display:flex; flex-wrap:wrap; justify-content:center; column-gap:28px; row-gap:14px; }
-.support-item { display:flex; align-items:center; gap:10px; font-size:18px; color: var(--text-secondary); }
-.si-icon { display:flex; color: var(--accent); }
+/* row-gap:14px (was) only ever gave clean clearance when every item in a
+   row was a single line tall — on any viewport/text-size combination
+   where one of the longer items (e.g. "Fully bilingual, right-to-left
+   Arabic support") wraps to 2 lines while its row-neighbors stay single-
+   line, that wrapped second line sat only 14px above the icons of the
+   row below, reading as clipped/crowded (reported directly, not
+   reproducible at any desktop width tested here — likely a narrower
+   effective width or larger text size on the reporting device, neither
+   of which this fix needs to pin down: it's safe at every width/line-
+   count regardless of why a given item wraps). 28px gives real
+   clearance even in that worst case. */
+.support-strip { max-width:1000px; margin:0 auto; padding:20px 28px 72px; display:flex; flex-wrap:wrap; justify-content:center; column-gap:28px; row-gap:28px; }
+/* align-items:flex-start (was center) — anchors the icon to the FIRST
+   line of its own label instead of the vertical center of the whole
+   (possibly 2-line) label, so a wrapped item's icon doesn't drift away
+   from its own text's cap-height, and single-line neighbors in the same
+   row aren't thrown out of visual alignment with it either. 2px top
+   padding on .si-icon nudges the icon down to optically align with the
+   text's cap-height now that it's pinned to flex-start instead of
+   vertically centered. */
+.support-item { display:flex; align-items:flex-start; gap:10px; font-size:18px; color: var(--text-secondary); }
+.si-icon { display:flex; color: var(--accent); padding-top:2px; }
 
 footer.site-footer { text-align:center; padding:56px 28px 48px; border-top:none; }
 footer.site-footer .closing { font-size:26px; font-weight:500; margin-bottom:32px; color: var(--heading); }
