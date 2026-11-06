@@ -48,7 +48,15 @@ html[data-lang="ar"] .brand img { transform: none; }
   .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
 }
 
-.hero { padding:70px 32px 60px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:18px; }
+.hero { padding:70px 32px 60px; }
+/* .hero used to BE the centered flex column directly (mark/h1/sub/store-
+   buttons as its own direct children) — now that column moves to
+   .hero-copy, one of two children of the new .hero-row below, sitting
+   beside .hero-shots. Properties here are unchanged from .hero's old
+   ones, just relocated, so the copy itself still looks exactly as it did
+   before this existed, both stacked (narrow viewports, see this file's
+   shared max-width:760px block further down) and side-by-side. */
+.hero-copy { flex:0 1 auto; display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; }
 /* Light mode only — same recolor as base.css's .brand img, see that
    rule's own comment (saturate/brightness only, no hue-rotate — an
    earlier version's hue-rotate shifted this into reading as teal).
@@ -62,6 +70,57 @@ html[data-lang="ar"] .brand img { transform: none; }
 html[data-lang="ar"] .hero h1 { font-weight:500; }
 .hero .sub { font-size:16.5px; line-height:1.6; max-width:460px; color: var(--text-secondary); }
 html[data-lang="ar"] .hero .sub { font-size:18.5px; }
+
+/* Hero row — wraps .hero-copy (unchanged content/styling, see above) and
+   .hero-shots beside it. Row on wide viewports, column (text above
+   images) on narrow ones — see this file's shared max-width:760px block
+   further down, same breakpoint/stacking convention as .sec-row. */
+.hero-row { display:flex; align-items:center; justify-content:center; gap:56px; max-width:1080px; margin:0 auto; }
+
+/* Hero screenshot pair — two REAL device-mockup screenshots (bezel,
+   notch, side buttons already baked into the asset itself, background
+   removed) of the home screen, light+dark, shown together rather than
+   swapped one-for-one like the .sec-shot pairs below: whichever matches
+   the active theme sits in front at full size, the other peeks out from
+   behind it at the same vertical level, per explicit "both visible, one
+   in back peeking from the side" direction — a genuinely different
+   treatment from .sec-shot's single-image swap, not a copy of it. Which
+   image gets which role still uses the SAME :root[data-theme]/
+   prefers-color-scheme dual-pattern as every other theme-swapped element
+   on this page (Apple badge, .sec-shot, .hero .mark above) — just
+   toggling position/z-index/opacity per role instead of display:none. */
+.hero-shots { position:relative; flex:0 0 auto; display:flex; justify-content:center; }
+.hero-shot { width:230px; height:auto; display:block; filter: drop-shadow(0 22px 48px rgba(20,60,140,0.35)); }
+:root[data-theme="dark"] .hero-shot { filter: drop-shadow(0 22px 48px rgba(0,0,0,0.55)); }
+@media (prefers-color-scheme: dark) { .hero-shot { filter: drop-shadow(0 22px 48px rgba(0,0,0,0.55)); } }
+:root[data-theme="light"] .hero-shot { filter: drop-shadow(0 22px 48px rgba(20,60,140,0.35)); }
+/* "Front" role: normal flow (sets .hero-shots' own box size, since the
+   peek image below is taken out of flow via position:absolute), full
+   opacity, higher z-index. "Peek" role: absolutely positioned against
+   that same box, top:0 keeps it at the FRONT image's own top edge (same
+   vertical level, not offset downward), inset-inline-end is a LOGICAL
+   offset — physically the right edge in LTR, the left edge in RTL,
+   flipping automatically with the page's own dir attribute exactly like
+   every other mirrored element here, no language-specific override
+   needed — hanging the peek image's trailing edge out past the front
+   image's own trailing edge by that amount. Light mode: shot-light is
+   front, shot-dark peeks. */
+.hero-shot.shot-light { position:relative; z-index:2; opacity:1; }
+.hero-shot.shot-dark { position:absolute; top:0; inset-inline-end:-56px; z-index:1; opacity:0.92; }
+:root[data-theme="dark"] .hero-shot.shot-dark { position:relative; z-index:2; opacity:1; inset-inline-end:auto; }
+:root[data-theme="dark"] .hero-shot.shot-light { position:absolute; top:0; inset-inline-end:-56px; z-index:1; opacity:0.92; }
+@media (prefers-color-scheme: dark) {
+  .hero-shot.shot-dark { position:relative; z-index:2; opacity:1; inset-inline-end:auto; }
+  .hero-shot.shot-light { position:absolute; top:0; inset-inline-end:-56px; z-index:1; opacity:0.92; }
+}
+/* Explicit light restatement — needed because the bare prefers-color-scheme
+   media query above has lower specificity than THIS selector but isn't
+   scoped to data-theme at all, so it would otherwise still win even when
+   the visitor's OS is dark but they've manually toggled this page to
+   light (the themeToggle in the footer script) — same reasoning as
+   .hero .mark's own :root[data-theme="light"] restatement above. */
+:root[data-theme="light"] .hero-shot.shot-light { position:relative; z-index:2; opacity:1; }
+:root[data-theme="light"] .hero-shot.shot-dark { position:absolute; top:0; inset-inline-end:-56px; z-index:1; opacity:0.92; }
 
 /* Official Apple/Google download badges — real artwork, not custom buttons. Apple badge
    verified live from Apple's own generator (toolbox.marketingtools.apple.com); Google Play
@@ -141,6 +200,18 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
   .sec-shot.stacked img.shot-wide { width:320px; }
   .sec-shot.stacked .shot-row { gap:10px; }
   .sec-shot.stacked img.shot-narrow { width:165px; }
+  /* Same text-above-images stacking as .sec-row above — .hero-copy's own
+     centering is untouched (it was already centered at every width
+     before .hero-shots existed), this just stacks .hero-shots below it
+     instead of beside it. Shots shrink a bit (230→190, peek offset
+     56→46 at the same ratio) to match .sec-shot's own ~17% mobile
+     shrink above. */
+  .hero-row { flex-direction:column; gap:32px; }
+  .hero-shot { width:190px; }
+  .hero-shot.shot-dark { inset-inline-end:-46px; }
+  :root[data-theme="dark"] .hero-shot.shot-light { inset-inline-end:-46px; }
+  @media (prefers-color-scheme: dark) { .hero-shot.shot-light { inset-inline-end:-46px; } }
+  :root[data-theme="light"] .hero-shot.shot-dark { inset-inline-end:-46px; }
 }
 
 .sec-icon { display:inline-flex; color: var(--accent); }
@@ -203,6 +274,8 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
 </nav>
 
 <section class="hero">
+  <div class="hero-row">
+  <div class="hero-copy">
   <img class="mark" src="/quran-atlas/assets/img/crescent-hero.png" alt=""/>
   <h1><span data-en>Build your own library of Islamic knowledge.</span><span data-ar>ابنِ مكتبتك الخاصة من المعرفة الإسلامية.</span></h1>
   <p class="sub"><span data-en>A bilingual companion for reading, studying, and reflecting on the Quran and Hadith — organize topics, attach verses and notes, and search across everything you save. For Muslims and anyone curious about Islam.</span><span data-ar>رفيقك ثنائي اللغة لقراءة القرآن والحديث ودراستهما والتأمل فيهما — نظّم مواضيعك، أرفق الآيات والملاحظات، وابحث في كل ما تحفظه. للمسلمين ولكل من يريد التعرف على الإسلام.</span></p>
@@ -231,6 +304,17 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
     <a class="badge-link" href="#" aria-disabled="true" onclick="return false;" data-ar aria-label="احصل عليه من Google Play">
       <img class="badge-img" src="/quran-atlas/assets/badges/google-play-badge-ar-trimmed.png" alt="احصل عليه من Google Play" height="48">
     </a>
+  </div>
+  </div>
+  <!-- Device-mockup pair (bezel/notch/buttons baked into the asset, background
+       removed) of the Home screen — see this file's own .hero-shots/.hero-shot
+       CSS comments above for the front/peek role mechanism. Both always in the
+       DOM/visible at once (unlike .sec-shot's single-image theme swap below),
+       so both get real descriptive alt text rather than one being decorative. -->
+  <div class="hero-shots">
+    <img class="hero-shot shot-light" src="/quran-atlas/assets/img/screenshots/hero-home-light.webp" width="230" height="483" alt="Quran Atlas home screen, light mode">
+    <img class="hero-shot shot-dark" src="/quran-atlas/assets/img/screenshots/hero-home-dark.webp" width="230" height="483" alt="Quran Atlas home screen, dark mode">
+  </div>
   </div>
 </section>
 
