@@ -256,6 +256,18 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
   .hero-shot { width:190px; }
 }
 
+/* Temporary stand-in for a section's real device screenshots — same box
+   footprint (200x434, 24px radius) as .sec-shot img so the layout doesn't
+   shift once real screenshots replace these. Dashed border instead of the
+   solid border + shadow treatment signals "not a real screenshot yet". */
+.shot-placeholder {
+  width:200px; height:434px; border-radius:24px; display:flex;
+  align-items:center; justify-content:center; text-align:center; padding:20px;
+  border:2px dashed var(--border-solid); color: var(--text-muted);
+  font-size:13px; line-height:1.5; background: color-mix(in srgb, var(--text-muted) 6%, transparent);
+}
+@media (max-width: 760px) { .shot-placeholder { width:175px; height:380px; } }
+
 .sec-icon { display:inline-flex; color: var(--accent); }
 .section h2 { font-size:24px; font-weight:500; letter-spacing:-0.005em; margin-top:10px; max-width:420px; color: var(--heading); }
 html[data-lang="ar"] .section h2 { font-weight:500; }
@@ -415,7 +427,7 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
           <li><span data-en>Arabic, translation, or side-by-side reading modes — 20 themes</span><span data-ar>أوضاع قراءة بالعربية، بالترجمة، أو جنبًا إلى جنب — 20 نمطًا</span></li>
           <li><span data-en>Full 604-page Mushaf view, with a two-page landscape layout and 8 Mushaf themes</span><span data-ar>عرض كامل لصفحات المصحف الـ 604، بتخطيط صفحتين أفقي و8 أنماط للمصحف</span></li>
           <li><span data-en>Tafsir from Ibn Katheer, Al-Mukhtasar, and more — 9 sources, 3 English and 6 Arabic</span><span data-ar>تفسير من ابن كثير والمختصر وغيرهما — 9 مصادر، 3 بالإنجليزية و6 بالعربية</span></li>
-          <li><span data-en>Reasons for revelation for every verse</span><span data-ar>أسباب النزول لكل آية</span></li>
+          <li><span data-en>Reasons for revelation for verses, when available</span><span data-ar>أسباب النزول للآيات، عند توفرها</span></li>
           <li><span data-en>Saheeh International and Yusuf Ali translations</span><span data-ar>ترجمتا صحيح إنترناشونال ويوسف علي</span></li>
           <li><span data-en>8 reciters — including Alafasy, Sudais, and Husary — with adjustable speed, repeat, and offline downloads</span><span data-ar>8 قرّاء — منهم العفاسي والسديس والحصري — مع إمكانية ضبط السرعة والتكرار والتحميل للاستماع دون اتصال</span></li>
           <li><span data-en>Tajweed color-coding</span><span data-ar>تلوين لأحكام التجويد</span></li>
@@ -430,6 +442,33 @@ footer.site-footer .copyright { margin-top:20px; font-size:12px; color: var(--te
           <img class="shot-light shot-narrow" src="/quran-atlas/assets/img/screenshots/read-tajweed-light.webp" width="210" height="456" loading="lazy" alt="Tajweed color-coding applied to the Quran text, rule by rule">
           <img class="shot-dark shot-narrow" src="/quran-atlas/assets/img/screenshots/read-tajweed-dark.webp" width="210" height="456" loading="lazy" alt="Tajweed color-coding applied to the Quran text, rule by rule">
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-sec="prayer">
+  <div class="sec-inner">
+    <div class="sec-row reverse">
+      <div class="sec-copy">
+        <div class="sec-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 2a1 1 0 0 1 1 1v1.07A8.94 8.94 0 0 1 20.93 12H22a1 1 0 1 1 0 2h-1.07A8.94 8.94 0 0 1 13 20.93V22a1 1 0 1 1-2 0v-1.07A8.94 8.94 0 0 1 3.07 14H2a1 1 0 1 1 0-2h1.07A8.94 8.94 0 0 1 11 4.07V3a1 1 0 0 1 1-1zm0 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm0 2a1 1 0 0 1 1 1v4.59l2.7 2.7a1 1 0 0 1-1.4 1.42l-3-3A1 1 0 0 1 11 14V9a1 1 0 0 1 1-1z" fill="currentColor"/></svg></div>
+        <h2><span data-en>Prayer, wherever you are.</span><span data-ar>أوقات الصلاة، أينما كنت.</span></h2>
+        <p class="sec-sub"><span data-en>Keep your daily prayers close at hand with accurate prayer times, Qibla direction, Adhan reminders, and widgets — all built into Quran Atlas.</span><span data-ar>احتفظ بصلواتك اليومية في متناول يدك مع أوقات صلاة دقيقة، واتجاه القبلة، وتذكيرات الأذان، والودجات — كل ذلك داخل أطلس القرآن.</span></p>
+        <ul class="bullets">
+          <li><span data-en>Accurate prayer times calculated for your location, with multiple recognized calculation methods</span><span data-ar>أوقات صلاة دقيقة تُحسب حسب موقعك، مع عدة طرق حساب معتمدة</span></li>
+          <li><span data-en>Choose your location automatically or select a city manually — useful for travel, privacy, or planning ahead</span><span data-ar>اختر موقعك تلقائيًا أو حدد مدينة يدويًا — مفيد عند السفر، أو للخصوصية، أو للتخطيط المسبق</span></li>
+          <li><span data-en>Next prayer countdown so you always know how long until the next salah</span><span data-ar>عداد تنازلي للصلاة القادمة لتعرف دائمًا الوقت المتبقي حتى الصلاة التالية</span></li>
+          <li><span data-en>Qibla direction using your device's compass, with live guidance to help you turn toward the Kaaba</span><span data-ar>اتجاه القبلة باستخدام بوصلة جهازك، مع إرشاد مباشر يساعدك على التوجه نحو الكعبة</span></li>
+          <li><span data-en>Adhan notifications with selectable Adhan modes and reciters</span><span data-ar>إشعارات الأذان مع إمكانية اختيار أنماط الأذان والقارئين</span></li>
+          <li><span data-en>Prayer widgets for a quick glance at prayer times and the next prayer from your Home Screen</span><span data-ar>ودجات الصلاة لنظرة سريعة على أوقات الصلاة والصلاة القادمة من الشاشة الرئيسية</span></li>
+          <li><span data-en>Calculation settings including Asr juristic method, high-latitude rules, 12/24-hour format, and individual prayer-time adjustments</span><span data-ar>إعدادات الحساب، تشمل مذهب حساب العصر، وقواعد خطوط العرض العالية، وتنسيق الوقت 12/24 ساعة، وتعديلات فردية لكل وقت صلاة</span></li>
+        </ul>
+      </div>
+      <!-- No real screenshots yet — .shot-placeholder stands in until device
+           captures of the Prayer tab and Qibla screen are ready. -->
+      <div class="sec-shot">
+        <div class="shot-placeholder"><span data-en>Screenshot coming soon — Prayer times &amp; countdown</span><span data-ar>لقطة شاشة قريبًا — أوقات الصلاة والعداد التنازلي</span></div>
+        <div class="shot-placeholder"><span data-en>Screenshot coming soon — Qibla direction</span><span data-ar>لقطة شاشة قريبًا — اتجاه القبلة</span></div>
       </div>
     </div>
   </div>
