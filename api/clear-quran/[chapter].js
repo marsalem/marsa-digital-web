@@ -66,7 +66,16 @@ module.exports = async function handler(req, res) {
       const upstream = await fetch(`${API_BASE}/chapters/${chapter}/verses?limit=${PAGE_LIMIT}&offset=${offset}`, {
         headers: { Authorization: `Bearer ${API_KEY}` },
       });
-      if (!upstream.ok) throw new Error(`Furqan API responded ${upstream.status}`);
+      if (!upstream.ok) {
+        const body = await upstream.text().catch(() => '');
+        // Classification only — NEVER include any substring of the actual
+        // key value in a response or log, even for debugging.
+        const keyKind = !API_KEY ? 'missing'
+          : API_KEY.startsWith('tcq_eng_liv_') ? 'live'
+          : API_KEY.startsWith('tcq_eng_sbx_') ? 'sandbox'
+          : 'unrecognized-prefix';
+        throw new Error(`Furqan API responded ${upstream.status}: ${body} | key: ${keyKind}, length ${API_KEY?.length ?? 0}`);
+      }
       const json = await upstream.json();
       if (!json.success) throw new Error('Furqan API responded success=false');
 
