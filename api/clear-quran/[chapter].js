@@ -81,7 +81,11 @@ module.exports = async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     res.status(200).json({ verses });
   } catch (err) {
-    console.error('Clear Quran proxy failed:', err instanceof Error ? err.message : String(err));
-    res.status(502).json({ error: 'Could not fetch translation text.' });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('Clear Quran proxy failed:', message);
+    // TEMPORARY: surfaced in the response body for live debugging while
+    // wiring up the first deploy — revert to a generic client message
+    // once this is confirmed working end to end.
+    res.status(502).json({ error: 'Could not fetch translation text.', debug: message });
   }
 };
