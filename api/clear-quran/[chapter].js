@@ -66,16 +66,7 @@ module.exports = async function handler(req, res) {
       const upstream = await fetch(`${API_BASE}/chapters/${chapter}/verses?limit=${PAGE_LIMIT}&offset=${offset}`, {
         headers: { Authorization: `Bearer ${API_KEY}` },
       });
-      if (!upstream.ok) {
-        const body = await upstream.text().catch(() => '');
-        // Classification only — NEVER include any substring of the actual
-        // key value in a response or log, even for debugging.
-        const keyKind = !API_KEY ? 'missing'
-          : API_KEY.startsWith('tcq_eng_liv_') ? 'live'
-          : API_KEY.startsWith('tcq_eng_sbx_') ? 'sandbox'
-          : 'unrecognized-prefix';
-        throw new Error(`Furqan API responded ${upstream.status}: ${body} | key: ${keyKind}, length ${API_KEY?.length ?? 0}`);
-      }
+      if (!upstream.ok) throw new Error(`Furqan API responded ${upstream.status}`);
       const json = await upstream.json();
       if (!json.success) throw new Error('Furqan API responded success=false');
 
@@ -90,11 +81,7 @@ module.exports = async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     res.status(200).json({ verses });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error('Clear Quran proxy failed:', message);
-    // TEMPORARY: surfaced in the response body for live debugging while
-    // wiring up the first deploy — revert to a generic client message
-    // once this is confirmed working end to end.
-    res.status(502).json({ error: 'Could not fetch translation text.', debug: message });
+    console.error('Clear Quran proxy failed:', err instanceof Error ? err.message : String(err));
+    res.status(502).json({ error: 'Could not fetch translation text.' });
   }
 };
