@@ -184,6 +184,16 @@ button { font-family:inherit; cursor:pointer; }
 html[data-lang="ar"] .eyebrow { letter-spacing: 0; }
 
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+/* section.block's own padding:64px 0 (set per-page) has higher specificity
+   (element+class) than .wrap's class-only selector, which was zeroing out
+   this combo's left/right padding entirely on every page using
+   class="block wrap" (FAQ/support/privacy) — invisible on wide viewports
+   where the 1080px max-width's own auto-centering margin masked the
+   missing inner padding, but exposed as fully edge-to-edge content on
+   narrower viewports where no outer margin exists. Pinned here with
+   matching section.block.wrap specificity so it wins regardless of the
+   per-page rule's source order. */
+section.block.wrap { padding-left: 28px; padding-right: 28px; }
 .prose { max-width: 65ch; }
 html[data-lang="ar"] .prose { max-width: 72ch; }
 

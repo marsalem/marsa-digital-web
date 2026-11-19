@@ -22,6 +22,11 @@ body { background: linear-gradient(180deg, #D9E4F3 0%, #DEEBF8 70%, #EDF5FD 100%
 @media (prefers-color-scheme: dark) {
   body { background: linear-gradient(180deg, var(--bg-grad-2) 0%, var(--bg-grad-3) 100%); }
 }
+/* Explicit light restatement — same reasoning as .hero .mark's own below:
+   the bare prefers-color-scheme query above isn't scoped to data-theme, so
+   it would otherwise still win when the visitor's OS is dark but they've
+   manually toggled this page to light. */
+:root[data-theme="light"] body { background: linear-gradient(180deg, #D9E4F3 0%, #DEEBF8 70%, #EDF5FD 100%); }
 
 /* No border-bottom here (unlike the shared base.css .nav, which FAQ/privacy/support still
    use as-is) — this page's nav sits directly on the same continuous gradient as the rest
@@ -47,6 +52,7 @@ html[data-lang="ar"] .brand img { transform: none; }
 @media (prefers-color-scheme: dark) {
   .nav { background: color-mix(in srgb, var(--bg-grad-2) 78%, transparent); }
 }
+:root[data-theme="light"] .nav { background: color-mix(in srgb, #D9E4F3 78%, transparent); }
 
 .hero { padding:70px 32px 60px; }
 /* .hero used to BE the centered flex column directly (mark/h1/sub/store-
@@ -191,6 +197,8 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
   .badge-img.apple-dark { display:block; }
   .badge-img.apple-light { display:none; }
 }
+:root[data-theme="light"] .badge-img.apple-dark { display:none; }
+:root[data-theme="light"] .badge-img.apple-light { display:block; }
 
 .section { max-width:1080px; margin:0 auto; padding:36px 28px; }
 .sec-inner { display:flex; flex-direction:column; gap:16px; }
@@ -229,6 +237,12 @@ html[data-lang="ar"] .hero .sub { font-size:18.5px; }
   .sec-shot img.shot-dark { display:block; }
   .sec-shot img.shot-light { display:none; }
 }
+/* Explicit light restatement — same reasoning as .hero-shot's own above:
+   the bare prefers-color-scheme query isn't scoped to data-theme, so on a
+   phone whose OS is set to Dark Mode, toggling this page to Light mode
+   left these section screenshots stuck showing their dark-mode variant. */
+:root[data-theme="light"] .sec-shot img.shot-dark { display:none; }
+:root[data-theme="light"] .sec-shot img.shot-light { display:block; }
 /* Read section only: one wide landscape 2-page Mushaf shot stacked above a narrower
    portrait verse-detail shot, instead of the uniform side-by-side pair every other
    section uses — the landscape image reads poorly at the standard 140px portrait width. */
